@@ -24,13 +24,3 @@ settings.tk-houdini-alembicnode.asset_step:
     color: []
     output_cache_template: houdini_asset_work_alembic_cache
   location: "@apps.tk-houdini-alembicnode.location"
-
-settings.tk-houdini-alembicnode.shot_step:
-  work_file_template: houdini_shot_work
-  default_node_name: sg_alembic_out
-  output_profiles:
-  - name: Shot Work Cache
-    settings: {}
-    color: []
-    output_cache_template: houdini_shot_work_alembic_cache
-  location: "@apps.tk-houdini-alembicnode.location"

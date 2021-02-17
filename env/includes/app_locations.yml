@@ -25,12 +25,6 @@ apps.tk-multi-about.location:
   name: tk-multi-about
   version: v0.3.3
 
-# breakdown
-apps.tk-multi-breakdown.location:
-  type: app_store
-  name: tk-multi-breakdown
-  version: v1.7.3
-
 # demo
 apps.tk-multi-demo.location:
   type: app_store
@@ -67,18 +61,6 @@ apps.tk-multi-reviewsubmission.location:
   name: tk-multi-reviewsubmission
   version: v1.1.1
 
-# screeningroom
-apps.tk-multi-screeningroom.location:
-  type: app_store
-  name: tk-multi-screeningroom
-  version: v0.4.0
-
-# setframerange
-apps.tk-multi-setframerange.location:
-  type: app_store
-  name: tk-multi-setframerange
-  version: v0.4.1
-
 # shotgun panel
 apps.tk-multi-shotgunpanel.location:
   type: app_store
@@ -107,41 +89,15 @@ apps.tk-multi-devutils.location:
 
 # shotgun folders
 apps.tk-shotgun-folders.location:
-  type: app_store
   name: tk-shotgun-folders
-  version: v0.2.0
-
-# shotgun launchfolder
-apps.tk-shotgun-launchfolder.location:
-  type: app_store
-  name: tk-shotgun-launchfolder
-  version: v0.2.1
-
-# shotgun launchpublish
-apps.tk-shotgun-launchpublish.location:
-  type: app_store
-  name: tk-shotgun-launchpublish
-  version: v0.4.1
-
-# shotgun launchvredreview
-apps.tk-shotgun-launchvredreview.location:
-  type: app_store
-  name: tk-shotgun-launchvredreview
-  version: v1.0.0
-
-# ---- Hiero apps
-
-# hiero export
-apps.tk-hiero-export.location:
-  type: app_store
-  name: tk-hiero-export
-  version: v0.5.3
-
-# hiero openinshotgun
-apps.tk-hiero-openinshotgun.location:
-  type: app_store
-  name: tk-hiero-openinshotgun
-  version: v0.3.4
+  ### App Store
+  # type: app_store
+  # version: v0.2.0
+  ### Toolkit Component Entity
+  type: shotgun
+  entity_type: CustomNonProjectEntity13
+  field: sg_uploaded_app
+  version: 1016 #tk-shotgun-folders-0.2.0.1
 
 # ---- Houdini apps
 
@@ -156,42 +112,6 @@ apps.tk-houdini-mantranode.location:
   type: app_store
   name: tk-houdini-mantranode
   version: v0.4.1
-
-# ---- Nuke apps
-
-# quickreview
-apps.tk-nuke-quickreview.location:
-  type: app_store
-  name: tk-nuke-quickreview
-  version: v1.0.3
-
-# writenode
-apps.tk-nuke-writenode.location:
-  name: tk-nuke-writenode
-  type: app_store
-  version: v1.4.2
-
-# ---- Flame apps
-
-# flame export
-apps.tk-flame-export.location:
-  name: tk-flame-export
-  type: app_store
-  version: v1.9.3
-
-# flame review
-apps.tk-flame-review.location:
-  name: tk-flame-review
-  type: app_store
-  version: v1.3.0
-
-# ---- Mari apps
-
-# project manager
-apps.tk-mari-projectmanager.location:
-  name: tk-mari-projectmanager
-  type: app_store
-  version: v1.2.2
 
 ################################################################################
 # reference all of the common frameworks
