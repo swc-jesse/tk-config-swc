@@ -27,19 +27,45 @@
 # {Shot}. The section below tells Sgtk which data types and formats to expect for each key.
 #
 keys:
-    Step:
+    Asset:
         type: str
-    sg_asset_type:
-        type: str
-    sg_asset_class:
-        type: str
-    sg_asset_category:
-        type: str
-    sg_asset_parent:
+    asset_parent:
         type: str
         shotgun_entity_type: Asset
-        shotgun_field_name: code
-    Asset:
+        shotgun_field_name: sg_asset_parent.Asset.code
+    asset_library:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_library.AssetLibrary.code
+    asset_library_parent:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_library.AssetLibrary.code
+    asset_type:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_type
+    asset_type_parent:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_type
+    asset_category:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_category
+    asset_category_parent:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_category
+    asset_class:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_class
+    asset_class_parent:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_class
+    Step:
         type: str
     name:
         type: str
@@ -95,6 +121,15 @@ keys:
         shotgun_entity_type: Task
         shotgun_field_name: content
 
+    # Photoshop supports two extension types.
+    photoshop_extension:
+        type: str
+        choices:
+            psd: Photoshop (.psd)
+            psb: Large Document Format (.psb)
+        default: psd
+        alias: extension
+
     # Maya supports two extension types.
     maya_extension:
         type: str
@@ -122,9 +157,15 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    pubs_asset_root: pubs/{sg_asset_type}/{sg_asset_class}/{sg_asset_parent}/{sg_asset_category}/{Asset}/{Step}
-    work_asset_root: work/{sg_asset_type}/{sg_asset_class}/{sg_asset_parent}/{sg_asset_category}/{Asset}/{Step}
+    # pubs_asset_root: pubs/{sg_asset_type}/{sg_asset_class}/{sg_asset_parent}/{sg_asset_category}/{Asset}/{Step}
+    # work_asset_root: work/{sg_asset_type}/{sg_asset_class}/{sg_asset_parent}/{sg_asset_category}/{Asset}/{Step}
+    #
+    # asset_root: '{sg_asset_library}/{sg_asset_type}/{Asset}'
+    # asset_child_root: '{sg_asset_library}/{sg_asset_type}/{sg_asset_parent}/{sg_asset_class}/{Asset}'
+    # asset_env_root: '{sg_asset_library}/{sg_asset_type}/{sg_biome_code}/{sg_asset_category}/{sg_asset_class}/{Asset}'
 
+    asset_root: '{asset_library}/{asset_type}/{asset_category}/{asset_class}/{Asset}/{Step}'
+    asset_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_class_parent}/{asset_parent}/{asset_category}/{Asset}/{Step}'
 
     ##########################################################################################
     # Asset pipeline
@@ -135,106 +176,49 @@ paths:
     #
 
     asset_alembic_cache:
-        definition: '@pubs_asset_root/caches/{name}.v{version}.abc'
+        definition: '@asset_root/caches/{Asset}[_{name}]_{Step}.abc'
 
 
     #
     # Photoshop
     #
 
-    # The location of WIP files
-    photoshop_asset_work:
-        definition: '@work_asset_root/workfiles/photoshop/{name}.v{version}.psd'
-    asset_work_area_photoshop:
-        definition: '@work_asset_root/workfiles/photoshop'
-    # The location of backups of WIP files
-    photoshop_asset_snapshot:
-        definition: '@work_asset_root/workfiles/photoshop/snapshots/{name}.v{version}.{timestamp}.psd'
-    # The location of published files
-    asset_publish_area_photoshop:
-        definition: '@pubs_asset_root/workfiles/photoshop'
-    photoshop_asset_publish:
-        definition: '@pubs_asset_root/workfiles/photoshop/{name}.v{version}.psd'
+    asset_photoshop_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{Step}.{photoshop_extension}'
+    asset_photoshop_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.{photoshop_extension}'
+    asset_child_photoshop_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{Step}.{photoshop_extension}'
+    asset_child_photoshop_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.{photoshop_extension}'
 
 
     #
     # Maya
     #
 
-    # define the location of a work area
-    asset_work_area_maya:
-        definition: '@work_asset_root/workfiles/maya'
-    # define the location of a publish area
-    asset_publish_area_maya:
-        definition: '@pubs_asset_root/workfiles/maya'
-    # The location of WIP files
-    maya_asset_work:
-        definition: '@work_asset_root/workfiles/maya/{name}.v{version}.{maya_extension}'
-    # The location of backups of WIP files
-    maya_asset_snapshot:
-        definition: '@work_asset_root/workfiles/maya/snapshots/{name}.v{version}.{timestamp}.{maya_extension}'
-    # The location of published maya files
-    maya_asset_publish:
-        definition: '@pubs_asset_root/workfiles/maya/{name}.v{version}.{maya_extension}'
-
+    asset_maya_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{Step}.{maya_extension}'
+    asset_maya_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.{maya_extension}'
 
     #
     # Houdini
     #
 
-    # define the location of a work area
-    asset_work_area_houdini:
-        definition: '@work_asset_root/workfiles/houdini'
-    # define the location of a publish area
-    asset_publish_area_houdini:
-        definition: '@pubs_asset_root/workfiles/houdini'
-    # The location of WIP files
-    houdini_asset_work:
-        definition: '@work_asset_root/workfiles/houdini/{name}.v{version}.hip'
-    # The location of backups of WIP files
-    houdini_asset_snapshot:
-        definition: '@work_asset_root/workfiles/houdini/snapshots/{name}.v{version}.{timestamp}.hip'
-    # The location of published houdini files
-    houdini_asset_publish:
-        definition: '@pubs_asset_root/workfiles/houdini/{name}.v{version}.hip'
-    # Alembic caches
-    houdini_asset_work_alembic_cache:
-        definition: '@work_asset_root/workfiles/houdini/cache/alembic/{name}/{houdini.node}/v{version}/{Asset}_{name}_v{version}.abc'
-
-    # Rendered images
-    houdini_asset_render:
-        definition: '@work_asset_root/workfiles/images/{name}/{houdini.node}/v{version}/{width}x{height}/{Asset}_{name}_v{version}.{SEQ}.exr'
-
-    # Additional mantra outputs
-    houdini_asset_ifd:
-        definition: '@work_asset_root/workfiles/ifds/{name}/{houdini.node}/v{version}/{width}x{height}/{Asset}_{name}_v{version}.{SEQ}.ifd'
-
-    houdini_asset_dcm:
-        definition: '@work_asset_root/workfiles/dcms/{name}/{houdini.node}/v{version}/{width}x{height}/{Asset}_{name}_v{version}.{SEQ}.dcm'
-
-    houdini_asset_extra_plane:
-        definition: '@work_asset_root/workfiles/images/{name}/{houdini.node}/{aov_name}/v{version}/{width}x{height}/{Asset}_{name}_v{version}.{SEQ}.exr'
-
+    asset_houdini_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{Step}.hip'
+    asset_houdini_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.hip'
 
     #
     # 3dsmax
     #
 
-    # define the location of a work area
-    asset_work_area_max:
-        definition: '@work_asset_root/workfiles/3dsmax'
-    # define the location of a publish area
-    asset_publish_area_max:
-        definition: '@pubs_asset_root/workfiles/3dsmax'
-    # The location of WIP files
-    max_asset_work:
-        definition: '@work_asset_root/workfiles/3dsmax/{name}.v{version}.max'
-    # The location of backups of WIP files
-    max_asset_snapshot:
-        definition: '@work_asset_root/workfiles/3dsmax/snapshots/{name}.v{version}.{timestamp}.max'
-    # The location of published max files
-    max_asset_publish:
-        definition: '@pubs_asset_root/workfiles/3dsmax/{name}.v{version}.max'
+    asset_max_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{Step}.max'
+    asset_max_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.max'
 
 
 #

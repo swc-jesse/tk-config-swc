@@ -12,15 +12,18 @@
 Hook which chooses an environment file to use based on the current context.
 """
 
-from tank import Hook
+import sgtk
+
+logger = sgtk.platform.get_logger(__name__)
 
 
-class PickEnvironment(Hook):
+class PickEnvironment(sgtk.Hook):
     def execute(self, context, **kwargs):
         """
         The default implementation assumes there are three environments, called shot, asset
         and project, and switches to these based on entity type.
         """
+
         if context.source_entity:
             if context.source_entity["type"] == "Version":
                 return "version"
@@ -38,11 +41,23 @@ class PickEnvironment(Hook):
         if context.entity and context.step is None:
             # We have an entity but no step.
             if context.entity["type"] == "Asset":
+                context_entity = context.sgtk.shotgun.find_one("Asset",
+                                                               [["id", "is", context.entity["id"]]],
+                                                               ["sg_asset_parent"])
+                if context_entity.get("sg_asset_parent"):
+                    return "asset_child"
+
                 return "asset"
 
         if context.entity and context.step:
             # We have a step and an entity.
             if context.entity["type"] == "Asset":
+                context_entity = context.sgtk.shotgun.find_one("Asset",
+                                                               [["id", "is", context.entity["id"]]],
+                                                               ["sg_asset_parent"])
+                if context_entity.get("sg_asset_parent"):
+                    return "asset_child_step"
+
                 return "asset_step"
 
         return None

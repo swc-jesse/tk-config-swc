@@ -15,6 +15,32 @@ includes:
 
 ################################################################################
 
+# entity_browser_settings
+entity_browser_settings: &entity_browser_settings
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, sg_asset_category, sg_asset_class, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  - caption: Child Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.sg_asset_class, sg_asset_parent.Asset.code, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is_not, [ null ]]
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+
+################################################################################
+
 # This configuration is used whenever a general file manager
 # is needed. This configuration doesn't look for files,
 # but only lets you switch to a valid work area. When a user
@@ -30,31 +56,13 @@ includes:
 # and these 'transit' areas can be project, shot, or sequence level.
 
 settings.tk-multi-workfiles2: &settings_tk-multi-workfiles2
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
-    filters:
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: [step]
+  <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # launches at startup.
 settings.tk-multi-workfiles2.launch_at_startup:
   launch_at_startup: true
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
-    filters:
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: [step]
+  <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -62,20 +70,11 @@ settings.tk-multi-workfiles2.launch_at_startup:
 # ---- 3dsmaxplus
 
 settings.tk-multi-workfiles2.3dsmaxplus.asset_step: &settings_tk-multi-workfiles2_3dsmaxplus_asset_step
-  template_publish: max_asset_publish
-  template_publish_area: asset_publish_area_max
-  template_work: max_asset_work
-  template_work_area: asset_work_area_max
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
-    filters:
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: [step]
+  template_publish: asset_max_workfile
+  template_publish_area: asset_root
+  template_work: asset_max_workfile
+  template_work_area: asset_root
+  <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -96,20 +95,11 @@ settings.tk-multi-workfiles2.3dsmax.asset_step:
 
 # asset_step
 settings.tk-multi-workfiles2.houdini.asset_step:
-  template_publish: houdini_asset_publish
-  template_publish_area: asset_publish_area_houdini
-  template_work: houdini_asset_work
-  template_work_area: asset_work_area_houdini
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
-    filters:
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: [step]
+  template_publish: asset_houdini_workfile
+  template_publish_area: asset_root
+  template_work: asset_houdini_workfile
+  template_work_area: asset_root
+  <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -118,20 +108,11 @@ settings.tk-multi-workfiles2.houdini.asset_step:
 
 # asset_step
 settings.tk-multi-workfiles2.maya.asset_step:
-  template_publish: maya_asset_publish
-  template_publish_area: asset_publish_area_maya
-  template_work: maya_asset_work
-  template_work_area: asset_work_area_maya
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
-    filters:
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: [step]
+  template_publish: asset_maya_workfile
+  template_publish_area: asset_root
+  template_work: asset_maya_workfile
+  template_work_area: asset_root
+  <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -140,18 +121,18 @@ settings.tk-multi-workfiles2.maya.asset_step:
 
 # asset_step
 settings.tk-multi-workfiles2.photoshop.asset_step:
-  template_publish: photoshop_asset_publish
-  template_publish_area: asset_publish_area_photoshop
-  template_work: photoshop_asset_work
-  template_work_area: asset_work_area_photoshop
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
-    filters:
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: [step]
+  template_publish: asset_photoshop_workfile
+  template_publish_area: asset_root
+  template_work: asset_photoshop_workfile
+  template_work_area: asset_root
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# asset_child_step
+settings.tk-multi-workfiles2.photoshop.asset_child_step:
+  template_publish: asset_child_photoshop_workfile
+  template_publish_area: asset_child_root
+  template_work: asset_child_photoshop_workfile
+  template_work_area: asset_child_root
+  <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
