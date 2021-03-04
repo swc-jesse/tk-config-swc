@@ -69,9 +69,18 @@ apps.tk-multi-shotgunpanel.location:
 
 # snapshot
 apps.tk-multi-snapshot.location:
-  type: app_store
   name: tk-multi-snapshot
-  version: v0.8.1
+  ### App Store
+  # type: app_store
+  # version: v0.8.1
+  ### Toolkit Component Entity
+  type: shotgun
+  entity_type: CustomNonProjectEntity13
+  field: sg_uploaded_app
+  version: 1214 #tk-multi-snapshot-0.8.1.1-swc
+  ### Dev
+  # type: dev
+  # path: ~/Documents/GitHub/tk-multi-snapshot_swc
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
@@ -98,6 +107,7 @@ apps.tk-shotgun-folders.location:
   entity_type: CustomNonProjectEntity13
   field: sg_uploaded_app
   version: 1016 #tk-shotgun-folders-0.2.0.1
+
 
 # ---- Houdini apps
 
