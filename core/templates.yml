@@ -29,6 +29,10 @@
 keys:
     Asset:
         type: str
+    task_step:
+        type: str
+        shotgun_entity_type: Task
+        shotgun_field_name: step.Step.short_name
     asset_parent:
         type: str
         shotgun_entity_type: Asset
@@ -164,8 +168,8 @@ paths:
     # asset_child_root: '{sg_asset_library}/{sg_asset_type}/{sg_asset_parent}/{sg_asset_class}/{Asset}'
     # asset_env_root: '{sg_asset_library}/{sg_asset_type}/{sg_biome_code}/{sg_asset_category}/{sg_asset_class}/{Asset}'
 
-    asset_root: '{asset_library}/{asset_type}/{asset_category}/{asset_class}/{Asset}/{Step}'
-    asset_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_class_parent}/{asset_parent}/{asset_category}/{Asset}/{Step}'
+    asset_root: '{asset_library}/{asset_type}/{asset_category}/{asset_class}/{Asset}'
+    asset_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_class_parent}/{asset_parent}/{asset_category}/{Asset}'
 
     ##########################################################################################
     # Asset pipeline
@@ -176,7 +180,7 @@ paths:
     #
 
     asset_alembic_cache:
-        definition: '@asset_root/caches/{Asset}[_{name}]_{Step}.abc'
+        definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
 
 
     #
@@ -184,13 +188,13 @@ paths:
     #
 
     asset_photoshop_workfile:
-        definition: '@asset_root/{Asset}[_{name}]_{Step}.{photoshop_extension}'
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.{photoshop_extension}'
     asset_photoshop_snapshot:
-        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.{photoshop_extension}'
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
     asset_child_photoshop_workfile:
-        definition: '@asset_child_root/{Asset}[_{name}]_{Step}.{photoshop_extension}'
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.{photoshop_extension}'
     asset_child_photoshop_snapshot:
-        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.{photoshop_extension}'
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
 
 
     #
@@ -198,27 +202,27 @@ paths:
     #
 
     asset_maya_workfile:
-        definition: '@asset_root/{Asset}[_{name}]_{Step}.{maya_extension}'
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.{maya_extension}'
     asset_maya_snapshot:
-        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.{maya_extension}'
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
 
     #
     # Houdini
     #
 
     asset_houdini_workfile:
-        definition: '@asset_root/{Asset}[_{name}]_{Step}.hip'
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.hip'
     asset_houdini_snapshot:
-        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.hip'
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.hip'
 
     #
     # 3dsmax
     #
 
     asset_max_workfile:
-        definition: '@asset_root/{Asset}[_{name}]_{Step}.max'
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.max'
     asset_max_snapshot:
-        definition: '@asset_root/snapshots/{Asset}[_{name}]_{Step}.{timestamp}.max'
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.max'
 
 
 #
