@@ -28,3 +28,17 @@ settings.tk-houdini-mantranode.asset_step:
     output_dcm_template: houdini_asset_dcm
     output_extra_plane_template: houdini_asset_extra_plane
   location: "@apps.tk-houdini-mantranode.location"
+
+# asset_child_step
+settings.tk-houdini-mantranode.asset_child_step:
+  work_file_template: houdini_asset_work
+  default_node_name: sg_mantra_out
+  output_profiles:
+  - name: Default Render
+    settings: {}
+    color: []
+    output_render_template: houdini_asset_render
+    output_ifd_template: houdini_asset_ifd
+    output_dcm_template: houdini_asset_dcm
+    output_extra_plane_template: houdini_asset_extra_plane
+  location: "@apps.tk-houdini-mantranode.location"

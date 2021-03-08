@@ -23,7 +23,7 @@ includes:
 
 ################################################################################
 
-# asset
+# asset & asset_child
 settings.tk-photoshopcc.asset:
   apps:
     tk-multi-about:

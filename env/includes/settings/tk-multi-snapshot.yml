@@ -17,50 +17,75 @@ includes:
 
 # ---- 3dsMaxPlus
 
+# asset_step
 settings.tk-multi-snapshot.3dsmaxplus.asset_step: &settings_tk-multi-snapshot_3dsmaxplus_asset_step
   template_snapshot: asset_max_snapshot
   template_work: asset_max_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# asset_child_step
+settings.tk-multi-snapshot.3dsmaxplus.asset_child_step: &settings_tk-multi-snapshot_3dsmaxplus_asset_child_step
+  template_snapshot: asset_child_max_snapshot
+  template_work: asset_child_max_workfile
   location: "@apps.tk-multi-snapshot.location"
 
 ################################################################################
 
 # ---- 3dsMax
 
+# asset_step
 settings.tk-multi-snapshot.3dsmax.asset_step:
   <<: *settings_tk-multi-snapshot_3dsmaxplus_asset_step
+  hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
+
+# asset_child_step
+settings.tk-multi-snapshot.3dsmax.asset_child_step:
+  <<: *settings_tk-multi-snapshot_3dsmaxplus_asset_child_step
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
 
 ################################################################################
 
 # ---- Houdini
 
-# asset step
+# asset_step
 settings.tk-multi-snapshot.houdini.asset_step:
   template_snapshot: asset_houdini_snapshot
   template_work: asset_houdini_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# asset_child_step
+settings.tk-multi-snapshot.houdini.asset_child_step:
+  template_snapshot: asset_child_houdini_snapshot
+  template_work: asset_child_houdini_workfile
   location: "@apps.tk-multi-snapshot.location"
 
 ################################################################################
 
 # ---- Maya
 
-# asset step
+# asset_step
 settings.tk-multi-snapshot.maya.asset_step:
   template_snapshot: asset_maya_snapshot
   template_work: asset_maya_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# asset_child_step
+settings.tk-multi-snapshot.maya.asset_child_step:
+  template_snapshot: asset_child_maya_snapshot
+  template_work: asset_child_maya_workfile
   location: "@apps.tk-multi-snapshot.location"
 
 ################################################################################
 
 # ---- Photoshop
 
-# asset step
+# asset_step
 settings.tk-multi-snapshot.photoshop.asset_step:
   template_snapshot: asset_photoshop_snapshot
   template_work: asset_photoshop_workfile
   location: "@apps.tk-multi-snapshot.location"
 
-# asset child step
+# asset_child_step
 settings.tk-multi-snapshot.photoshop.asset_child_step:
   template_snapshot: asset_child_photoshop_snapshot
   template_work: asset_child_photoshop_workfile

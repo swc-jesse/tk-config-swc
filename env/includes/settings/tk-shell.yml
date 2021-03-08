@@ -19,15 +19,8 @@ includes:
 
 ################################################################################
 
-# asset
+# asset & asset_step & asset_child_step
 settings.tk-shell.asset:
-  apps:
-    tk-multi-launchapp: '@settings.tk-multi-launchapp'
-    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
-  location: '@engines.tk-shell.location'
-
-# asset_step
-settings.tk-shell.asset_step:
   apps:
     tk-multi-launchapp: '@settings.tk-multi-launchapp'
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
