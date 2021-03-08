@@ -161,19 +161,11 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    # pubs_asset_root: pubs/{sg_asset_type}/{sg_asset_class}/{sg_asset_parent}/{sg_asset_category}/{Asset}/{Step}
-    # work_asset_root: work/{sg_asset_type}/{sg_asset_class}/{sg_asset_parent}/{sg_asset_category}/{Asset}/{Step}
-    #
-    # asset_root: '{sg_asset_library}/{sg_asset_type}/{Asset}'
-    # asset_child_root: '{sg_asset_library}/{sg_asset_type}/{sg_asset_parent}/{sg_asset_class}/{Asset}'
-    # asset_env_root: '{sg_asset_library}/{sg_asset_type}/{sg_biome_code}/{sg_asset_category}/{sg_asset_class}/{Asset}'
-
     asset_root: '{asset_library}/{asset_type}/{asset_category}/{asset_class}/{Asset}'
     asset_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_class_parent}/{asset_parent}/{asset_category}/{Asset}'
 
     ##########################################################################################
     # Asset pipeline
-
 
     #
     # Alembic caches
@@ -181,7 +173,6 @@ paths:
 
     asset_alembic_cache:
         definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
-
 
     #
     # Photoshop
@@ -196,7 +187,6 @@ paths:
     asset_child_photoshop_snapshot:
         definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
 
-
     #
     # Maya
     #
@@ -205,6 +195,10 @@ paths:
         definition: '@asset_root/{Asset}[_{name}]_{task_step}.{maya_extension}'
     asset_maya_snapshot:
         definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
+    asset_child_maya_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.{maya_extension}'
+    asset_child_maya_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
 
     #
     # Houdini
@@ -214,6 +208,10 @@ paths:
         definition: '@asset_root/{Asset}[_{name}]_{task_step}.hip'
     asset_houdini_snapshot:
         definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.hip'
+    asset_child_houdini_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.hip'
+    asset_child_houdini_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.hip'
 
     #
     # 3dsmax
@@ -223,7 +221,10 @@ paths:
         definition: '@asset_root/{Asset}[_{name}]_{task_step}.max'
     asset_max_snapshot:
         definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.max'
-
+    asset_child_max_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.max'
+    asset_child_max_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.max'
 
 #
 # The strings section is similar to the paths section - but rather than defining paths

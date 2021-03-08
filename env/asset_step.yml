@@ -34,7 +34,7 @@ engines:
   tk-houdini: "@settings.tk-houdini.asset_step"
   tk-maya: "@settings.tk-maya.asset_step"
   tk-photoshopcc: "@settings.tk-photoshopcc.asset_step"
-  tk-shell: "@settings.tk-shell.asset_step"
+  tk-shell: "@settings.tk-shell.asset"
   tk-shotgun: "@settings.tk-shotgun.asset_step"
 
 ################################################################################

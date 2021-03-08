@@ -24,9 +24,6 @@ publish_help_url: &help_url "https://support.shotgunsoftware.com/hc/en-us/articl
 settings.tk-multi-publish2.standalone:
   collector: "{self}/collector.py"
   publish_plugins:
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py"
-  #   settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
@@ -37,55 +34,65 @@ settings.tk-multi-publish2.standalone:
 
 # ---- 3dsMax
 
-# asset step
+# asset_step
 settings.tk-multi-publish2.3dsmaxplus.asset_step: &settings_tk-multi-publish2_3dsmaxplus_asset_step
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: max_asset_work
+      Work Template: asset_max_workfile
   publish_plugins:
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py"
-  #   settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
-  #   settings:
-  #       Publish Template: max_asset_publish
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session_geometry.py"
-  #   settings:
-  #       Publish Template: asset_alembic_cache
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+# asset_child_step
+settings.tk-multi-publish2.3dsmaxplus.asset_child_step: &settings_tk-multi-publish2_3dsmaxplus_asset_child_step
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_child_max_workfile
+  publish_plugins:
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
 # ---- 3dsMax
 
 # Uses the exact same settings. The {engine} resolves the hook at the right location.
-# asset step
+
+# asset_step
 settings.tk-multi-publish2.3dsmax.asset_step: *settings_tk-multi-publish2_3dsmaxplus_asset_step
+
+# asset_child_step
+settings.tk-multi-publish2.3dsmax.asset_child_step: *settings_tk-multi-publish2_3dsmaxplus_asset_child_step
 
 ################################################################################
 
 # ---- Houdini
 
-# asset step
+# asset_step
 settings.tk-multi-publish2.houdini.asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: houdini_asset_work
+      Work Template: asset_houdini_workfile
   publish_plugins:
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py"
-  #   settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
-  #   settings:
-  #       Publish Template: houdini_asset_publish
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+# asset_child_step
+settings.tk-multi-publish2.houdini.asset_child_step:
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_child_houdini_workfile
+  publish_plugins:
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
@@ -93,26 +100,27 @@ settings.tk-multi-publish2.houdini.asset_step:
 
 # ---- Maya
 
-# asset step
+# asset_step
 settings.tk-multi-publish2.maya.asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: maya_asset_work
+      Work Template: asset_maya_workfile
   publish_plugins:
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py"
-  #   settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
-  #   settings:
-  #       Publish Template: maya_asset_publish
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session_geometry.py"
-  #   settings:
-  #       Publish Template: asset_alembic_cache
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+# asset_child_step
+settings.tk-multi-publish2.maya.asset_child_step:
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_child_maya_workfile
+  publish_plugins:
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
@@ -120,44 +128,30 @@ settings.tk-multi-publish2.maya.asset_step:
 
 # ---- Photoshop
 
-# asset step
+# asset_step
 settings.tk-multi-publish2.photoshop.asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_photoshop_workfile
   publish_plugins:
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py"
-  #   settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_document.py"
-  #   settings:
-  #       Publish Template: asset_photoshop_workfile
   - name: Upload for review
     hook: "{engine}/tk-multi-publish2/basic/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset child step
+# asset_child_step
 settings.tk-multi-publish2.photoshop.asset_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_photoshop_workfile
   publish_plugins:
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py"
-  #   settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
-  # - name: Publish to Shotgun
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_document.py"
-  #   settings:
-  #       Publish Template: asset_child_photoshop_workfile
   - name: Upload for review
     hook: "{engine}/tk-multi-publish2/basic/upload_version.py"
     settings: {}
