@@ -16,6 +16,7 @@ includes:
 - ../engine_locations.yml
 - ./tk-multi-launchapp.yml
 - ./tk-multi-publish2.yml
+- ./tk-multi-perforce.yml
 
 ################################################################################
 
@@ -34,6 +35,9 @@ settings.tk-desktop.project:
       location: "@apps.tk-multi-devutils.location"
     tk-multi-launchapp: "@settings.tk-multi-launchapp"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+  show_recents: false
+  default_group: "Studio Tools"
   groups:
   - matches:
     - "*Fla*"

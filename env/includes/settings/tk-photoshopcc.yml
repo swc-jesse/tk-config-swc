@@ -20,6 +20,7 @@ includes:
 - ./tk-multi-shotgunpanel.yml
 - ./tk-multi-snapshot.yml
 - ./tk-multi-workfiles2.yml
+- ./tk-multi-perforce.yml
 
 ################################################################################
 
@@ -32,8 +33,10 @@ settings.tk-photoshopcc.asset:
       location: "@apps.tk-multi-pythonconsole.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   shelf_favorites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: '@engines.tk-photoshopcc.location'
 
 # asset_step
@@ -49,11 +52,13 @@ settings.tk-photoshopcc.asset_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.asset_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.photoshop"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   shelf_favorites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: '@engines.tk-photoshopcc.location'
 
 # asset_child_step
@@ -69,11 +74,13 @@ settings.tk-photoshopcc.asset_child_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.asset_child_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.photoshop"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   shelf_favorites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: '@engines.tk-photoshopcc.location'
 
 # project
@@ -85,7 +92,9 @@ settings.tk-photoshopcc.project:
       location: "@apps.tk-multi-pythonconsole.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   shelf_favorites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: '@engines.tk-photoshopcc.location'

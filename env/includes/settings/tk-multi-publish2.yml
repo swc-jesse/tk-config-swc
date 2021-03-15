@@ -35,7 +35,7 @@ settings.tk-multi-publish2.standalone:
 # ---- 3dsMax
 
 # asset_step
-settings.tk-multi-publish2.3dsmaxplus.asset_step: &settings_tk-multi-publish2_3dsmaxplus_asset_step
+settings.tk-multi-publish2.3dsmax.asset_step: &settings_tk-multi-publish2_3dsmax_asset_step
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_max_workfile
@@ -47,7 +47,7 @@ settings.tk-multi-publish2.3dsmaxplus.asset_step: &settings_tk-multi-publish2_3d
   location: "@apps.tk-multi-publish2.location"
 
 # asset_child_step
-settings.tk-multi-publish2.3dsmaxplus.asset_child_step: &settings_tk-multi-publish2_3dsmaxplus_asset_child_step
+settings.tk-multi-publish2.3dsmax.asset_child_step: &settings_tk-multi-publish2_3dsmax_asset_child_step
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_max_workfile
@@ -57,16 +57,6 @@ settings.tk-multi-publish2.3dsmaxplus.asset_child_step: &settings_tk-multi-publi
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
-
-# ---- 3dsMax
-
-# Uses the exact same settings. The {engine} resolves the hook at the right location.
-
-# asset_step
-settings.tk-multi-publish2.3dsmax.asset_step: *settings_tk-multi-publish2_3dsmaxplus_asset_step
-
-# asset_child_step
-settings.tk-multi-publish2.3dsmax.asset_child_step: *settings_tk-multi-publish2_3dsmaxplus_asset_child_step
 
 ################################################################################
 

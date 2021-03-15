@@ -15,7 +15,6 @@ description: Apps and Engines when launching with a project only context.
 
 includes:
 - ./includes/frameworks.yml
-- ./includes/settings/tk-3dsmaxplus.yml
 - ./includes/settings/tk-3dsmax.yml
 - ./includes/settings/tk-desktop.yml
 - ./includes/settings/tk-houdini.yml
@@ -23,12 +22,12 @@ includes:
 - ./includes/settings/tk-photoshopcc.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
+- ./includes/settings/tk-multi-perforce.yml
 
 ################################################################################
 # configuration for all engines to load in a project context
 
 engines:
-  tk-3dsmaxplus: "@settings.tk-3dsmaxplus.project"
   tk-3dsmax: "@settings.tk-3dsmax.project"
   tk-desktop: "@settings.tk-desktop.project"
   tk-houdini: "@settings.tk-houdini.project"

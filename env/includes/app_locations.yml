@@ -108,7 +108,6 @@ apps.tk-shotgun-folders.location:
   field: sg_uploaded_app
   version: 1016 #tk-shotgun-folders-0.2.0.1
 
-
 # ---- Houdini apps
 
 # houdini alembicnode
@@ -122,6 +121,20 @@ apps.tk-houdini-mantranode.location:
   type: app_store
   name: tk-houdini-mantranode
   version: v0.4.1
+
+# ---- Custom apps
+
+# perforce
+apps.tk-multi-perforce.location:
+  name: tk-multi-perforce
+  ### Toolkit Component Entity
+  # type: shotgun
+  # entity_type: CustomNonProjectEntity13
+  # field: sg_uploaded_app
+  # version: #### #tk-multi-perforce-#.#.#
+  ### Dev
+  type: dev
+  path: ~/Documents/GitHub/tk-multi-perforce
 
 ################################################################################
 # reference all of the common frameworks

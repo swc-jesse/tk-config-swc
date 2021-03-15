@@ -19,6 +19,7 @@ includes:
 - ./tk-multi-shotgunpanel.yml
 - ./tk-multi-snapshot.yml
 - ./tk-multi-workfiles2.yml
+- ./tk-multi-perforce.yml
 
 ################################################################################
 
@@ -31,8 +32,10 @@ settings.tk-3dsmax.asset:
       location: "@apps.tk-multi-pythonconsole.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-3dsmax.location"
 
 # asset_step
@@ -47,6 +50,10 @@ settings.tk-3dsmax.asset_step:
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.3dsmax"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_step"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+  menu_favourites:
+  - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-3dsmax.location"
 
 # asset_child_step
@@ -61,6 +68,10 @@ settings.tk-3dsmax.asset_child_step:
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.3dsmax"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_child_step"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+  menu_favourites:
+  - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-3dsmax.location"
 
 # project
@@ -72,6 +83,8 @@ settings.tk-3dsmax.project:
       location: "@apps.tk-multi-pythonconsole.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-3dsmax.location"
