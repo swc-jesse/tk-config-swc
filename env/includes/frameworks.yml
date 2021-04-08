@@ -91,5 +91,10 @@ frameworks:
     hook_get_shotgun_user: '{config}/tk-framework-perforce/get_shotgun_user.py'
     location:
     ### Dev
-      type: dev
-      path: ~/Documents/GitHub/tk-framework-perforce
+      # type: dev
+      # path: ~/Documents/GitHub/tk-framework-perforce
+    ### Github
+      type: git_branch
+      branch: swc_custom
+      path: https://github.com/nimbleheroes/tk-framework-perforce.git
+      version: 5608eca4

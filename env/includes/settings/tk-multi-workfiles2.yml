@@ -17,9 +17,9 @@ includes:
 
 # common_workfiles_hooks
 common_workfiles_hooks: &common_workfiles_hooks
-  hook_filter_publishes: '{tk-framework-perforce_v0.x.x}/shared/filter_publishes.py'
-  hook_filter_work_files: '{tk-framework-perforce_v0.x.x}/tk-multi-workfiles2/filter_work_files.py'
-  hook_scene_operation: "{tk-framework-perforce_v0.x.x}/tk-multi-workfiles2/scene_operation_{engine_name}.py"
+  hook_filter_publishes: '{config}/shared/filter_publishes.py'
+  hook_filter_work_files: '{config}/tk-multi-workfiles2/filter_work_files.py'
+  hook_scene_operation: "{config}/tk-multi-workfiles2/scene_operation_{engine_name}.py"
 
 # entity_browser_settings
 entity_browser_settings: &entity_browser_settings
