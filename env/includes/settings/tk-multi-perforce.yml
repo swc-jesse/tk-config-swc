@@ -1,0 +1,11 @@
+
+includes:
+- ../app_locations.yml
+
+################################################################################
+
+# ---- Perforce
+
+settings.tk-multi-perforce:
+  connect_on_startup: true
+  location: "@apps.tk-multi-perforce.location"

@@ -20,6 +20,7 @@ includes:
 - ./tk-multi-shotgunpanel.yml
 - ./tk-multi-snapshot.yml
 - ./tk-multi-workfiles2.yml
+- ./tk-multi-perforce.yml
 
 ################################################################################
 
@@ -30,8 +31,10 @@ settings.tk-maya.asset:
       location: "@apps.tk-multi-about.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   debug_logging: false
   location: "@engines.tk-maya.location"
 
@@ -46,12 +49,14 @@ settings.tk-maya.asset_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
-  template_project: asset_work_area_maya
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  template_project: asset_root
   location: "@engines.tk-maya.location"
 
 # asset_child_step
@@ -65,12 +70,14 @@ settings.tk-maya.asset_child_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_child_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
-  template_project: asset_work_area_maya
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  template_project: asset_child_root
   location: "@engines.tk-maya.location"
 
 # project
@@ -80,6 +87,8 @@ settings.tk-maya.project:
       location: "@apps.tk-multi-about.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-maya.location"

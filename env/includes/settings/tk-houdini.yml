@@ -21,6 +21,7 @@ includes:
 - ./tk-multi-shotgunpanel.yml
 - ./tk-multi-snapshot.yml
 - ./tk-multi-workfiles2.yml
+- ./tk-multi-perforce.yml
 
 ################################################################################
 
@@ -31,8 +32,10 @@ settings.tk-houdini.asset:
       location: "@apps.tk-multi-about.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-houdini.location"
 
 # asset_step
@@ -47,11 +50,13 @@ settings.tk-houdini.asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_step"
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_step"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: '@engines.tk-houdini.location'
 
 # asset_child_step
@@ -66,11 +71,13 @@ settings.tk-houdini.asset_child_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_child_step"
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: '@engines.tk-houdini.location'
 
 # project
@@ -80,6 +87,8 @@ settings.tk-houdini.project:
       location: "@apps.tk-multi-about.location"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
   location: "@engines.tk-houdini.location"

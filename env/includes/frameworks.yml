@@ -83,3 +83,18 @@ frameworks:
       version: v0.1.2
       type: app_store
       name: tk-framework-lmv
+
+  # perforce - provides connection to perforce
+  tk-framework-perforce_v0.x.x:
+    server: "ssl:artifact.studiowildcard.com:20654"
+    hook_get_perforce_user: '{config}/tk-framework-perforce/get_perforce_user.py'
+    hook_get_shotgun_user: '{config}/tk-framework-perforce/get_shotgun_user.py'
+    location:
+    ### Dev
+      # type: dev
+      # path: ~/Documents/GitHub/tk-framework-perforce
+    ### Github
+      type: git_branch
+      branch: swc_custom
+      path: https://github.com/nimbleheroes/tk-framework-perforce.git
+      version: 5608eca4

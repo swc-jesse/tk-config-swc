@@ -35,11 +35,14 @@ settings.tk-multi-publish2.standalone:
 # ---- 3dsMax
 
 # asset_step
-settings.tk-multi-publish2.3dsmaxplus.asset_step: &settings_tk-multi-publish2_3dsmaxplus_asset_step
+settings.tk-multi-publish2.3dsmax.asset_step: &settings_tk-multi-publish2_3dsmax_asset_step
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_max_workfile
   publish_plugins:
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-3dsmax/check_in_workfile.py"
+    settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
@@ -47,26 +50,19 @@ settings.tk-multi-publish2.3dsmaxplus.asset_step: &settings_tk-multi-publish2_3d
   location: "@apps.tk-multi-publish2.location"
 
 # asset_child_step
-settings.tk-multi-publish2.3dsmaxplus.asset_child_step: &settings_tk-multi-publish2_3dsmaxplus_asset_child_step
+settings.tk-multi-publish2.3dsmax.asset_child_step: &settings_tk-multi-publish2_3dsmax_asset_child_step
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_max_workfile
   publish_plugins:
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-3dsmax/check_in_workfile.py"
+    settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
-
-# ---- 3dsMax
-
-# Uses the exact same settings. The {engine} resolves the hook at the right location.
-
-# asset_step
-settings.tk-multi-publish2.3dsmax.asset_step: *settings_tk-multi-publish2_3dsmaxplus_asset_step
-
-# asset_child_step
-settings.tk-multi-publish2.3dsmax.asset_child_step: *settings_tk-multi-publish2_3dsmaxplus_asset_child_step
 
 ################################################################################
 
@@ -78,6 +74,9 @@ settings.tk-multi-publish2.houdini.asset_step:
   collector_settings:
       Work Template: asset_houdini_workfile
   publish_plugins:
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-houdini/check_in_workfile.py"
+    settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
@@ -90,6 +89,9 @@ settings.tk-multi-publish2.houdini.asset_child_step:
   collector_settings:
       Work Template: asset_child_houdini_workfile
   publish_plugins:
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-houdini/check_in_workfile.py"
+    settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
@@ -106,6 +108,9 @@ settings.tk-multi-publish2.maya.asset_step:
   collector_settings:
       Work Template: asset_maya_workfile
   publish_plugins:
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
+    settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
@@ -118,6 +123,9 @@ settings.tk-multi-publish2.maya.asset_child_step:
   collector_settings:
       Work Template: asset_child_maya_workfile
   publish_plugins:
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
+    settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
     settings: {}
@@ -134,11 +142,11 @@ settings.tk-multi-publish2.photoshop.asset_step:
   collector_settings:
       Work Template: asset_photoshop_workfile
   publish_plugins:
-  - name: Upload for review
-    hook: "{self}/upload_version.py"
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
-    hook: "{engine}/tk-multi-publish2/basic/upload_version.py"
+    hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -149,11 +157,11 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
   collector_settings:
       Work Template: asset_child_photoshop_workfile
   publish_plugins:
-  - name: Upload for review
-    hook: "{self}/upload_version.py"
+  - name: Check-in to Perforce
+    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
-    hook: "{engine}/tk-multi-publish2/basic/upload_version.py"
+    hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"

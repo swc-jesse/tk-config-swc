@@ -15,33 +15,21 @@ includes:
 
 ################################################################################
 
-# ---- 3dsMaxPlus
-
-# asset_step
-settings.tk-multi-snapshot.3dsmaxplus.asset_step: &settings_tk-multi-snapshot_3dsmaxplus_asset_step
-  template_snapshot: asset_max_snapshot
-  template_work: asset_max_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_step
-settings.tk-multi-snapshot.3dsmaxplus.asset_child_step: &settings_tk-multi-snapshot_3dsmaxplus_asset_child_step
-  template_snapshot: asset_child_max_snapshot
-  template_work: asset_child_max_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
-################################################################################
-
 # ---- 3dsMax
 
 # asset_step
 settings.tk-multi-snapshot.3dsmax.asset_step:
-  <<: *settings_tk-multi-snapshot_3dsmaxplus_asset_step
+  template_snapshot: asset_max_snapshot
+  template_work: asset_max_workfile
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
+  location: "@apps.tk-multi-snapshot.location"
 
 # asset_child_step
 settings.tk-multi-snapshot.3dsmax.asset_child_step:
-  <<: *settings_tk-multi-snapshot_3dsmaxplus_asset_child_step
+  template_snapshot: asset_child_max_snapshot
+  template_work: asset_child_max_workfile
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
+  location: "@apps.tk-multi-snapshot.location"
 
 ################################################################################
 
