@@ -135,3 +135,83 @@ settings.tk-multi-loader2.photoshop:
     hierarchy: [entity, content]
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
+
+# substance painter
+settings.tk-multi-loader2.substancepainter:
+  actions_hook: '{engine}/tk-multi-loader2/tk-substancepainter_actions.py'
+  action_mappings:
+    Image: [environment, colorlut, alpha, texture]
+    Texture: [environment, colorlut, alpha, texture]
+    Rendered Image: [environment, colorlut, alpha, texture]
+    Substance Material Preset: [preset]
+    Sppr File: [preset]
+    PopcornFX : [script]
+    Pkfx File : [script]
+    Shader: [shader]
+    Glsl File: [shader]
+    Substance Export Preset: [export]
+    Spexp File: [export]
+    Substance Smart Material: [smartmaterial]
+    Spsm File: [smartmaterial]
+    Substance File: [basematerial, alpha, texture, filter, procedural, generator]
+    Sbsar File: [basematerial, alpha, texture, filter, procedural, generator]
+    Substance Smart Mask: [smartmask]
+    Spmsk File: [smartmask]
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, sg_asset_category, sg_asset_class, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+  - caption: Child Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.sg_asset_class, sg_asset_parent.Asset.code, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is_not, [ null ]]
+      - [project, is, '{context.project}']
+  - caption: My Tasks
+    entity_type: Task
+    filters:
+    - [task_assignees, is, '{context.user}']
+    - [project, is, '{context.project}']
+    hierarchy: [entity, content]
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
+# Substance Designer
+settings.tk-multi-loader2.substancedesigner:
+  actions_hook: '{engine}/tk-multi-loader2/tk-substancedesigner_actions.py'
+  action_mappings:
+    Image: [bitmap]
+    Texture: [bitmap]
+    Rendered Image: [bitmap]
+    SVG File: [svg]
+    Font: [font]
+    TTF File: [font]
+    FBX File: [scene]
+    Motion Builder FBX: [scene]
+    IES File: [light_profile]
+    Ies File: [light_profile]
+    MDSDF File: [bsdf_measurement]
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, sg_asset_category, sg_asset_class, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+  - caption: Child Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.sg_asset_class, sg_asset_parent.Asset.code, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is_not, [ null ]]
+      - [project, is, '{context.project}']
+  - caption: My Tasks
+    entity_type: Task
+    filters:
+    - [task_assignees, is, '{context.user}']
+    - [project, is, '{context.project}']
+    hierarchy: [entity, content]
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"

@@ -13,6 +13,8 @@
 
 ################################################################################
 
+# ---- Shotgun Software Engines
+
 # 3dsMax
 engines.tk-3dsmax.location:
   type: app_store
@@ -60,3 +62,19 @@ engines.tk-shotgun.location:
   type: app_store
   name: tk-shotgun
   version: v0.9.0
+
+# ---- 3rd Party Engines
+
+# Substance Painter
+engines.tk-substancepainter.location:
+  type: git
+  branch: master
+  path: https://github.com/diegogarciahuerta/tk-substancepainter.git
+  version: v1.2.2
+
+# Substance Designer
+engines.tk-substancedesigner.location:
+  type: git
+  branch: master
+  path: https://github.com/diegogarciahuerta/tk-substancedesigner.git
+  version: v1.0.0

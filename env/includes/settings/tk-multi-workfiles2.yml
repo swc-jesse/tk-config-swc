@@ -59,26 +59,24 @@ entity_browser_settings: &entity_browser_settings
 # 'transit' levels in the configuration, where work normally
 # doesn't happen, but you just want the user to jump to their
 # work area. The work area is typically a task or pipeline step
-# and these 'transit' areas can be project, shot, or sequence level.
+# and these 'transit' areas can be project or asset.
 
 # basic
-settings.tk-multi-workfiles2: &settings_tk-multi-workfiles2
+settings.tk-multi-workfiles2:
+  <<: *common_workfiles_hooks
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # launches at startup.
 settings.tk-multi-workfiles2.launch_at_startup:
   launch_at_startup: true
+  <<: *common_workfiles_hooks
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
 
 # ---- 3dsmax
-
-# basic
-settings.tk-multi-workfiles2.3dsmax:
-  <<: *settings_tk-multi-workfiles2
 
 # asset_step
 settings.tk-multi-workfiles2.3dsmax.asset_step:
@@ -168,6 +166,123 @@ settings.tk-multi-workfiles2.photoshop.asset_child_step:
   template_publish_area: asset_child_root
   template_work: asset_child_photoshop_workfile
   template_work_area: asset_child_root
+  <<: *common_workfiles_hooks
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+################################################################################
+
+# -- substancepainter
+
+# # project
+# settings.tk-multi-workfiles2.substancepainter.project:
+#   allow_task_creation: true
+#   create_new_task_hook: "{self}/create_new_task.py"
+#   custom_actions_hook: "{self}/custom_actions.py"
+#   entities:
+#   - caption: Assets
+#     entity_type: Task
+#     filters:
+#     - [entity, type_is, Asset]
+#     hierarchy: [entity.Asset.sg_asset_type, entity, step, content]
+#   - caption: Shots
+#     entity_type: Task
+#     filters:
+#     - [entity, type_is, Shot]
+#     hierarchy: [entity.Shot.sg_sequence, entity, step, content]
+#   file_extensions: []
+#   hook_copy_file: "{self}/copy_file.py"
+#   hook_filter_publishes: default
+#   hook_filter_work_files: default
+#   hook_scene_operation: "{engine}/tk-multi-workfiles2/scene_operation_tk-substancepainter.py"
+#   launch_at_startup: false
+#   my_tasks_extra_display_fields: []
+#   saveas_default_name: scene
+#   saveas_prefer_version_up: false
+#   show_my_tasks: true
+#   template_publish:
+#   template_publish_area:
+#   template_work:
+#   template_work_area:
+#   version_compare_ignore_fields: []
+#   location: "@apps.tk-multi-workfiles2.location"
+
+# asset_step
+settings.tk-multi-workfiles2.substancepainter.asset_step:
+  template_publish: asset_substancepainter_workfile
+  template_publish_area: asset_root
+  template_work: asset_substancepainter_workfile
+  template_work_area: asset_root
+  <<: *common_workfiles_hooks
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# asset_child_step
+settings.tk-multi-workfiles2.substancepainter.asset_child_step:
+  template_publish: asset_child_substancepainter_workfile
+  template_publish_area: asset_child_root
+  template_work: asset_child_substancepainter_workfile
+  template_work_area: asset_child_root
+  <<: *common_workfiles_hooks
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+################################################################################
+
+# -- substancedesigner
+
+# # project
+# settings.tk-multi-workfiles2.substancedesigner.project:
+#   allow_task_creation: true
+#   create_new_task_hook: "{self}/create_new_task.py"
+#   custom_actions_hook: "{self}/custom_actions.py"
+#   entities:
+#   - caption: Assets
+#     entity_type: Task
+#     filters:
+#     - [entity, type_is, Asset]
+#     hierarchy: [entity.Asset.sg_asset_type, entity, step, content]
+#   - caption: Shots
+#     entity_type: Task
+#     filters:
+#     - [entity, type_is, Shot]
+#     hierarchy: [entity.Shot.sg_sequence, entity, step, content]
+#   file_extensions: []
+#   hook_copy_file: "{self}/copy_file.py"
+#   hook_filter_publishes: default
+#   hook_filter_work_files: default
+#   hook_scene_operation: "{engine}/tk-multi-workfiles2/scene_operation_tk-substancedesigner.py"
+#   launch_at_startup: false
+#   my_tasks_extra_display_fields: []
+#   saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
+#   saveas_prefer_version_up: false
+#   show_my_tasks: true
+#   template_publish:
+#   template_publish_area:
+#   template_work:
+#   template_work_area:
+#   version_compare_ignore_fields: []
+#   location: "@apps.tk-multi-workfiles2.location"
+
+
+# asset_step
+settings.tk-multi-workfiles2.substancedesigner.asset_step:
+  template_publish: asset_substancedesigner_workfile
+  template_publish_area: asset_root
+  template_work: asset_substancedesigner_workfile
+  template_work_area: asset_root
+  # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
+  <<: *common_workfiles_hooks
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# asset_child_step
+settings.tk-multi-workfiles2.substancedesigner.asset_child_step:
+  template_publish: asset_child_substancedesigner_workfile
+  template_publish_area: asset_child_root
+  template_work: asset_child_substancedesigner_workfile
+  template_work_area: asset_child_root
+  # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
   <<: *common_workfiles_hooks
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
