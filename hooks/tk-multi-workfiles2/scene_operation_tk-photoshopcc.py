@@ -11,13 +11,13 @@
 import os
 
 import sgtk
-from sgtk import TankError
+from sgtk import TankError, LogManager
 
-HookClass = sgtk.get_hook_baseclass()
-TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
+log = LogManager.get_logger(__name__)
+HookBaseClass = sgtk.get_hook_baseclass()
 
 
-class SceneOperation(HookClass):
+class SceneOperation(HookBaseClass):
     """
     Hook called to perform an operation with the
     current scene
@@ -66,7 +66,11 @@ class SceneOperation(HookClass):
                                                  state, otherwise False
                                 all others     - None
         """
-        p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
+        # run the base class operations
+        super(SceneOperation, self).execute(operation, file_path, context,
+                                            parent_action, file_version,
+                                            read_only, **kwargs)
+
         adobe = self.parent.engine.adobe
 
         if operation == "current_path":
@@ -82,27 +86,18 @@ class SceneOperation(HookClass):
             return path
 
         elif operation == "open":
-            # check that we have the correct version synced:
-            p4 = p4_fw.connection.connect()
-            if not read_only:
-                # open the file for edit:
-                p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
 
             # open the specified script
             adobe.app.load(adobe.File(file_path))
 
         elif operation == "save":
-            # save the current script:
+            # save the current script
             doc = self._get_active_document()
             doc.save()
 
         elif operation == "save_as":
+            # save current script as file_path
             doc = self._get_active_document()
-
-            # and check out the file for edit:
-            p4 = p4_fw.connection.connect()
-            p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
-
             adobe.save_as(doc, file_path)
 
         elif operation == "reset":
