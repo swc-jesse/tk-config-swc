@@ -14,11 +14,10 @@ import sgtk
 from sgtk import TankError
 from sgtk.platform.qt import QtGui
 
-HookClass = sgtk.get_hook_baseclass()
-TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
+HookBaseClass = sgtk.get_hook_baseclass()
 
 
-class SceneOperation(HookClass):
+class SceneOperation(HookBaseClass):
     """
     Hook called to perform an operation with the
     current scene
@@ -67,8 +66,10 @@ class SceneOperation(HookClass):
                                                  state, otherwise False
                                 all others     - None
         """
-        p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
-        p4_fw.util = p4_fw.import_module("util")
+        # run the base class operations
+        super(SceneOperation, self).execute(operation, file_path, context,
+                                            parent_action, file_version,
+                                            read_only, **kwargs)
 
         if operation == "current_path":
             # return the current scene path
@@ -78,12 +79,6 @@ class SceneOperation(HookClass):
             # do new scene as Maya doesn't like opening
             # the scene it currently has open!
             cmds.file(new=True, force=True)
-
-            # check that we have the correct version synced:
-            p4 = p4_fw.connection.connect()
-            if not read_only:
-                # open the file for edit:
-                p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
 
             # open the specified scene
             cmds.file(file_path, open=True, force=True)
@@ -95,13 +90,6 @@ class SceneOperation(HookClass):
         elif operation == "save_as":
             # first rename the scene as file_path:
             cmds.file(rename=file_path)
-
-            # ensure the file is checked out if it's a Perforce file:
-            try:
-                p4 = p4_fw.connection.connect()
-                p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
-            except TankError, e:
-                self.parent.log_warning(e)
 
             # Maya can choose the wrong file type so
             # we should set it here explicitely based

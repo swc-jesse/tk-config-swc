@@ -50,5 +50,6 @@ settings.tk-desktop.project:
     - "*Photoshop*"
     - "*After*"
     - "*Effects*"
+    - "*Substance*"
     name: Creative Tools
   location: "@engines.tk-desktop.location"
