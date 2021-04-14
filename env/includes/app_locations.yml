@@ -124,7 +124,7 @@ apps.tk-houdini-mantranode.location:
 
 # ---- Custom apps
 
-# perforce
+# Perforce
 apps.tk-multi-perforce.location:
   name: tk-multi-perforce
   ### Toolkit Component Entity

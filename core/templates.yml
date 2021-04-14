@@ -27,6 +27,11 @@
 # {Shot}. The section below tells Sgtk which data types and formats to expect for each key.
 #
 keys:
+
+    #
+    # Common Keys
+    #
+
     Asset:
         type: str
     task_step:
@@ -92,6 +97,9 @@ keys:
     segment_name:
         type: str
 
+    #
+    # Houdini
+    #
 
     houdini.node:
         alias: node
@@ -102,30 +110,10 @@ keys:
         type: sequence
         format_spec: "04"
 
+    #
+    # Photoshop
+    #
 
-    # These are used for the Mari UDIM pipeline:
-    UDIM:
-        type: sequence
-        default: "<UDIM>"
-    mari.channel:
-        type: str
-        alias: channel
-    mari.layer:
-        type: str
-        alias: layer
-    mari.project_name:
-        type: str
-        alias: name
-    asset_name:
-        type: str
-        shotgun_entity_type: Asset
-        shotgun_field_name: code
-    task_name:
-        type: str
-        shotgun_entity_type: Task
-        shotgun_field_name: content
-
-    # Photoshop supports two extension types.
     photoshop_extension:
         type: str
         choices:
@@ -134,7 +122,10 @@ keys:
         default: psd
         alias: extension
 
-    # Maya supports two extension types.
+    #
+    # Maya
+    #
+
     maya_extension:
         type: str
         choices:
@@ -143,6 +134,42 @@ keys:
         default: ma
         alias: extension
 
+    #
+    # Substance Painter
+    #
+
+    texture_extension:
+        type: str
+        alias: extension
+
+    texture_name:
+        type: str
+
+    #
+    # Substance Designer
+    #
+
+    substancedesigner.texture_extension:
+        type: str
+        alias: extension
+
+    substancedesigner.channel:
+        type: str
+        alias: channel
+
+    substancedesigner.package.name:
+        type: str
+        alias: name
+
+    substancedesigner.graph.name:
+        type: str
+
+    substancedesigner.extension:
+        type: str
+        choices:
+            sbs: Substance Design File (.sbs)
+        default: sbs
+        alias: extension
 
 #
 # The paths section contains all the the key locations where files are to be stored
@@ -225,6 +252,33 @@ paths:
         definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.max'
     asset_child_max_snapshot:
         definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.max'
+
+    #
+    # Substance Painter
+    #
+
+    asset_substancepainter_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.spp'
+    asset_substancepainter_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.spp'
+    asset_child_substancepainter_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.spp'
+    asset_child_substancepainter_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.spp'
+
+    #
+    # Substance Designer
+    #
+
+    asset_substancedesigner_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.{substancedesigner.extension}'
+    asset_substancedesigner_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
+    asset_child_substancedesigner_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.{substancedesigner.extension}'
+    asset_child_substancedesigner_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
+
 
 #
 # The strings section is similar to the paths section - but rather than defining paths

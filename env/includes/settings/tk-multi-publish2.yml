@@ -165,3 +165,191 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
+
+################################################################################
+
+# --- Substance Painter
+
+# asset step
+settings.tk-multi-publish2.substancepainter.asset_step:
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_substancepainter_workfile
+      # Work Export Template: substancepainter_asset_textures_path_export
+      # Publish Textures as Folder: true
+  publish_plugins:
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py"
+  #   settings: {}
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  #   settings:
+  #     Publish Template: substancepainter_asset_textures_path_publish
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  #   settings:
+  #     Publish Template: substancepainter_asset_texture_path_publish
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
+  # - name: Begin file versioning
+  #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
+  #   settings: {}
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  #   settings:
+  #       Publish Template: substancepainter_asset_publish
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+# asset_child_step
+settings.tk-multi-publish2.substancepainter.asset_child_step:
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_child_substancepainter_workfile
+      # Work Export Template: substancepainter_asset_textures_path_export
+      # Publish Textures as Folder: true
+  publish_plugins:
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py"
+  #   settings: {}
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  #   settings:
+  #     Publish Template: substancepainter_asset_textures_path_publish
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  #   settings:
+  #     Publish Template: substancepainter_asset_texture_path_publish
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
+  # - name: Begin file versioning
+  #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
+  #   settings: {}
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  #   settings:
+  #       Publish Template: substancepainter_asset_publish
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+################################################################################
+
+# ---- Substance Designer
+
+# asset step
+settings.tk-multi-publish2.substancedesigner.asset_step:
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_substancedesigner_workfile
+  publish_plugins:
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py"
+  #   settings: {}
+
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
+
+  # - name: Begin file versioning
+  #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
+  #   settings: {}
+
+  # - name: Publish Package to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_package_publish
+
+  # Note that most of these publishers are for completion, as packages and
+  # graphs can be exported in multitude of ways.
+  # With the exception of exporting textures from a graph, you most likely
+  # won't need all these publishers, so feel free to comment the ones
+  # that you/your pipeline is not interested in.
+
+  # - name: Publish Package Archive to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_package_archive_publish
+
+  # - name: Publish Package as MDL to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_package_mdl_publish
+
+  # - name: Publish Graph Output Textures to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_graph_textures_path_publish
+  #       Texture Format: exr
+
+  # - name: Publish Graph in MDLE format to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
+
+  # - name: Publish Publish Graph as a preset to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
+
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+# asset_child_step
+settings.tk-multi-publish2.substancedesigner.asset_child_step:
+  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector_settings:
+      Work Template: asset_child_substancedesigner_workfile
+  publish_plugins:
+  # - name: Publish to Shotgun
+  #   hook: "{self}/publish_file.py"
+  #   settings: {}
+
+  - name: Upload for review
+    hook: "{self}/upload_version.py"
+    settings: {}
+
+  # - name: Begin file versioning
+  #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
+  #   settings: {}
+
+  # - name: Publish Package to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_package_publish
+
+  # Note that most of these publishers are for completion, as packages and
+  # graphs can be exported in multitude of ways.
+  # With the exception of exporting textures from a graph, you most likely
+  # won't need all these publishers, so feel free to comment the ones
+  # that you/your pipeline is not interested in.
+
+  # - name: Publish Package Archive to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_package_archive_publish
+
+  # - name: Publish Package as MDL to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_package_mdl_publish
+
+  # - name: Publish Graph Output Textures to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_graph_textures_path_publish
+  #       Texture Format: exr
+
+  # - name: Publish Graph in MDLE format to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
+
+  # - name: Publish Publish Graph as a preset to Shotgun
+  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
+  #   settings:
+  #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
+
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"

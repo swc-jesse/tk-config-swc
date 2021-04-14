@@ -26,6 +26,8 @@ includes:
 - ./includes/settings/tk-houdini.yml
 - ./includes/settings/tk-maya.yml
 - ./includes/settings/tk-photoshopcc.yml
+- ./includes/settings/tk-substancedesigner.yml
+- ./includes/settings/tk-substancepainter.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
 - ./includes/settings/tk-multi-perforce.yml
@@ -38,6 +40,8 @@ engines:
   tk-houdini: "@settings.tk-houdini.asset"
   tk-maya: "@settings.tk-maya.asset"
   tk-photoshopcc: "@settings.tk-photoshopcc.asset"
+  tk-substancedesigner: "@settings.tk-substancedesigner.asset"
+  tk-substancepainter: "@settings.tk-substancepainter.asset"
   tk-shell: "@settings.tk-shell.asset"
   tk-shotgun: "@settings.tk-shotgun.asset"
 

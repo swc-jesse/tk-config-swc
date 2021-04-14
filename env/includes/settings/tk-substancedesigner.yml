@@ -9,6 +9,9 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 #
 
+# Author: Diego Garcia Huerta
+# Contact: https://www.linkedin.com/in/diegogh/
+
 ################################################################################
 
 includes:
@@ -16,7 +19,6 @@ includes:
 - ../engine_locations.yml
 - ./tk-multi-loader2.yml
 - ./tk-multi-publish2.yml
-# - ./tk-multi-reviewsubmission.yml
 - ./tk-multi-shotgunpanel.yml
 - ./tk-multi-snapshot.yml
 - ./tk-multi-workfiles2.yml
@@ -24,31 +26,45 @@ includes:
 
 ################################################################################
 
-# asset and asset_child
-settings.tk-maya.asset:
+# project
+settings.tk-substancedesigner.project:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
+    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancedesigner"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+  menu_favourites:
+  - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  debug_logging: true
+  location: "@engines.tk-substancedesigner.location"
+  # compatibility_dialog_min_version: 11
+
+# asset and asset_child
+settings.tk-substancedesigner.asset:
+  apps:
+    tk-multi-about:
+      location: "@apps.tk-multi-about.location"
+    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancedesigner"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status}
   debug_logging: false
-  location: "@engines.tk-maya.location"
+  location: "@engines.tk-substancedesigner.location"
 
 # asset_step
-settings.tk-maya.asset_step:
+settings.tk-substancedesigner.asset_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.maya"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_step"
-    # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
+    tk-multi-loader2: "@settings.tk-multi-loader2.substancedesigner"
+    tk-multi-publish2: "@settings.tk-multi-publish2.substancedesigner.asset_step"
+    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancedesigner"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancedesigner.asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancedesigner.asset_step"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
@@ -57,19 +73,18 @@ settings.tk-maya.asset_step:
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status}
   template_project: asset_root
-  location: "@engines.tk-maya.location"
+  location: "@engines.tk-substancedesigner.location"
 
 # asset_child_step
-settings.tk-maya.asset_child_step:
+settings.tk-substancedesigner.asset_child_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_child_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.maya"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_child_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_child_step"
-    # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
+    tk-multi-loader2: "@settings.tk-multi-loader2.substancedesigner"
+    tk-multi-publish2: "@settings.tk-multi-publish2.substancedesigner.asset_child_step"
+    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancedesigner"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancedesigner.asset_child_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancedesigner.asset_child_step"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
@@ -78,17 +93,4 @@ settings.tk-maya.asset_child_step:
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status}
   template_project: asset_child_root
-  location: "@engines.tk-maya.location"
-
-# project
-settings.tk-maya.project:
-  apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status}
-  location: "@engines.tk-maya.location"
+  location: "@engines.tk-substancedesigner.location"

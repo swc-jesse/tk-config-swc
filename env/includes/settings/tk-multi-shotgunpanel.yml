@@ -130,3 +130,31 @@ settings.tk-multi-shotgunpanel.photoshop:
     - actions: [quicktime_clipboard, sequence_clipboard, add_to_playlist]
       filters: {}
   location: "@apps.tk-multi-shotgunpanel.location"
+
+# Substance Painter
+settings.tk-multi-shotgunpanel.substancepainter:
+  action_mappings:
+    PublishedFile:
+    - actions: [publish_clipboard]
+      filters: {}
+    Task:
+    - actions: [assign_task, task_to_ip]
+      filters: {}
+    Version:
+    - actions: [quicktime_clipboard, sequence_clipboard, add_to_playlist]
+      filters: {}
+  location: "@apps.tk-multi-shotgunpanel.location"
+
+# Substance Designer
+settings.tk-multi-shotgunpanel.substancedesigner:
+  action_mappings:
+    PublishedFile:
+    - actions: [publish_clipboard]
+      filters: {}
+    Task:
+    - actions: [assign_task, task_to_ip]
+      filters: {}
+    Version:
+    - actions: [quicktime_clipboard, sequence_clipboard, add_to_playlist]
+      filters: {}
+  location: "@apps.tk-multi-shotgunpanel.location"

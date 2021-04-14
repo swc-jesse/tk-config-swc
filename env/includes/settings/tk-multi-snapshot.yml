@@ -78,3 +78,43 @@ settings.tk-multi-snapshot.photoshop.asset_child_step:
   template_snapshot: asset_child_photoshop_snapshot
   template_work: asset_child_photoshop_workfile
   location: "@apps.tk-multi-snapshot.location"
+
+################################################################################
+
+# ---- Substance Painter
+
+# asset_step
+settings.tk-multi-snapshot.substancepainter.asset_step:
+  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancepainter.py"
+  template_snapshot: asset_substancepainter_snapshot
+  template_work: asset_substancepainter_workfile
+  hook_thumbnail: "{engine}/thumbnail.py"
+  location: "@apps.tk-multi-snapshot.location"
+
+# asset_child_step
+settings.tk-multi-snapshot.substancepainter.asset_child_step:
+  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancepainter.py"
+  template_snapshot: asset_child_substancepainter_snapshot
+  template_work: asset_child_substancepainter_workfile
+  hook_thumbnail: "{engine}/thumbnail.py"
+  location: "@apps.tk-multi-snapshot.location"
+
+################################################################################
+
+# ---- Substance Designer
+
+# asset_step
+settings.tk-multi-snapshot.substancedesigner.asset_step:
+  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
+  template_snapshot: asset_substancedesigner_snapshot
+  template_work: asset_substancedesigner_workfile
+  hook_thumbnail: "{engine}/thumbnail.py"
+  location: "@apps.tk-multi-snapshot.location"
+
+# asset_child_step
+settings.tk-multi-snapshot.substancedesigner.asset_child_step:
+  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
+  template_snapshot: asset_child_substancedesigner_snapshot
+  template_work: asset_child_substancedesigner_workfile
+  hook_thumbnail: "{engine}/thumbnail.py"
+  location: "@apps.tk-multi-snapshot.location"
