@@ -115,6 +115,14 @@ class SceneOperation(HookClass):
                                                  state, otherwise False
                                 all others     - None
         """
+        # run the base class operations
+        base_class = super(SceneOperation, self).execute(operation, file_path, context,
+                                                         parent_action, file_version,
+                                                         read_only, **kwargs)
+        # if the base_class returns false, go no further
+        if not base_class:
+            return False
+
         logger = self.parent.logger
 
         logger.debug("operation: %s" % operation)

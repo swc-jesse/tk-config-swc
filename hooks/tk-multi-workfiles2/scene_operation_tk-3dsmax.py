@@ -8,6 +8,8 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import os.path
+
 import pymxs
 
 import sgtk
@@ -65,9 +67,12 @@ class SceneOperation(HookBaseClass):
                                 all others     - None
         """
         # run the base class operations
-        super(SceneOperation, self).execute(operation, file_path, context,
-                                            parent_action, file_version,
-                                            read_only, **kwargs)
+        base_class = super(SceneOperation, self).execute(operation, file_path, context,
+                                                         parent_action, file_version,
+                                                         read_only, **kwargs)
+        # if the base_class returns false, go no further
+        if not base_class:
+            return False
 
         if operation == "current_path":
             # return the current scene path or an empty string.
@@ -82,6 +87,12 @@ class SceneOperation(HookBaseClass):
             _save_file()
 
         elif operation == "save_as":
+            # check if the file exists
+            if os.path.exists(file_path):
+                confirm_overwrite = super(SceneOperation, self).confirm_overwrite(file_path)
+                if not confirm_overwrite:
+                    return False
+
             # save the scene as file_path:
             _save_file(file_path)
 

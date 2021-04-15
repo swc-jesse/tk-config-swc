@@ -91,10 +91,34 @@ class SceneOperation(HookBaseClass):
                         p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
                     except TankError, e:
                         self.parent.log_warning(e)
+            # operation completed successfully
+            return True
 
         elif operation == "save_as":
-            # ensure the file is checked out if it's a Perforce file:
-            try:
-                p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=True)
-            except TankError, e:
-                self.parent.log_warning(e)
+
+            # a file exists in that path, lets make sure the user wants to overwrite it
+            if os.path.exists(file_path):
+                msgBox = QtGui.QMessageBox()
+                msgBox.setText("This file already exists.")
+                msgBox.setInformativeText("Are you sure you want to overwite this file?")
+                msgBox.setIcon(QtGui.QMessageBox.Warning)
+                msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                msgBox.setDefaultButton(QtGui.QMessageBox.Yes)
+                msgBox.setEscapeButton(QtGui.QMessageBox.No)
+
+                ret = msgBox.exec_()
+
+                if ret == QtGui.QMessageBox.Yes:
+                    # check out the file
+                    try:
+                        p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
+                    except TankError, e:
+                        self.parent.log_warning(e)
+                    # operation completed successfully
+                    return True
+                else:
+                    # operation didn't complete
+                    return False
+
+        # no operations were found to act upon
+        return True
