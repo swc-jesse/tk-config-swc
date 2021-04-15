@@ -9,18 +9,18 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
+import hou
 
 import sgtk
-from sgtk import TankError, LogManager
 
-log = LogManager.get_logger(__name__)
-HookBaseClass = sgtk.get_hook_baseclass()
+from tank_vendor import six
+
+HookClass = sgtk.get_hook_baseclass()
 
 
-class SceneOperation(HookBaseClass):
+class SceneOperation(HookClass):
     """
-    Hook called to perform an operation with the
-    current scene
+    Hook called to perform an operation with the current scene
     """
 
     def execute(
@@ -74,52 +74,22 @@ class SceneOperation(HookBaseClass):
         if not base_class:
             return False
 
-        adobe = self.parent.engine.adobe
-
         if operation == "current_path":
-            # return the current doc path
-            doc = adobe.get_active_document_path()
-
-            if doc is None:
-                # new file?
-                path = ""
-            else:
-                path = doc
-
-            return path
+            return str(hou.hipFile.name())
 
         elif operation == "open":
-
-            # open the specified script
-            adobe.app.load(adobe.File(file_path))
+            # give houdini forward slashes
+            file_path = file_path.replace(os.path.sep, "/")
+            hou.hipFile.load(six.ensure_str(file_path))
 
         elif operation == "save":
-            # save the current script
-            doc = self._get_active_document()
-            doc.save()
+            hou.hipFile.save()
 
         elif operation == "save_as":
-            # save current script as file_path
-            doc = self._get_active_document()
-            adobe.save_as(doc, file_path)
+            # give houdini forward slashes
+            file_path = file_path.replace(os.path.sep, "/")
+            hou.hipFile.save(six.ensure_str(file_path))
 
         elif operation == "reset":
-            # do nothing and indicate scene was reset to empty
+            hou.hipFile.clear()
             return True
-
-        elif operation == "prepare_new":
-            # file->new. Not sure how to pop up the actual file->new UI,
-            # this command will create a document with default properties
-            adobe.app.documents.add()
-
-    def _get_active_document(self):
-        """
-        Returns the currently open document in Photoshop.
-        Raises an exeption if no document is active.
-        """
-        doc = self.parent.engine.adobe.get_active_document()
-
-        if not doc:
-            raise TankError("There is no active document!")
-
-        return doc

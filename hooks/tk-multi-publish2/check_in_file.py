@@ -159,7 +159,7 @@ class MayaPerforceFileCheckin(HookBaseClass):
 
         # Ensure the file is checked out/added to depot:
         self.logger.info("Ensuring file is checked out...")
-        self.p4_fw.util.open_file_for_edit(p4, path)
+        self.p4_fw.util.open_file_for_edit(p4, path, add_if_new=True)
 
         # create a new changelist for all files being published:
         self.logger.info("Creating new Perforce changelist...")

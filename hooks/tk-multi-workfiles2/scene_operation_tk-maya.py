@@ -8,6 +8,8 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import os.path
+
 import maya.cmds as cmds
 
 import sgtk
@@ -67,9 +69,12 @@ class SceneOperation(HookBaseClass):
                                 all others     - None
         """
         # run the base class operations
-        super(SceneOperation, self).execute(operation, file_path, context,
-                                            parent_action, file_version,
-                                            read_only, **kwargs)
+        base_class = super(SceneOperation, self).execute(operation, file_path, context,
+                                                         parent_action, file_version,
+                                                         read_only, **kwargs)
+        # if the base_class returns false, go no further
+        if not base_class:
+            return False
 
         if operation == "current_path":
             # return the current scene path
