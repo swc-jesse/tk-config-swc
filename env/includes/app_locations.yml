@@ -133,8 +133,13 @@ apps.tk-multi-perforce.location:
   # field: sg_uploaded_app
   # version: #### #tk-multi-perforce-#.#.#
   ### Dev
-  type: dev
-  path: ~/Documents/GitHub/tk-multi-perforce
+  # type: dev
+  # path: ~/Documents/GitHub/tk-multi-perforce
+  ### Github
+  type: git_branch
+  branch: swc_custom
+  path: https://github.com/nimbleheroes/tk-multi-perforce.git
+  version: 80e6a5a
 
 ################################################################################
 # reference all of the common frameworks

@@ -36,7 +36,7 @@ settings.tk-substancedesigner.project:
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  - {app_instance: tk-multi-perforce, name: Perforce Status...}
   debug_logging: true
   location: "@engines.tk-substancedesigner.location"
   # compatibility_dialog_min_version: 11
@@ -51,7 +51,7 @@ settings.tk-substancedesigner.asset:
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  - {app_instance: tk-multi-perforce, name: Perforce Status...}
   debug_logging: false
   location: "@engines.tk-substancedesigner.location"
 
@@ -71,7 +71,7 @@ settings.tk-substancedesigner.asset_step:
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  - {app_instance: tk-multi-perforce, name: Perforce Status...}
   template_project: asset_root
   location: "@engines.tk-substancedesigner.location"
 
@@ -91,6 +91,6 @@ settings.tk-substancedesigner.asset_child_step:
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status}
+  - {app_instance: tk-multi-perforce, name: Perforce Status...}
   template_project: asset_child_root
   location: "@engines.tk-substancedesigner.location"
