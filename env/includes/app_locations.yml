@@ -126,13 +126,14 @@ apps.tk-houdini-mantranode.location:
 
 # Perforce
 apps.tk-multi-perforce.location:
-  name: tk-multi-perforce
   ### Toolkit Component Entity
+  # name: tk-multi-perforce
   # type: shotgun
   # entity_type: CustomNonProjectEntity13
   # field: sg_uploaded_app
   # version: #### #tk-multi-perforce-#.#.#
   ### Dev
+  # name: tk-multi-perforce
   # type: dev
   # path: ~/Documents/GitHub/tk-multi-perforce
   ### Github
