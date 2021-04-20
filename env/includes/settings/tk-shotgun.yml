@@ -15,6 +15,7 @@ includes:
 - ../engine_locations.yml
 - ./tk-multi-launchapp.yml
 - ./tk-multi-publish2.yml
+- ./tk-multi-perforce.yml
 - ./tk-shotgun-folders.yml
 
 ################################################################################
@@ -24,6 +25,7 @@ settings.tk-shotgun.asset:
   apps:
     tk-multi-launchapp: "@settings.tk-multi-launchapp"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
     tk-shotgun-folders: "@settings.tk-shotgun-folders"
   location: "@engines.tk-shotgun.location"
 
@@ -32,6 +34,7 @@ settings.tk-shotgun.asset_step:
   apps:
     tk-multi-launchapp: "@settings.tk-multi-launchapp.shotgun"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   location: "@engines.tk-shotgun.location"
 
 # project
