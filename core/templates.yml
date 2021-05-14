@@ -96,6 +96,9 @@ keys:
         type: int
     segment_name:
         type: str
+    ext:
+        type: str
+        alias: extension
 
     #
     # Houdini
@@ -200,6 +203,19 @@ paths:
 
     asset_alembic_cache:
         definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
+
+    #
+    # Generic
+    #
+
+    asset_workfile:
+        definition: '@asset_root/{Asset}[_{name}]_{task_step}.{ext}'
+    asset_snapshot:
+        definition: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
+    asset_child_workfile:
+        definition: '@asset_child_root/{Asset}[_{name}]_{task_step}.{ext}'
+    asset_child_snapshot:
+        definition: '@asset_child_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
 
     #
     # Photoshop

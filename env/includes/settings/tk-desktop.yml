@@ -16,7 +16,9 @@ includes:
 - ../engine_locations.yml
 - ./tk-multi-launchapp.yml
 - ./tk-multi-publish2.yml
-- ./tk-multi-perforce.yml
+- ./tk-multi-workfiles2.yml
+# - ./tk-multi-perforce.yml
+# - ./tk-multi-starterapp.yml
 
 ################################################################################
 
@@ -25,6 +27,17 @@ settings.tk-desktop.site:
   apps:
   location: "@engines.tk-desktop.location"
 
+# asset_step
+settings.tk-desktop.asset_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_step"
+  location: "@engines.tk-desktop.location"
+
+# asset_child_step
+settings.tk-desktop.asset_child_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_step"
+  location: "@engines.tk-desktop.location"
 
 # project
 settings.tk-desktop.project:
@@ -35,7 +48,7 @@ settings.tk-desktop.project:
       location: "@apps.tk-multi-devutils.location"
     tk-multi-launchapp: "@settings.tk-multi-launchapp"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
-    tk-multi-perforce: "@settings.tk-multi-perforce.desktop"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2"
   show_recents: false
   default_group: "Studio Tools"
   groups:
