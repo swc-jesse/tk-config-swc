@@ -69,24 +69,40 @@ apps.tk-multi-shotgunpanel.location:
 
 # snapshot
 apps.tk-multi-snapshot.location:
-  name: tk-multi-snapshot
   ### App Store
+  # name: tk-multi-snapshot
   # type: app_store
   # version: v0.8.1
-  ### Toolkit Component Entity
-  type: shotgun
-  entity_type: CustomNonProjectEntity13
-  field: sg_uploaded_app
-  version: 1214 #tk-multi-snapshot-0.8.1.1-swc
   ### Dev
+  # name: tk-multi-snapshot
   # type: dev
   # path: ~/Documents/GitHub/tk-multi-snapshot_swc
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-multi-snapshot
+  version: v0.8.1.2-swc
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
-  type: app_store
-  name: tk-multi-workfiles2
-  version: v0.12.6
+  ### App Store
+  # type: app_store
+  # name: tk-multi-workfiles2
+  # version: v0.12.6
+  ### GitHub Release
+  # type: github_release
+  # organization: nimbleheroes
+  # repository: tk-multi-workfiles2
+  # version: v0.12.6.1
+  ### Git Branch
+  type: git_branch
+  branch: swc_master
+  path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
+  version: 'bb01159'
+  ### Dev
+  # name: tk-multi-workfiles2
+  # type: dev
+  # path: ~/Documents/GitHub/tk-multi-workfiles2_nx
 
 # dev utils
 apps.tk-multi-devutils.location:
@@ -98,15 +114,15 @@ apps.tk-multi-devutils.location:
 
 # shotgun folders
 apps.tk-shotgun-folders.location:
-  name: tk-shotgun-folders
   ### App Store
+  # name: tk-shotgun-folders
   # type: app_store
   # version: v0.2.0
-  ### Toolkit Component Entity
-  type: shotgun
-  entity_type: CustomNonProjectEntity13
-  field: sg_uploaded_app
-  version: 1016 #tk-shotgun-folders-0.2.0.1
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-shotgun-folders
+  version: v0.2.0-nx.1
 
 # ---- Houdini apps
 
@@ -126,21 +142,15 @@ apps.tk-houdini-mantranode.location:
 
 # Perforce
 apps.tk-multi-perforce.location:
-  ### Toolkit Component Entity
-  # name: tk-multi-perforce
-  # type: shotgun
-  # entity_type: CustomNonProjectEntity13
-  # field: sg_uploaded_app
-  # version: #### #tk-multi-perforce-#.#.#
   ### Dev
   # name: tk-multi-perforce
   # type: dev
   # path: ~/Documents/GitHub/tk-multi-perforce
   ### Github
   type: git_branch
-  branch: swc_custom
+  branch: swc_master
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: 80e6a5a
+  version: '2022411'
 
 ################################################################################
 # reference all of the common frameworks
