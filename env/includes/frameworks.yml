@@ -111,6 +111,6 @@ frameworks:
       # path: ~/Documents/GitHub/tk-framework-perforce
       ### Github
       type: git_branch
-      branch: swc_master
+      branch: swc_main
       path: https://github.com/nimbleheroes/tk-framework-perforce.git
       version: 'aa75a46'

@@ -67,62 +67,11 @@ apps.tk-multi-shotgunpanel.location:
   name: tk-multi-shotgunpanel
   version: v1.7.1
 
-# snapshot
-apps.tk-multi-snapshot.location:
-  ### App Store
-  # name: tk-multi-snapshot
-  # type: app_store
-  # version: v0.8.1
-  ### Dev
-  # name: tk-multi-snapshot
-  # type: dev
-  # path: ~/Documents/GitHub/tk-multi-snapshot_swc
-  ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-multi-snapshot
-  version: v0.8.1.2-swc
-
-# workfiles2
-apps.tk-multi-workfiles2.location:
-  ### App Store
-  # type: app_store
-  # name: tk-multi-workfiles2
-  # version: v0.12.6
-  ### GitHub Release
-  # type: github_release
-  # organization: nimbleheroes
-  # repository: tk-multi-workfiles2
-  # version: v0.12.6.1
-  ### Git Branch
-  type: git_branch
-  branch: swc_master
-  path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
-  version: 'bb01159'
-  ### Dev
-  # name: tk-multi-workfiles2
-  # type: dev
-  # path: ~/Documents/GitHub/tk-multi-workfiles2_nx
-
 # dev utils
 apps.tk-multi-devutils.location:
   type: app_store
   name: tk-multi-devutils
   version: v1.1.0
-
-# ---- Shotgun apps
-
-# shotgun folders
-apps.tk-shotgun-folders.location:
-  ### App Store
-  # name: tk-shotgun-folders
-  # type: app_store
-  # version: v0.2.0
-  ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-shotgun-folders
-  version: v0.2.0-nx.1
 
 # ---- Houdini apps
 
@@ -138,19 +87,68 @@ apps.tk-houdini-mantranode.location:
   name: tk-houdini-mantranode
   version: v0.4.1
 
-# ---- Custom apps
+# ---- Shotgun app takeovers
+
+# snapshot
+apps.tk-multi-snapshot.location:
+  ### App Store
+  # name: tk-multi-snapshot
+  # type: app_store
+  # version: v0.8.1
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-multi-snapshot
+  version: v0.8.1.2-swc
+  ### Dev
+  # name: tk-multi-snapshot
+  # type: dev
+  # path: ~/Projects/swc/tk-multi-snapshot
+
+# shotgun folders
+apps.tk-shotgun-folders.location:
+  ### App Store
+  # name: tk-shotgun-folders
+  # type: app_store
+  # version: v0.2.0
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-shotgun-folders
+  version: v0.2.0-nx.1
+
+# workfiles2
+apps.tk-multi-workfiles2.location:
+  ### App Store
+  # type: app_store
+  # name: tk-multi-workfiles2
+  # version: v0.12.6
+  ### GitHub Release
+  # type: github_release
+  # organization: nimbleheroes
+  # repository: tk-multi-workfiles2
+  # version: v0.12.6.1
+  ### Git Branch
+  # type: git_branch
+  # branch: swc_beta
+  # path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
+  # version: 'bb01159'
+  ### Dev
+  name: tk-multi-workfiles2
+  type: dev
+  path: ~/Projects/swc/tk-multi-workfiles2
 
 # Perforce
 apps.tk-multi-perforce.location:
-  ### Dev
-  # name: tk-multi-perforce
-  # type: dev
-  # path: ~/Documents/GitHub/tk-multi-perforce
   ### Github
-  type: git_branch
-  branch: swc_master
-  path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: '2022411'
+  # type: git_branch
+  # branch: swc_beta
+  # path: https://github.com/nimbleheroes/tk-multi-perforce.git
+  # version: '2022411'
+  ### Dev
+  name: tk-multi-perforce
+  type: dev
+  path: ~/Projects/swc/tk-multi-perforce
 
 ################################################################################
 # reference all of the common frameworks

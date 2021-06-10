@@ -9,8 +9,3 @@ includes:
 settings.tk-multi-perforce:
   connect_on_startup: true
   location: "@apps.tk-multi-perforce.location"
-
-settings.tk-multi-perforce.desktop:
-  connect_on_startup: true
-  desktop_app_only: true
-  location: "@apps.tk-multi-perforce.location"
