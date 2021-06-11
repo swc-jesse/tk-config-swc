@@ -96,7 +96,7 @@ apps.tk-multi-workfiles2.location:
   # version: v0.12.6.1
   ### Git Branch
   type: git_branch
-  branch: swc_master
+  branch: swc_main
   path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
   version: 'bb01159'
   ### Dev
@@ -145,12 +145,12 @@ apps.tk-multi-perforce.location:
   ### Dev
   # name: tk-multi-perforce
   # type: dev
-  # path: ~/Documents/GitHub/tk-multi-perforce
+  # path: ~/Projects/swc/tk-multi-perforce
   ### Github
   type: git_branch
-  branch: swc_master
+  branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: '2022411'
+  version: '8c4581a'
 
 ################################################################################
 # reference all of the common frameworks
