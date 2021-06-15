@@ -15,6 +15,7 @@ from datetime import datetime
 import sgtk
 from sgtk import TankError
 from tank_vendor.shotgun_api3 import sg_timezone
+from sgtk.platform.qt import QtGui
 
 HookClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -137,6 +138,7 @@ class FilterWorkFiles(HookClass):
             # filename = self._get_file_path_components(local_path)["filename"]
             # work_file["name"] = filename
 
+            # work_file["thumbnail"] = QtGui.QPixmap(os.path.join(self.disk_location, "icons", "thumb_file.png"))
             work_file["thumbnail"] = os.path.join(self.disk_location, "icons", "thumb_file.png")
 
             p4_details = p4_file_details.get(local_path)

@@ -13,3 +13,4 @@ settings.tk-multi-perforce:
 settings.tk-multi-perforce.desktop:
   connect_on_startup: true
   location: "@apps.tk-multi-perforce.location"
+

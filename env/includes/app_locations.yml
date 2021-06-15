@@ -67,21 +67,55 @@ apps.tk-multi-shotgunpanel.location:
   name: tk-multi-shotgunpanel
   version: v1.7.1
 
+# dev utils
+apps.tk-multi-devutils.location:
+  type: app_store
+  name: tk-multi-devutils
+  version: v1.1.0
+
+# ---- Houdini apps
+
+# houdini alembicnode
+apps.tk-houdini-alembicnode.location:
+  type: app_store
+  name: tk-houdini-alembicnode
+  version: v0.4.1
+
+# houdini mantranode
+apps.tk-houdini-mantranode.location:
+  type: app_store
+  name: tk-houdini-mantranode
+  version: v0.4.1
+
+# ---- Shotgun app takeovers
+
 # snapshot
 apps.tk-multi-snapshot.location:
   ### App Store
   # name: tk-multi-snapshot
   # type: app_store
   # version: v0.8.1
-  ### Dev
-  # name: tk-multi-snapshot
-  # type: dev
-  # path: ~/Documents/GitHub/tk-multi-snapshot_swc
   ### GitHub Release
   type: github_release
   organization: nimbleheroes
   repository: tk-multi-snapshot
   version: v0.8.1.2-swc
+  ### Dev
+  # name: tk-multi-snapshot
+  # type: dev
+  # path: ~/Projects/swc/tk-multi-snapshot
+
+# shotgun folders
+apps.tk-shotgun-folders.location:
+  ### App Store
+  # name: tk-shotgun-folders
+  # type: app_store
+  # version: v0.2.0
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-shotgun-folders
+  version: v0.2.0-nx.1
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
@@ -102,43 +136,7 @@ apps.tk-multi-workfiles2.location:
   ### Dev
   # name: tk-multi-workfiles2
   # type: dev
-  # path: ~/Documents/GitHub/tk-multi-workfiles2_nx
-
-# dev utils
-apps.tk-multi-devutils.location:
-  type: app_store
-  name: tk-multi-devutils
-  version: v1.1.0
-
-# ---- Shotgun apps
-
-# shotgun folders
-apps.tk-shotgun-folders.location:
-  ### App Store
-  # name: tk-shotgun-folders
-  # type: app_store
-  # version: v0.2.0
-  ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-shotgun-folders
-  version: v0.2.0-nx.1
-
-# ---- Houdini apps
-
-# houdini alembicnode
-apps.tk-houdini-alembicnode.location:
-  type: app_store
-  name: tk-houdini-alembicnode
-  version: v0.4.1
-
-# houdini mantranode
-apps.tk-houdini-mantranode.location:
-  type: app_store
-  name: tk-houdini-mantranode
-  version: v0.4.1
-
-# ---- Custom apps
+  # path: ~/Projects/swc/tk-multi-workfiles2
 
 # Perforce
 apps.tk-multi-perforce.location:
@@ -151,6 +149,7 @@ apps.tk-multi-perforce.location:
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
   version: '8c4581a'
+
 
 ################################################################################
 # reference all of the common frameworks
