@@ -15,6 +15,7 @@ from datetime import datetime
 import sgtk
 from sgtk import TankError
 from tank_vendor.shotgun_api3 import sg_timezone
+from sgtk.platform.qt import QtGui
 
 HookClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -134,10 +135,11 @@ class FilterWorkFiles(HookClass):
         for entry, local_path in file_path_pairs:
             work_file = entry.get("work_file")
 
-            # filename = self._get_file_path_components(local_path)["filename"]
-            # work_file["name"] = filename
+            filename = self._get_file_path_components(local_path)["filename"]
+            work_file["name"] = filename
 
-            work_file["thumbnail"] = os.path.join(self.disk_location, "icons", "thumb_file.png")
+            # work_file["thumbnail"] = QtGui.QPixmap(os.path.join(self.disk_location, "icons", "thumb_file.png"))
+            # work_file["thumbnail"] = os.path.join(self.disk_location, "icons", "thumb_file.png")
 
             p4_details = p4_file_details.get(local_path)
             if p4_details:
@@ -188,50 +190,50 @@ class FilterWorkFiles(HookClass):
 
         return filtered_work_files
 
-    # def _get_file_path_components(self, path):
-    #     """
-    #     Convenience method for determining file components for a given path.
-    #     :param str path: The path to the file to componentize.
-    #     Returns file path components in the form::
-    #         # path="/path/to/the/file/my_file.v001.ext"
-    #         {
-    #             "path": "/path/to/the/file/my_file.v001.ext",
-    #             "folder": "/path/to/the/file" ,
-    #             "filename": "my_file.v001.ext",
-    #             "extension": "ext",
-    #         }
-    #         # path="/path/to/the/folder"
-    #         {
-    #             "path": "/path/to/the/folder",
-    #             "folder": "/path/to/the" ,
-    #             "filename": "folder",
-    #             "extension": None,
-    #         }
-    #     """
-    #
-    #     # get the path in a normalized state. no trailing separator, separators are
-    #     # appropriate for current os, no double separators, etc.
-    #     path = sgtk.util.ShotgunPath.normalize(path)
-    #
-    #     # logger.debug("Getting file path components for path: '%s'..." % (path,))
-    #
-    #     # break it up into the major components
-    #     (folder, filename) = os.path.split(path)
-    #
-    #     if os.path.isdir(path):
-    #         # folder
-    #         extension = None
-    #     else:
-    #         # file. extract the extension and remove the "."
-    #         (_, extension) = os.path.splitext(filename)
-    #         if extension:
-    #             extension = extension.lstrip(".")
-    #         else:
-    #             # prevent extension = ""
-    #             extension = None
-    #
-    #     file_info = dict(path=path, folder=folder, filename=filename, extension=extension,)
-    #
-    #     # logger.debug("Extracted components from path '%s': %s" % (path, file_info))
-    #
-    #     return file_info
+    def _get_file_path_components(self, path):
+        """
+        Convenience method for determining file components for a given path.
+        :param str path: The path to the file to componentize.
+        Returns file path components in the form::
+            # path="/path/to/the/file/my_file.v001.ext"
+            {
+                "path": "/path/to/the/file/my_file.v001.ext",
+                "folder": "/path/to/the/file" ,
+                "filename": "my_file.v001.ext",
+                "extension": "ext",
+            }
+            # path="/path/to/the/folder"
+            {
+                "path": "/path/to/the/folder",
+                "folder": "/path/to/the" ,
+                "filename": "folder",
+                "extension": None,
+            }
+        """
+
+        # get the path in a normalized state. no trailing separator, separators are
+        # appropriate for current os, no double separators, etc.
+        path = sgtk.util.ShotgunPath.normalize(path)
+
+        # logger.debug("Getting file path components for path: '%s'..." % (path,))
+
+        # break it up into the major components
+        (folder, filename) = os.path.split(path)
+
+        if os.path.isdir(path):
+            # folder
+            extension = None
+        else:
+            # file. extract the extension and remove the "."
+            (_, extension) = os.path.splitext(filename)
+            if extension:
+                extension = extension.lstrip(".")
+            else:
+                # prevent extension = ""
+                extension = None
+
+        file_info = dict(path=path, folder=folder, filename=filename, extension=extension,)
+
+        # logger.debug("Extracted components from path '%s': %s" % (path, file_info))
+
+        return file_info

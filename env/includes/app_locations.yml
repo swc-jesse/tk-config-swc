@@ -23,7 +23,7 @@ includes:
 apps.tk-multi-about.location:
   type: app_store
   name: tk-multi-about
-  version: v0.3.3
+  version: v0.4.0
 
 # demo
 apps.tk-multi-demo.location:
@@ -35,94 +35,43 @@ apps.tk-multi-demo.location:
 apps.tk-multi-launchapp.location:
   type: app_store
   name: tk-multi-launchapp
-  version: v0.11.2
+  version: v0.12.0
 
 # loader2
 apps.tk-multi-loader2.location:
   type: app_store
   name: tk-multi-loader2
-  version: v1.20.2
+  version: v1.21.0
 
 # publish2
 apps.tk-multi-publish2.location:
   type: app_store
   name: tk-multi-publish2
-  version: v2.5.5
+  version: v2.6.0
 
 # pythonconsole
 apps.tk-multi-pythonconsole.location:
   type: app_store
   name: tk-multi-pythonconsole
-  version: v1.2.5
+  version: v1.3.0
 
 # reviewsubmission
 apps.tk-multi-reviewsubmission.location:
   type: app_store
   name: tk-multi-reviewsubmission
-  version: v1.1.1
+  version: v1.2.0
 
 # shotgun panel
 apps.tk-multi-shotgunpanel.location:
   type: app_store
   name: tk-multi-shotgunpanel
-  version: v1.7.1
-
-# snapshot
-apps.tk-multi-snapshot.location:
-  ### App Store
-  # name: tk-multi-snapshot
-  # type: app_store
-  # version: v0.8.1
-  ### Dev
-  # name: tk-multi-snapshot
-  # type: dev
-  # path: ~/Documents/GitHub/tk-multi-snapshot_swc
-  ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-multi-snapshot
-  version: v0.8.1.2-swc
-
-# workfiles2
-apps.tk-multi-workfiles2.location:
-  ### App Store
-  # type: app_store
-  # name: tk-multi-workfiles2
-  # version: v0.12.6
-  ### GitHub Release
-  # type: github_release
-  # organization: nimbleheroes
-  # repository: tk-multi-workfiles2
-  # version: v0.12.6.1
-  ### Git Branch
-  type: git_branch
-  branch: swc_main
-  path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
-  version: 'bb01159'
-  ### Dev
-  # name: tk-multi-workfiles2
-  # type: dev
-  # path: ~/Documents/GitHub/tk-multi-workfiles2_nx
+  version: v1.8.0
 
 # dev utils
 apps.tk-multi-devutils.location:
   type: app_store
   name: tk-multi-devutils
   version: v1.1.0
-
-# ---- Shotgun apps
-
-# shotgun folders
-apps.tk-shotgun-folders.location:
-  ### App Store
-  # name: tk-shotgun-folders
-  # type: app_store
-  # version: v0.2.0
-  ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-shotgun-folders
-  version: v0.2.0-nx.1
 
 # ---- Houdini apps
 
@@ -138,7 +87,56 @@ apps.tk-houdini-mantranode.location:
   name: tk-houdini-mantranode
   version: v0.4.1
 
-# ---- Custom apps
+# ---- Shotgun app takeovers
+
+# snapshot
+apps.tk-multi-snapshot.location:
+  ### App Store
+  # name: tk-multi-snapshot
+  # type: app_store
+  # version: v0.8.1
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-multi-snapshot
+  version: v0.8.1.2-swc
+  ### Dev
+  # name: tk-multi-snapshot
+  # type: dev
+  # path: ~/Projects/swc/tk-multi-snapshot
+
+# shotgun folders
+apps.tk-shotgun-folders.location:
+  ### App Store
+  # name: tk-shotgun-folders
+  # type: app_store
+  # version: v0.2.0
+  ### GitHub Release
+  type: github_release
+  organization: nimbleheroes
+  repository: tk-shotgun-folders
+  version: v0.2.0-nx.1
+
+# workfiles2
+apps.tk-multi-workfiles2.location:
+  ### App Store
+  type: app_store
+  name: tk-multi-workfiles2
+  version: v0.13.0
+  ### GitHub Release
+  # type: github_release
+  # organization: nimbleheroes
+  # repository: tk-multi-workfiles2
+  # version: v0.12.6.1
+  ### Git Branch
+  # type: git_branch
+  # branch: swc_main
+  # path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
+  # version: bb01159
+  ### Dev
+  # name: tk-multi-workfiles2
+  # type: dev
+  # path: ~/Projects/swc/tk-multi-workfiles2
 
 # Perforce
 apps.tk-multi-perforce.location:
@@ -150,8 +148,7 @@ apps.tk-multi-perforce.location:
   type: git_branch
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: '8c4581a'
-
+  version: 8c4581a
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'

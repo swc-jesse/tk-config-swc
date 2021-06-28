@@ -17,10 +17,11 @@ includes:
 
 # common_workfiles_hooks
 common_workfiles_settings: &common_workfiles_settings
-  file_browser_tabs: ['Working']
-  hook_filter_publishes: "{config}/tk-multi-workfiles2/filter_publishes.py"
+  # file_browser_tabs: ['Working']
+  # hook_filter_publishes: "{config}/tk-multi-workfiles2/filter_publishes.py"
   hook_filter_work_files: "{config}/tk-multi-workfiles2/filter_work_files.py"
-  hook_get_badge: "{config}/tk-multi-workfiles2/get_badge.py"
+  custom_actions_hook: "{config}/tk-multi-workfiles2/custom_actions.py"
+  # hook_get_badge: "{config}/tk-multi-workfiles2/get_badge.py"
   hook_scene_operation: "{config}/tk-multi-workfiles2/scene_operation_perforce.py:{config}/tk-multi-workfiles2/scene_operation_{engine_name}.py"
 
 # entity_browser_settings

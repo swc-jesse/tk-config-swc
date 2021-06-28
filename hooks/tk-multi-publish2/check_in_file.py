@@ -171,7 +171,19 @@ class MayaPerforceFileCheckin(HookBaseClass):
 
         # submit the change:
         self.logger.info("Submitting the change...")
-        self.p4_fw.util.submit_change(p4, new_change)
+        submission = self.p4_fw.util.submit_change(p4, new_change)
+        item.properties.p4_submit = submission
+
+        self.logger.debug(
+            "Submitted change returned data...",
+            extra={
+                "action_show_more_info": {
+                    "label": "Change data",
+                    "tooltip": "Show the p4_submit data",
+                    "text": "<pre>%s</pre>" % (pprint.pformat(submission),),
+                }
+            },
+        )
 
     def finalize(self, settings, item):
         """
@@ -186,3 +198,24 @@ class MayaPerforceFileCheckin(HookBaseClass):
         """
 
         publisher = self.parent
+
+        # check to see if we have sg publish data
+        publish_data = item.properties.get('sg_publish_data')
+        if publish_data:
+            p4_submit_data = item.properties.p4_submit
+            """
+            p4_submit_data should be a list of dicts, something like this:
+            [
+             {'locked': '1', 'change': '35'},
+             {'action': 'edit', 'rev': '6', 'depotFile': '//path/to/file.ext'},
+             {'submittedChange': '35'}
+            ]
+            """
+            change_number = int(p4_submit_data[0].get('change'))
+            rev_number = int(p4_submit_data[1].get('rev'))
+            depo_path = "{}#{}".format(p4_submit_data[1].get('depotFile'), int(p4_submit_data[1].get('rev')))
+            update_data = {'version_number': rev_number,
+                           'sg_p4_change_number': change_number,
+                           'sg_p4_depo_path': depo_path}
+
+            publisher.shotgun.update("PublishedFile", publish_data['id'], update_data)
