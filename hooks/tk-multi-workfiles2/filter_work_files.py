@@ -10,12 +10,13 @@
 
 import os
 from datetime import datetime
-
+import six
 
 import sgtk
 from sgtk import TankError
 from tank_vendor.shotgun_api3 import sg_timezone
 from sgtk.platform.qt import QtGui
+
 
 HookClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -91,7 +92,7 @@ class FilterWorkFiles(HookClass):
         # find the details about the specific revision of each file returned - this is
         # so that we have the modified by information.
         path_revision_to_path = {}
-        for path, details in p4_file_details.iteritems():
+        for path, details in six.iteritems(p4_file_details):
             if not details:
                 continue
 
@@ -106,7 +107,7 @@ class FilterWorkFiles(HookClass):
             p4_file_revision_details = p4_fw.util.get_client_file_details(p4, path_revision_to_path.keys())
 
             # update any file details to use the revision specific details:
-            for path_revision, details in p4_file_revision_details.iteritems():
+            for path_revision, details in six.iteritems(p4_file_revision_details):
                 if not details:
                     continue
                 path = path_revision_to_path.get(path_revision)
@@ -115,7 +116,7 @@ class FilterWorkFiles(HookClass):
         # finally, grab the change details for all changes referenced by these files - this
         # is so that we have the user and description info.
         changes = set()
-        for path, details in p4_file_details.iteritems():
+        for path, details in six.iteritems(p4_file_details):
             if not details:
                 continue
 

@@ -124,7 +124,7 @@ settings.tk-multi-publish2.maya.asset_step:
       Work Template: asset_maya_workfile
   publish_plugins:
   - name: Publish to ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
     settings: {}
   - name: Check-in to Perforce
     hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
@@ -142,7 +142,7 @@ settings.tk-multi-publish2.maya.asset_child_step:
       Work Template: asset_child_maya_workfile
   publish_plugins:
   - name: Publish to ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
     settings: {}
   - name: Check-in to Perforce
     hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
