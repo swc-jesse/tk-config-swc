@@ -170,7 +170,7 @@ class CustomActions(HookBaseClass):
                     # check out the file
                     try:
                         p4.run_sync([], sync_path)
-                    except TankError, e:
+                    except TankError as e:
                         self.parent.log_warning(e)
                 # operation completed successfully
                 return True
@@ -201,7 +201,7 @@ class CustomActions(HookBaseClass):
         #             # check out the file
         #             try:
         #                 p4.run_sync([], sync_path)
-        #             except TankError, e:
+        #             except TankError as e:
         #                 self.parent.log_warning(e)
         #         # operation completed successfully
         #         return True
