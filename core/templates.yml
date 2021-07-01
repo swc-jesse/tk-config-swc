@@ -183,8 +183,10 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    asset_root: '{asset_library}/{asset_type}/{asset_category}/{Asset}'
-    asset_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
+    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    asset_other_root: '{asset_library}/{asset_type}/{asset_category}/{Asset}'
+    asset_other_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
 
     ##########################################################################################
     # Asset pipeline
@@ -195,6 +197,8 @@ paths:
 
     asset_alembic_cache:
         definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
+    asset_other_alembic_cache:
+        definition: '@asset_other_root/caches/{Asset}[_{name}].abc'        
 
     #
     # Generic
@@ -209,6 +213,15 @@ paths:
     asset_child_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
 
+    asset_other_workfile:
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}].{ext}'
+    asset_other_snapshot:
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}].{timestamp}.{ext}'
+    asset_other_child_workfile:
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{ext}'
+    asset_other_child_snapshot:
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}.{ext}'
+
     #
     # Photoshop
     #
@@ -221,6 +234,15 @@ paths:
         definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{photoshop_extension}'
     asset_child_photoshop_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
+
+    asset_other_photoshop_workfile:
+        definition: '@asset_root/{asset_category}_{Asset}[_{name}].{photoshop_extension}'
+    asset_other_photoshop_snapshot:
+        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}].{timestamp}.{photoshop_extension}'
+    asset_other_child_photoshop_workfile:
+        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{photoshop_extension}'
+    asset_other_child_photoshop_snapshot:
+        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}.{photoshop_extension}'
 
     #
     # Maya
