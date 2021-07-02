@@ -37,6 +37,22 @@ settings.tk-shotgun.asset_step:
     tk-multi-perforce: "@settings.tk-multi-perforce"
   location: "@engines.tk-shotgun.location"
 
+settings.tk-shotgun.asset_other:
+  apps:
+    tk-multi-launchapp: "@settings.tk-multi-launchapp"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+    tk-shotgun-folders: "@settings.tk-shotgun-folders"
+  location: "@engines.tk-shotgun.location"
+
+# asset_step & asset_child_step
+settings.tk-shotgun.asset_other_step:
+  apps:
+    tk-multi-launchapp: "@settings.tk-multi-launchapp.shotgun"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+  location: "@engines.tk-shotgun.location"
+
 # project
 settings.tk-shotgun.project:
   apps:
