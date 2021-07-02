@@ -197,6 +197,26 @@ settings.tk-multi-workfiles2.photoshop.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# asset_other_step
+settings.tk-multi-workfiles2.photoshop.asset_other_step:
+  template_publish: asset_other_photoshop_workfile
+  template_publish_area: asset_other_root
+  template_work: asset_other_photoshop_workfile
+  template_work_area: asset_other_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# asset_other_child_step
+settings.tk-multi-workfiles2.photoshop.asset_other_child_step:
+  template_publish: asset_other_child_photoshop_workfile
+  template_publish_area: asset_other_child_root
+  template_work: asset_other_child_photoshop_workfile
+  template_work_area: asset_other_child_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
 ################################################################################
 
 # -- substancepainter

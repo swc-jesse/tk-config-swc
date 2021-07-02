@@ -43,21 +43,31 @@ class PickEnvironment(sgtk.Hook):
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
-                                                               ["sg_asset_parent"])
-                if context_entity.get("sg_asset_parent"):
-                    return "asset_child"
+                                                               ["sg_asset_parent","sg_asset_library"])
 
-                return "asset"
+                asset_env = "asset"
+                if context_entity.get("sg_asset_library").get("name") in ["Engine", "Tool", "Publishing"]:
+                    asset_env = "asset_other"
+
+                if context_entity.get("sg_asset_parent"):
+                    return asset_env + "_child"
+
+                return asset_env
 
         if context.entity and context.step:
             # We have a step and an entity.
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
-                                                               ["sg_asset_parent"])
-                if context_entity.get("sg_asset_parent"):
-                    return "asset_child_step"
+                                                               ["sg_asset_parent","sg_asset_library"])
 
-                return "asset_step"
+                asset_env = "asset"
+                if context_entity.get("sg_asset_library").get("name") in ["Engine", "Tool", "Publishing"]:
+                    asset_env = "asset_other"
+
+                if context_entity.get("sg_asset_parent"):
+                    return asset_env + "_child_step"
+
+                return asset_env + "_step"
 
         return None

@@ -45,7 +45,7 @@ keys:
     asset_library:
         type: str
         shotgun_entity_type: Asset
-        shotgun_field_name: sg_asset_library.AssetLibrary.code
+        shotgun_field_name: sg_asset_library.AssetLibrary.code 
     asset_library_parent:
         type: str
         shotgun_entity_type: Asset
@@ -198,7 +198,7 @@ paths:
     asset_alembic_cache:
         definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
     asset_other_alembic_cache:
-        definition: '@asset_other_root/caches/{Asset}[_{name}].abc'        
+        definition: '@asset_other_root/caches/{Asset}[_{name}]_{task_step}.abc'        
 
     #
     # Generic
@@ -214,13 +214,13 @@ paths:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
 
     asset_other_workfile:
-        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}].{ext}'
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}]_{task_step}.{ext}'
     asset_other_snapshot:
-        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}].{timestamp}.{ext}'
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
     asset_other_child_workfile:
-        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{ext}'
+        definition: '@asset_other_child_root/{asset_category_parent}_{Asset}_{asset_category}_{Asset}[_{name}]_{task_step}.{ext}'
     asset_other_child_snapshot:
-        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}.{ext}'
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{Asset}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
 
     #
     # Photoshop
@@ -236,13 +236,13 @@ paths:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
 
     asset_other_photoshop_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}].{photoshop_extension}'
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}].{photoshop_extension}'
     asset_other_photoshop_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}].{timestamp}.{photoshop_extension}'
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}].{timestamp}.{photoshop_extension}'
     asset_other_child_photoshop_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{photoshop_extension}'
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{photoshop_extension}'
     asset_other_child_photoshop_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}.{photoshop_extension}'
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}.{photoshop_extension}'
 
     #
     # Maya
@@ -257,6 +257,15 @@ paths:
     asset_child_maya_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
 
+    asset_other_maya_workfile:
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}]_{task_step}.{maya_extension}'
+    asset_other_maya_snapshot:
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
+    asset_other_child_maya_workfile:
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{maya_extension}'
+    asset_other_child_maya_snapshot:
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
+
     #
     # Houdini
     #
@@ -269,6 +278,15 @@ paths:
         definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.hip'
     asset_child_houdini_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.hip'
+
+    asset_other_houdini_workfile:
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}]_{task_step}.hip'
+    asset_other_houdini_snapshot:
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.hip'
+    asset_other_child_houdini_workfile:
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.hip'
+    asset_other_child_houdini_snapshot:
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.hip'        
 
     #
     # 3dsmax
@@ -283,6 +301,15 @@ paths:
     asset_child_max_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.max'
 
+    asset_other_max_workfile:
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}]_{task_step}.max'
+    asset_other_max_snapshot:
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.max'
+    asset_other_child_max_workfile:
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.max'
+    asset_other_child_max_snapshot:
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.max'
+
     #
     # Substance Painter
     #
@@ -295,6 +322,15 @@ paths:
         definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.spp'
     asset_child_substancepainter_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.spp'
+
+    asset_other_substancepainter_workfile:
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}]_{task_step}.spp'
+    asset_other_substancepainter_snapshot:
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.spp'
+    asset_other_child_substancepainter_workfile:
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.spp'
+    asset_other_child_substancepainter_snapshot:
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.spp'        
 
     #
     # Substance Designer
@@ -309,6 +345,14 @@ paths:
     asset_child_substancedesigner_snapshot:
         definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
 
+    asset_other_substancedesigner_workfile:
+        definition: '@asset_other_root/{asset_category}_{Asset}[_{name}]_{task_step}.{substancedesigner.extension}'
+    asset_other_substancedesigner_snapshot:
+        definition: '@asset_other_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
+    asset_other_child_substancedesigner_workfile:
+        definition: '@asset_other_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{substancedesigner.extension}'
+    asset_other_child_substancedesigner_snapshot:
+        definition: '@asset_other_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
 
 #
 # The strings section is similar to the paths section - but rather than defining paths
