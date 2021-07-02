@@ -70,7 +70,7 @@ class SceneOperation(HookBaseClass):
             try:
                 file_details = p4_fw.util.get_client_file_details(p4, file_path, fields=["action"], flags=[])[file_path]
                 log.debug("file_details: {}".format(file_details))
-            except TankError, e:
+            except TankError as e:
                 self.parent.log_warning(e)
             # check if the file is checked out
             if not file_details.get("action") == "edit":
@@ -89,7 +89,7 @@ class SceneOperation(HookBaseClass):
                     # check out the file
                     try:
                         p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
-                    except TankError, e:
+                    except TankError as e:
                         self.parent.log_warning(e)
             # operation completed successfully
             return True
@@ -112,7 +112,7 @@ class SceneOperation(HookBaseClass):
                     # check out the file
                     try:
                         p4_fw.util.open_file_for_edit(p4, file_path, add_if_new=False)
-                    except TankError, e:
+                    except TankError as e:
                         self.parent.log_warning(e)
                     # operation completed successfully
                     return True

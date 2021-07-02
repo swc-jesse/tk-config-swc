@@ -138,36 +138,11 @@ class BasicFilePublishPlugin(HookBaseClass):
         Verbose, multi-line description of what the plugin does. This can
         contain simple html for formatting.
         """
-
-        loader_url = "https://support.shotgunsoftware.com/hc/en-us/articles/219033078"
-
         return """
         Publishes the file to ShotGrid. A <b>Publish</b> entry will be
         created in ShotGrid which will include a reference to the file's current
-        path on disk. Other users will be able to access the published file via
-        the <b><a href='%s'>Loader</a></b> so long as they have access to
-        the file's location on disk.
-
-        <h3>File versioning</h3>
-        The <code>version</code> field of the resulting <b>Publish</b> in
-        ShotGrid will also reflect the version number identified in the filename.
-        The basic worklfow recognizes the following version formats by default:
-
-        <ul>
-        <li><code>filename.v###.ext</code></li>
-        <li><code>filename_v###.ext</code></li>
-        <li><code>filename-v###.ext</code></li>
-        </ul>
-
-        <br><br><i>NOTE: any amount of version number padding is supported.</i>
-
-        <h3>Overwriting an existing publish</h3>
-        A file can be published multiple times however only the most recent
-        publish will be available to other users. Warnings will be provided
-        during validation if there are previous publishes.
-        """ % (
-            loader_url,
-        )
+        path on disk.
+        """
 
     @property
     def settings(self):
@@ -293,57 +268,6 @@ class BasicFilePublishPlugin(HookBaseClass):
 
         publish_path = self.get_publish_path(settings, item)
         publish_name = self.get_publish_name(settings, item)
-
-        # ---- check for conflicting publishes of this path with a status
-
-        # Note the name, context, and path *must* match the values supplied to
-        # register_publish in the publish phase in order for this to return an
-        # accurate list of previous publishes of this file.
-
-        # publishes = publisher.util.get_conflicting_publishes(
-        #     item.context,
-        #     publish_path,
-        #     publish_name,
-        #     filters=["sg_status_list", "is_not", None],
-        # )
-        #
-        # if publishes:
-        #
-        #     self.logger.debug(
-        #         "Conflicting publishes: %s" % (pprint.pformat(publishes),)
-        #     )
-        #
-        #     publish_template = self.get_publish_template(settings, item)
-        #
-        #     if "work_template" in item.properties or publish_template:
-        #
-        #         # templates are in play and there is already a publish in SG
-        #         # for this file path. We will raise here to prevent this from
-        #         # happening.
-        #         error_msg = (
-        #             "Can not validate file path. There is already a publish in "
-        #             "ShotGrid that matches this path. Please uncheck this "
-        #             "plugin or save the file to a different path."
-        #         )
-        #         self.logger.error(error_msg)
-        #         raise Exception(error_msg)
-        #
-        #     else:
-        #         conflict_info = (
-        #             "If you continue, these conflicting publishes will no "
-        #             "longer be available to other users via the loader:<br>"
-        #             "<pre>%s</pre>" % (pprint.pformat(publishes),)
-        #         )
-        #         self.logger.warn(
-        #             "Found %s conflicting publishes in ShotGrid" % (len(publishes),),
-        #             extra={
-        #                 "action_show_more_info": {
-        #                     "label": "Show Conflicts",
-        #                     "tooltip": "Show conflicting publishes in ShotGrid",
-        #                     "text": conflict_info,
-        #                 }
-        #             },
-        #         )
 
         self.logger.info("A Publish will be created in ShotGrid and linked to:")
         self.logger.info("  %s" % (path,))

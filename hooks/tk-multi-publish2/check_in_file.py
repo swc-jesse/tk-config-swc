@@ -201,6 +201,7 @@ class MayaPerforceFileCheckin(HookBaseClass):
 
         # check to see if we have sg publish data
         publish_data = item.properties.get('sg_publish_data')
+
         if publish_data:
             p4_submit_data = item.properties.p4_submit
             """
