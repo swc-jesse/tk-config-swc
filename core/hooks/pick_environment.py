@@ -43,10 +43,16 @@ class PickEnvironment(sgtk.Hook):
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
-                                                               ["sg_asset_parent","sg_asset_type"])
-
+                                                               ["sg_asset_parent","sg_asset_type","project"])
+                context_project = context.sgtk.shotgun.find_one("Project",
+                                                               [["id", "is", context_entity.get('project')["id"]]],
+                                                               ["sg_non_game_asset_types"])
                 asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Engine", "Tool", "Publishing"]:
+
+                assets_other = []
+                for x in context_project.get('sg_non_game_asset_types'): assets_other.append(x['name'])
+
+                if context_entity.get("sg_asset_type") in assets_other:
                     asset_env = "asset_other"
 
                 if context_entity.get("sg_asset_parent"):
@@ -60,9 +66,16 @@ class PickEnvironment(sgtk.Hook):
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
                                                                ["sg_asset_parent","sg_asset_type"])
+                context_project = context.sgtk.shotgun.find_one("Project",
+                                                               [["id", "is", context_entity.get('project')["id"]]],
+                                                               ["sg_non_game_asset_types"])
+                asset_env = "asset"
+
+                assets_other = []
+                for x in context_project.get('sg_non_game_asset_types'): assets_other.append(x['name'])                                                               
 
                 asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Engine", "Tool", "Publishing"]:
+                if context_entity.get("sg_asset_type") in assets_other:
                     asset_env = "asset_other"
 
                 if context_entity.get("sg_asset_parent"):
