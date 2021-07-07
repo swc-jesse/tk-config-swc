@@ -10,10 +10,10 @@
 
 import os
 import sys
-import six
 
 import sgtk
 from sgtk import Hook, TankError
+from tank_vendor import six
 
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
 

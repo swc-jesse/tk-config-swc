@@ -10,11 +10,11 @@
 
 import os
 from datetime import datetime
-import six
 
 import sgtk
 from sgtk import TankError
 from tank_vendor.shotgun_api3 import sg_timezone
+from tank_vendor import six
 from sgtk.platform.qt import QtGui
 
 
