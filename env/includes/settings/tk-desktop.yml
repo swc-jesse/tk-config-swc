@@ -39,6 +39,18 @@ settings.tk-desktop.asset_child_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_step"
   location: "@engines.tk-desktop.location"
 
+# asset_other_step
+settings.tk-desktop.asset_other_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_other_step"
+  location: "@engines.tk-desktop.location"
+
+# asset_other_child_step
+settings.tk-desktop.asset_other_child_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_other_child_step"
+  location: "@engines.tk-desktop.location"
+
 # project
 settings.tk-desktop.project:
   apps:

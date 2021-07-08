@@ -32,8 +32,16 @@ keys:
     # Common Keys
     #
 
+    Project:
+        type: str
+        shotgun_entity_type: Project
+        shotgun_field_name: name
     Asset:
         type: str
+    Task:
+        type: str
+        shotgun_entity_type: Task
+        shotgun_field_name: content        
     task_step:
         type: str
         shotgun_entity_type: Task
@@ -45,7 +53,7 @@ keys:
     asset_library:
         type: str
         shotgun_entity_type: Asset
-        shotgun_field_name: sg_asset_library.AssetLibrary.code
+        shotgun_field_name: sg_asset_library.AssetLibrary.code 
     asset_library_parent:
         type: str
         shotgun_entity_type: Asset
@@ -183,8 +191,22 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    asset_root: '{asset_library}/{asset_type}/{asset_category}/{Asset}'
-    asset_child_root: '{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
+    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    asset_other_root: '{asset_type}/{asset_library}/{asset_category}/{Asset}'
+    asset_other_child_root: '{asset_type_parent}/{asset_library_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+
+    asset_filename: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}'
+    asset_snapshot_filename: '@asset_filename.{timestamp}'
+    
+    asset_child_filename: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}'
+    asset_child_snapshot_filename: '@asset_child_filename.{timestamp}'
+    
+    asset_other_filename: '@asset_other_root/{Project}_{asset_library}_{Asset}_{Task}[_{name}]'
+    asset_other_snapshot_filename: '@asset_other_filename.{timestamp}'
+    
+    asset_other_child_filename: '@asset_other_child_root/{Project}_{asset_library_parent}_{asset_parent}_{asset_category}_{Asset}_{Task}[_{name}]'
+    asset_other_child_snapshot_filename: '@asset_other_child_filename.{timestamp}'
 
     ##########################################################################################
     # Asset pipeline
@@ -195,98 +217,162 @@ paths:
 
     asset_alembic_cache:
         definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
+    asset_other_alembic_cache:
+        definition: '@asset_other_root/caches/{Asset}[_{name}]_{task_step}.abc'        
 
     #
     # Generic
     #
 
     asset_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.{ext}'
+        definition: '@asset_filename.{ext}'
     asset_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
+        definition: '@asset_snapshot_filename.{ext}'
     asset_child_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{ext}'
+        definition: '@asset_child_filename.{ext}'
     asset_child_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{ext}'
+        definition: '@asset_child_snapshot_filename.{ext}'
+
+    asset_other_workfile:
+        definition: '@asset_other_filename.{ext}'
+    asset_other_snapshot:
+        definition: '@asset_other_snapshot_filename.{ext}'
+    asset_other_child_workfile:
+        definition: '@asset_other_child_filename.{ext}'
+    asset_other_child_snapshot:
+        definition: '@asset_other_child_snapshot_filename.{ext}'
 
     #
     # Photoshop
     #
 
     asset_photoshop_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.{photoshop_extension}'
+        definition: '@asset_filename.{photoshop_extension}'
     asset_photoshop_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
+        definition: '@asset_snapshot_filename.{photoshop_extension}'
     asset_child_photoshop_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{photoshop_extension}'
+        definition: '@asset_child_filename.{photoshop_extension}'
     asset_child_photoshop_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{photoshop_extension}'
+        definition: '@asset_child_snapshot_filename.{photoshop_extension}'
+
+    asset_other_photoshop_workfile:
+        definition: '@asset_other_filename.{photoshop_extension}'
+    asset_other_photoshop_snapshot:
+        definition: '@asset_other_snapshot_filename.{photoshop_extension}'
+    asset_other_child_photoshop_workfile:
+        definition: '@asset_other_child_filename.{photoshop_extension}'
+    asset_other_child_photoshop_snapshot:
+        definition: '@asset_other_child_snapshot_filename.{photoshop_extension}'
 
     #
     # Maya
     #
 
     asset_maya_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.{maya_extension}'
+        definition: '@asset_filename.{maya_extension}'
     asset_maya_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
+        definition: '@asset_snapshot_filename.{maya_extension}'
     asset_child_maya_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{maya_extension}'
+        definition: '@asset_child_filename.{maya_extension}'
     asset_child_maya_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{maya_extension}'
+        definition: '@asset_child_snapshot_filename.{maya_extension}'
+
+    asset_other_maya_workfile:
+        definition: '@asset_other_filename.{maya_extension}'
+    asset_other_maya_snapshot:
+        definition: '@asset_other_snapshot_filename.{maya_extension}'
+    asset_other_child_maya_workfile:
+        definition: '@asset_other_child_filename.{maya_extension}'
+    asset_other_child_maya_snapshot:
+        definition: '@asset_other_child_snapshot_filename.{maya_extension}'
 
     #
     # Houdini
     #
 
     asset_houdini_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.hip'
+        definition: '@asset_filename.hip'
     asset_houdini_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.hip'
+        definition: '@asset_snapshot_filename.hip'
     asset_child_houdini_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.hip'
+        definition: '@asset_child_filename.hip'
     asset_child_houdini_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.hip'
+        definition: '@asset_child_snapshot_filename.hip'
+
+    asset_other_houdini_workfile:
+        definition: '@asset_other_filename.hip'
+    asset_other_houdini_snapshot:
+        definition: '@asset_other_snapshot_filename.hip'
+    asset_other_child_houdini_workfile:
+        definition: '@asset_other_child_filename.hip'
+    asset_other_child_houdini_snapshot:
+        definition: '@asset_other_child_snapshot_filename.hip'    
 
     #
     # 3dsmax
     #
 
     asset_max_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.max'
+        definition: '@asset_filename.max'
     asset_max_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.max'
+        definition: '@asset_snapshot_filename.max'
     asset_child_max_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.max'
+        definition: '@asset_child_filename.max'
     asset_child_max_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.max'
+        definition: '@asset_child_snapshot_filename.max'
+
+    asset_other_max_workfile:
+        definition: '@asset_other_filename.max'
+    asset_other_max_snapshot:
+        definition: '@asset_other_snapshot_filename.max'
+    asset_other_child_max_workfile:
+        definition: '@asset_other_child_filename.max'
+    asset_other_child_max_snapshot:
+        definition: '@asset_other_child_snapshot_filename.max'
 
     #
     # Substance Painter
     #
 
     asset_substancepainter_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.spp'
+        definition: '@asset_filename.spp'
     asset_substancepainter_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.spp'
+        definition: '@asset_snapshot_filename.spp'
     asset_child_substancepainter_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.spp'
+        definition: '@asset_child_filename.spp'
     asset_child_substancepainter_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.spp'
+        definition: '@asset_child_snapshot_filename.spp'
+
+    asset_other_substancepainter_workfile:
+        definition: '@asset_other_filename.spp'
+    asset_other_substancepainter_snapshot:
+        definition: '@asset_other_snapshot_filename.spp'
+    asset_other_child_substancepainter_workfile:
+        definition: '@asset_other_child_filename.spp'
+    asset_other_child_substancepainter_snapshot:
+        definition: '@asset_other_child_snapshot_filename.spp'
 
     #
     # Substance Designer
     #
 
     asset_substancedesigner_workfile:
-        definition: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}.{substancedesigner.extension}'
+        definition: '@asset_filename.{substancedesigner.extension}'
     asset_substancedesigner_snapshot:
-        definition: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
+        definition: '@asset_snapshot_filename.{substancedesigner.extension}'
     asset_child_substancedesigner_workfile:
-        definition: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{substancedesigner.extension}'
+        definition: '@asset_child_filename.{substancedesigner.extension}'
     asset_child_substancedesigner_snapshot:
-        definition: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}.{substancedesigner.extension}'
+        definition: '@asset_child_snapshot_filename.{substancedesigner.extension}'
 
+    asset_other_substancedesigner_workfile:
+        definition: '@asset_other_filename.{substancedesigner.extension}'
+    asset_other_substancedesigner_snapshot:
+        definition: '@asset_other_snapshot_filename.{substancedesigner.extension}'
+    asset_other_child_substancedesigner_workfile:
+        definition: '@asset_other_child_filename.{substancedesigner.extension}'
+    asset_other_child_substancedesigner_snapshot:
+        definition: '@asset_other_child_snapshot_filename.{substancedesigner.extension}'
 
 #
 # The strings section is similar to the paths section - but rather than defining paths

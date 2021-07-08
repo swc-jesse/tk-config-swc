@@ -25,18 +25,27 @@ settings.tk-multi-loader2.3dsmax:
     Rendered Image: [texture_node]
     Texture: [texture_node]
   entities:
-  - caption: Assets
+  - caption: Content
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']
-  - caption: Child Assets
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Children
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
       - [project, is, '{context.project}']
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Other
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]           
   - caption: My Tasks
     entity_type: Task
     filters:
@@ -55,18 +64,27 @@ settings.tk-multi-loader2.houdini:
     Rendered Image: [file_cop]
     Texture: [file_cop]
   entities:
-  - caption: Assets
+  - caption: Content
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']
-  - caption: Child Assets
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Child Content
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
       - [project, is, '{context.project}']
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]  
+  - caption: Other
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]               
   - caption: My Tasks
     entity_type: Task
     filters:
@@ -86,18 +104,27 @@ settings.tk-multi-loader2.maya:
     Rendered Image: [texture_node, image_plane]
     Texture: [texture_node, image_plane]
   entities:
-  - caption: Assets
+  - caption: Content
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']
-  - caption: Child Assets
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Children
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
       - [project, is, '{context.project}']
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Other
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]           
   - caption: My Tasks
     entity_type: Task
     filters:
@@ -115,18 +142,27 @@ settings.tk-multi-loader2.photoshop:
     Image: [add_as_a_layer, open_file]
     Texture: [add_as_a_layer, open_file]
   entities:
-  - caption: Assets
+  - caption: Content
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']
-  - caption: Child Assets
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]
+  - caption: Children
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
       - [project, is, '{context.project}']
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]
+  - caption: Other
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]     
   - caption: My Tasks
     entity_type: Task
     filters:
@@ -160,16 +196,25 @@ settings.tk-multi-loader2.substancepainter:
   entities:
   - caption: Assets
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']
-  - caption: Child Assets
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Children
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
       - [project, is, '{context.project}']
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]   
+  - caption: Other
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]              
   - caption: My Tasks
     entity_type: Task
     filters:
@@ -197,16 +242,25 @@ settings.tk-multi-loader2.substancedesigner:
   entities:
   - caption: Assets
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']
-  - caption: Child Assets
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Children
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
       - [project, is, '{context.project}']
+      - [sg_asset_type, not_in, [ 'Publishing', 'Engine', 'Tool']]      
+  - caption: Other
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']
+      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]           
   - caption: My Tasks
     entity_type: Task
     filters:
