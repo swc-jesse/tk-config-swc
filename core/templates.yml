@@ -202,10 +202,10 @@ paths:
     asset_child_filename: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}'
     asset_child_snapshot_filename: '@asset_child_filename.{timestamp}'
     
-    asset_other_filename: '@asset_other_root/{Project}_{asset_library}_{Asset}_{Task}[_{name}]'
+    asset_other_filename: '@asset_other_root/{task_step}/{Project}_{asset_library}_{Asset}[_{name}]'
     asset_other_snapshot_filename: '@asset_other_filename.{timestamp}'
     
-    asset_other_child_filename: '@asset_other_child_root/{Project}_{asset_library_parent}_{asset_parent}_{asset_category}_{Asset}_{Task}[_{name}]'
+    asset_other_child_filename: '@asset_other_child_root/{task_step}/{Project}_{asset_library_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]'
     asset_other_child_snapshot_filename: '@asset_other_child_filename.{timestamp}'
 
     ##########################################################################################
