@@ -36,3 +36,26 @@ settings.tk-houdini-alembicnode.asset_child_step:
     color: []
     output_cache_template: houdini_asset_work_alembic_cache
   location: "@apps.tk-houdini-alembicnode.location"
+
+# asset_other_step
+settings.tk-houdini-alembicnode.asset_other_step:
+  work_file_template: houdini_asset_other_work
+  default_node_name: sg_alembic_out
+  output_profiles:
+  - name: Asset Work Cache
+    settings: {}
+    color: []
+    output_cache_template: houdini_asset_other_work_alembic_cache
+  location: "@apps.tk-houdini-alembicnode.location"
+
+# asset_other_child_step
+settings.tk-houdini-alembicnode.asset_other_child_step:
+  work_file_template: houdini_asset_other_work
+  default_node_name: sg_alembic_out
+  output_profiles:
+  - name: Asset Work Cache
+    settings: {}
+    color: []
+    output_cache_template: houdini_asset_other_work_alembic_cache
+  location: "@apps.tk-houdini-alembicnode.location"
+
