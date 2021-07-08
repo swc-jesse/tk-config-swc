@@ -303,7 +303,7 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
 
 # asset_other_step
 settings.tk-multi-publish2.photoshop.asset_other_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{self}/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
   collector_settings:
       Work Template: asset_other_photoshop_workfile
   publish_plugins:
