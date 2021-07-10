@@ -46,7 +46,7 @@ class PickEnvironment(sgtk.Hook):
                                                                ["sg_asset_parent","sg_asset_type"])
 
                 asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Engine", "Tool", "Publishing"]:
+                if context_entity.get("sg_asset_type") in ["Products", "Events", "Sales"]:
                     asset_env = "asset_other"
 
                 if context_entity.get("sg_asset_parent"):
@@ -62,7 +62,7 @@ class PickEnvironment(sgtk.Hook):
                                                                ["sg_asset_parent","sg_asset_type"])
 
                 asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Engine", "Tool", "Publishing"]:
+                if context_entity.get("sg_asset_type") in ["Products", "Events", "Sales"]:
                     asset_env = "asset_other"
 
                 if context_entity.get("sg_asset_parent"):

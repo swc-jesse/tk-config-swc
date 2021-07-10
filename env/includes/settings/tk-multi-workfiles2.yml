@@ -32,7 +32,7 @@ entity_browser_settings: &entity_browser_settings
     hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
-      - [sg_asset_type, not_in, [ 'Publishing','Engine','Tool' ]]
+      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales' ]]
     sub_hierarchy:
       entity_type: Task
       filters:
@@ -43,18 +43,18 @@ entity_browser_settings: &entity_browser_settings
     hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is_not, [ null ]]
-      - [sg_asset_type, not_in, [ 'Publishing','Engine','Tool' ]]      
+      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales' ]]      
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
       hierarchy: [step]
-  - caption: Other
+  - caption: Publishing
     entity_type: Asset
-    hierarchy: [sg_asset_type, sg_asset_library, sg_asset_category, code]
+    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
-      - [sg_asset_type, in, [ 'Publishing','Engine','Tool' ]]      
+      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]      
     sub_hierarchy:
       entity_type: Task
       filters:
