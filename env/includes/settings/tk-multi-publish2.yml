@@ -91,11 +91,11 @@ settings.tk-multi-publish2.3dsmax.asset_other_step: &settings_tk-multi-publish2_
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_other_child_step
-settings.tk-multi-publish2.3dsmax.asset_other_child_step: &settings_tk-multi-publish2_3dsmax_asset_other_child_step
+# env_asset_step
+settings.tk-multi-publish2.3dsmax.env_asset_step: &settings_tk-multi-publish2_3dsmax_env_asset_step
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: asset_other_child_max_workfile
+      Work Template: env_asset_max_workfile
   publish_plugins:
   - name: Publish to ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
@@ -167,11 +167,11 @@ settings.tk-multi-publish2.houdini.asset_other_step:
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_other_child_step
-settings.tk-multi-publish2.houdini.asset_other_child_step:
+# env_asset_step
+settings.tk-multi-publish2.houdini.env_asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: asset_other_child_houdini_workfile
+      Work Template: env_asset_houdini_workfile
   publish_plugins:
   - name: Publish to ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
@@ -243,11 +243,11 @@ settings.tk-multi-publish2.maya.asset_other_step:
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_other_child_step
-settings.tk-multi-publish2.maya.asset_other_child_step:
+# env_asset_step
+settings.tk-multi-publish2.maya.env_asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: asset_other_child_maya_workfile
+      Work Template: env_asset_maya_workfile
   publish_plugins:
   - name: Publish to ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
@@ -319,11 +319,11 @@ settings.tk-multi-publish2.photoshop.asset_other_step:
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_other_child_step
-settings.tk-multi-publish2.photoshop.asset_other_child_step:
+# env_asset_step
+settings.tk-multi-publish2.photoshop.env_asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: asset_other_child_photoshop_workfile
+      Work Template: env_asset_photoshop_workfile
   publish_plugins:
   - name: Publish to ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
@@ -437,11 +437,11 @@ settings.tk-multi-publish2.substancepainter.asset_other_step:
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_other_child_step
-settings.tk-multi-publish2.substancepainter.asset_other_child_step:
+# env_asset_step
+settings.tk-multi-publish2.substancepainter.env_asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: asset_other_child_substancepainter_workfile
+      Work Template: env_asset_substancepainter_workfile
       # Work Export Template: substancepainter_asset_other_textures_path_export
       # Publish Textures as Folder: true
   publish_plugins:
@@ -647,11 +647,11 @@ settings.tk-multi-publish2.substancedesigner.asset_other_step:
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_other_child_step
-settings.tk-multi-publish2.substancedesigner.asset_other_child_step:
+# env_asset_step
+settings.tk-multi-publish2.substancedesigner.env_asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
-      Work Template: asset_other_child_substancedesigner_workfile
+      Work Template: env_asset_substancedesigner_workfile
   publish_plugins:
   # - name: Publish to ShotGrid
   #   hook: "{self}/publish_file.py"
