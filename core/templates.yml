@@ -237,11 +237,11 @@ paths:
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{CustomEntity01}'
     pub_asset_root: '{Campaign}/{Product}/{use}/{CustomEntity03}'
 
-    asset_filename: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}'
-    asset_snapshot_filename: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}'
+    asset_filename: '@asset_root/{Asset}[_{name}]_{task_step}'
+    asset_snapshot_filename: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}'
     
-    asset_child_filename: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}'
-    asset_child_snapshot_filename: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}'
+    asset_child_filename: '@asset_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}'
+    asset_child_snapshot_filename: '@asset_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}'
 
     env_asset_filename: '@env_asset_root/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{task_step}'
     env_asset_snapshot_filename: '@env_asset_root/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{task_step}.{timestamp}'
