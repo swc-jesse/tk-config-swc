@@ -267,15 +267,14 @@ settings.tk-multi-publish2.maya.asset_other_child_step:
 
 # asset_step
 settings.tk-multi-publish2.photoshop.asset_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_photoshop_workfile
+      Work Area: asset_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -285,15 +284,14 @@ settings.tk-multi-publish2.photoshop.asset_step:
 
 # asset_child_step
 settings.tk-multi-publish2.photoshop.asset_child_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_photoshop_workfile
+      Work Area: asset_child_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -303,15 +301,14 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
 
 # asset_other_step
 settings.tk-multi-publish2.photoshop.asset_other_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_photoshop_workfile
+      Work Area: asset_other_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -321,15 +318,14 @@ settings.tk-multi-publish2.photoshop.asset_other_step:
 
 # asset_other_child_step
 settings.tk-multi-publish2.photoshop.asset_other_child_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_child_photoshop_workfile
+      Work Area: asset_other_child_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -585,9 +581,9 @@ settings.tk-multi-publish2.substancedesigner.asset_child_step:
   #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
-  
+
   help_url: *help_url
-  location: "@apps.tk-multi-publish2.location"  
+  location: "@apps.tk-multi-publish2.location"
 
 # asset_other step
 settings.tk-multi-publish2.substancedesigner.asset_other_step:

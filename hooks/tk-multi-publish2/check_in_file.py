@@ -167,7 +167,7 @@ class MayaPerforceFileCheckin(HookBaseClass):
 
         # and add the file to this change:
         self.logger.info("Adding the file to the change...")
-        self.p4_fw.util.add_to_change(p4, new_change, path)
+        self.p4_fw.util.add_to_change(p4, new_change, [path])
 
         # submit the change:
         self.logger.info("Submitting the change...")
