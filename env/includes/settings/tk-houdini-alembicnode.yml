@@ -37,15 +37,15 @@ settings.tk-houdini-alembicnode.asset_child_step:
     output_cache_template: houdini_asset_work_alembic_cache
   location: "@apps.tk-houdini-alembicnode.location"
 
-# asset_other_step
-settings.tk-houdini-alembicnode.asset_other_step:
-  work_file_template: houdini_asset_other_work
+# pub_asset_step
+settings.tk-houdini-alembicnode.pub_asset_step:
+  work_file_template: houdini_pub_asset_work
   default_node_name: sg_alembic_out
   output_profiles:
   - name: Asset Work Cache
     settings: {}
     color: []
-    output_cache_template: houdini_asset_other_work_alembic_cache
+    output_cache_template: houdini_pub_asset_work_alembic_cache
   location: "@apps.tk-houdini-alembicnode.location"
 
 # env_asset_step

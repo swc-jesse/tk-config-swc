@@ -43,31 +43,31 @@ class PickEnvironment(sgtk.Hook):
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
-                                                               ["sg_asset_parent","sg_asset_type"])
-
-                asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Products", "Events", "Sales"]:
-                    asset_env = "asset_other"
+                                                               ["sg_asset_parent"])
 
                 if context_entity.get("sg_asset_parent"):
-                    return asset_env + "_child"
+                    return "asset_child"
 
-                return asset_env
+                return "asset"
+            elif context.entity["type"] == "CustomEntity01":
+                return "env_asset"  
+            elif context.entity["type"] == "CustomEntity03":
+                return "pub_asset"                        
 
         if context.entity and context.step:
             # We have a step and an entity.
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
-                                                               ["sg_asset_parent","sg_asset_type"])
-
-                asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Products", "Events", "Sales"]:
-                    asset_env = "asset_other"
+                                                               ["sg_asset_parent"])
 
                 if context_entity.get("sg_asset_parent"):
-                    return asset_env + "_child_step"
+                    return "asset_child_step"
 
-                return asset_env + "_step"
+                return "asset_step"
+            elif context.entity["type"] == "CustomEntity01":
+                return "env_asset_step"     
+            elif context.entity["type"] == "CustomEntity03":
+                return "pub_asset_step"                    
 
         return None

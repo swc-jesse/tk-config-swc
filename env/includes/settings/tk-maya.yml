@@ -80,16 +80,16 @@ settings.tk-maya.asset_child_step:
   template_project: asset_child_root
   location: "@engines.tk-maya.location"
 
-# asset_other_step
-settings.tk-maya.asset_other_step:
+# pub_asset_step
+settings.tk-maya.pub_asset_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_other_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.pub_asset_step"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.maya"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_other_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_other_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.pub_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.pub_asset_step"
     # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites:
@@ -98,7 +98,7 @@ settings.tk-maya.asset_other_step:
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  template_project: asset_other_root
+  template_project: pub_asset_root
   location: "@engines.tk-maya.location"
 
 # env_asset_step

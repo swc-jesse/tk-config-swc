@@ -49,12 +49,45 @@ entity_browser_settings: &entity_browser_settings
       filters:
       link_field: entity
       hierarchy: [step]
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
+  - caption: Environment
+    entity_type: CustomEntity01
+    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
     filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]      
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]    
+  - caption: Publishing
+    entity_type: CustomEntity03
+    hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
+    filters: 
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: []        
+
+# env_entity_browser_settings
+entity_browser_settings: &env_entity_browser_settings
+  entities:
+  - caption: Environment
+    entity_type: CustomEntity01
+    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+
+# pub_entity_browser_settings
+entity_browser_settings: &pub_entity_browser_settings
+  entities:
+  - caption: Publishing
+    entity_type: CustomEntity03
+    hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
+    filters: 
     sub_hierarchy:
       entity_type: Task
       filters:
@@ -114,14 +147,14 @@ settings.tk-multi-workfiles2.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.asset_other_step:
-  template_publish: asset_other_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.pub_asset_step:
+  template_publish: pub_asset_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_workfile
+  template_work_area: pub_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # env_asset_step
@@ -131,7 +164,7 @@ settings.tk-multi-workfiles2.env_asset_step:
   template_work: env_asset_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -158,24 +191,24 @@ settings.tk-multi-workfiles2.3dsmax.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.3dsmax.asset_other_step:
-  template_publish: asset_other_max_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_max_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.3dsmax.pub_asset_step:
+  template_publish: pub_asset_max_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_max_workfile
+  template_work_area: pub_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # env_asset_step
 settings.tk-multi-workfiles2.3dsmax.env_asset_step:
   template_publish: env_asset_max_workfile
-  template_publish_area: asset_other_root
+  template_publish_area: pub_asset_root
   template_work: env_asset_max_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -202,14 +235,14 @@ settings.tk-multi-workfiles2.houdini.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.houdini.asset_other_step:
-  template_publish: asset_other_houdini_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_houdini_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.houdini.pub_asset_step:
+  template_publish: pub_asset_houdini_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_houdini_workfile
+  template_work_area: pub_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # env_asset_step
@@ -219,7 +252,7 @@ settings.tk-multi-workfiles2.houdini.env_asset_step:
   template_work: env_asset_houdini_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -246,14 +279,14 @@ settings.tk-multi-workfiles2.maya.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.maya.asset_other_step:
-  template_publish: asset_other_maya_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_maya_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.maya.pub_asset_step:
+  template_publish: pub_asset_maya_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_maya_workfile
+  template_work_area: pub_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # env_asset_step
@@ -263,7 +296,7 @@ settings.tk-multi-workfiles2.maya.env_asset_step:
   template_work: env_asset_maya_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -290,14 +323,14 @@ settings.tk-multi-workfiles2.photoshop.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.photoshop.asset_other_step:
-  template_publish: asset_other_photoshop_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_photoshop_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.photoshop.pub_asset_step:
+  template_publish: pub_asset_photoshop_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_photoshop_workfile
+  template_work_area: pub_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # env_asset_step
@@ -307,7 +340,7 @@ settings.tk-multi-workfiles2.photoshop.env_asset_step:
   template_work: env_asset_photoshop_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -367,14 +400,14 @@ settings.tk-multi-workfiles2.substancepainter.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.substancepainter.asset_other_step:
-  template_publish: asset_other_substancepainter_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_substancepainter_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.substancepainter.pub_asset_step:
+  template_publish: pub_asset_substancepainter_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_substancepainter_workfile
+  template_work_area: pub_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # env_asset_step
@@ -384,7 +417,7 @@ settings.tk-multi-workfiles2.substancepainter.env_asset_step:
   template_work: env_asset_substancepainter_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
@@ -447,15 +480,15 @@ settings.tk-multi-workfiles2.substancedesigner.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_other_step
-settings.tk-multi-workfiles2.substancedesigner.asset_other_step:
-  template_publish: asset_other_substancedesigner_workfile
-  template_publish_area: asset_other_root
-  template_work: asset_other_substancedesigner_workfile
-  template_work_area: asset_other_root
+# pub_asset_step
+settings.tk-multi-workfiles2.substancedesigner.pub_asset_step:
+  template_publish: pub_asset_substancedesigner_workfile
+  template_publish_area: pub_asset_root
+  template_work: pub_asset_substancedesigner_workfile
+  template_work_area: pub_asset_root
   # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # asset_child_step
@@ -466,5 +499,5 @@ settings.tk-multi-workfiles2.substancedesigner.env_asset_step:
   template_work_area: env_asset_root
   # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
