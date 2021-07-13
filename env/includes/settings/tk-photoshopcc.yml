@@ -83,6 +83,7 @@ settings.tk-photoshopcc.asset_child_step:
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   location: '@engines.tk-photoshopcc.location'
 
+# pub_asset
 settings.tk-photoshopcc.pub_asset:
   apps:
     tk-multi-about:

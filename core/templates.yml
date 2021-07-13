@@ -35,21 +35,9 @@ keys:
     Project:
         type: str
         shotgun_entity_type: Project
-        shotgun_field_name: code
-    Product:
-        type: str
-        shotgun_entity_type: CustomEntity03
-        shotgun_field_name: sg_product.CustomNonProjectEntity01.sg_short_code
-    Campaign:
-        type: str
-        shotgun_entity_type: CustomEntity03
-        shotgun_field_name: sg_campaign        
+        shotgun_field_name: code     
     Asset:
-        type: str
-    CustomEntity01:
-        type: str
-    CustomEntity03:
-        type: str        
+        type: str    
     Task:
         type: str
         shotgun_entity_type: Task
@@ -86,14 +74,6 @@ keys:
         type: str
         shotgun_entity_type: Asset
         shotgun_field_name: sg_asset_parent.Asset.sg_asset_category
-    biome:
-        type: str
-        shotgun_entity_type: CustomEntity01
-        shotgun_field_name: sg_biome        
-    use:
-        type: str
-        shotgun_entity_type: CustomAsset03
-        shotgun_field_name: sg_use     
     Step:
         type: str
     name:
@@ -124,6 +104,9 @@ keys:
         type: str
         alias: extension
 
+    # Environment Asset
+    CustomEntity01:
+        type: str
     env_asset_library:
         type: str
         shotgun_entity_type: CustomEntity01
@@ -139,7 +122,27 @@ keys:
     env_asset_type:
         type: str
         shotgun_entity_type: CustomEntity01
-        shotgun_field_name: sg_asset_type          
+        shotgun_field_name: sg_asset_type  
+    biome:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_biome        
+
+    # Publishing Asset
+    CustomEntity03:
+        type: str 
+    Product:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_product.CustomNonProjectEntity01.sg_short_code
+    Campaign:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_campaign   
+    use:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_use                
 
     #
     # Houdini
@@ -235,7 +238,7 @@ paths:
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{CustomEntity01}'
-    pub_asset_root: '{Campaign}/{Product}/{use}/{CustomEntity03}'
+    pub_asset_root: '{Campaign}/{Product}/{use}/{CustomEntity03}/{Step}'
 
     asset_filename: '@asset_root/{Asset}[_{name}]_{task_step}'
     asset_snapshot_filename: '@asset_root/snapshots/{Asset}[_{name}]_{task_step}.{timestamp}'
@@ -246,8 +249,8 @@ paths:
     env_asset_filename: '@env_asset_root/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{task_step}'
     env_asset_snapshot_filename: '@env_asset_root/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{task_step}.{timestamp}'
     
-    pub_asset_filename: '@pub_asset_root/{task_step}/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
-    pub_asset_snapshot_filename: '@pub_asset_root/snapshots/{task_step}/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'
+    pub_asset_filename: '@pub_asset_root/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
+    pub_asset_snapshot_filename: '@pub_asset_root/snapshots/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'
     
     ##########################################################################################
     # Asset pipeline
@@ -285,10 +288,6 @@ paths:
         definition: '@pub_asset_filename.{ext}'
     pub_asset_snapshot:
         definition: '@pub_asset_snapshot_filename.{ext}'
-    env_asset_workfile:
-        definition: '@env_asset_filename.{ext}'
-    env_asset_snapshot:
-        definition: '@env_asset_snapshot_filename.{ext}'
 
     #
     # Photoshop

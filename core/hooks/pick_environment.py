@@ -68,6 +68,7 @@ class PickEnvironment(sgtk.Hook):
             elif context.entity["type"] == "CustomEntity01":
                 return "env_asset_step"     
             elif context.entity["type"] == "CustomEntity03":
+                self.logger.info("Jesse: pub_asset_step")
                 return "pub_asset_step"                    
 
         return None

@@ -32,7 +32,6 @@ entity_browser_settings: &entity_browser_settings
     hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
       - [sg_asset_parent, is, [ null ]]
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales' ]]
     sub_hierarchy:
       entity_type: Task
       filters:
@@ -41,9 +40,8 @@ entity_browser_settings: &entity_browser_settings
   - caption: Children
     entity_type: Asset
     hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales' ]]      
+    filters: 
+      - [sg_asset_parent, is_not, [ null ]]  
     sub_hierarchy:
       entity_type: Task
       filters:
@@ -52,7 +50,7 @@ entity_browser_settings: &entity_browser_settings
   - caption: Environment
     entity_type: CustomEntity01
     hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
-    filters:
+    filters: 
     sub_hierarchy:
       entity_type: Task
       filters:
