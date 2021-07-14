@@ -102,6 +102,7 @@ class SceneOperation(HookBaseClass):
             # save current script as file_path
             doc = self._get_active_document()
             adobe.save_as(doc, file_path)
+            self.parent.engine._PhotoshopCCEngine__add_to_context_cache(file_path, context)
 
         elif operation == "reset":
             # do nothing and indicate scene was reset to empty
