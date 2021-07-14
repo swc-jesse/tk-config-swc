@@ -110,7 +110,21 @@ class SceneOperation(HookBaseClass):
         elif operation == "prepare_new":
             # file->new. Not sure how to pop up the actual file->new UI,
             # this command will create a document with default properties
-            adobe.app.documents.add()
+            doc = adobe.app.documents.add()
+
+            # Apply task data from Shotgun context
+            adobe.app.preferences.rulerUnits = adobe.Units.PIXELS
+            context_task = context.sgtk.shotgun.find_one("Task",
+                                                [["id", "is", context.task["id"]]],
+                                                ["sg_width", "sg_height"])
+            
+            # Resize to width and height
+            task_width = context_task.get('sg_width')
+            task_height = context_task.get('sg_height')
+            if task_width != None and task_height != None:
+                doc.resizeCanvas(task_width,task_height)
+                # Fit on screen
+                adobe.app.runMenuItem( adobe.stringIDToTypeID('fitOnScreen') )
 
     def _get_active_document(self):
         """
