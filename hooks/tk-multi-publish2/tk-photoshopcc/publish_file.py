@@ -83,7 +83,7 @@ class PhotoshopCCDocumentPublishPlugin(HookBaseClass):
         accept() method. Strings can contain glob patters such as *, for example
         ["maya.*", "file.maya"]
         """
-        return ["photoshop.document"]
+        return ["photoshop.document", "file.image"]
 
     def accept(self, settings, item):
         """

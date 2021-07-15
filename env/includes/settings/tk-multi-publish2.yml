@@ -314,7 +314,7 @@ settings.tk-multi-publish2.photoshop.pub_asset_step:
     hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
-    hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/tk-photoshopcc/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
