@@ -44,5 +44,5 @@
 primary:
     description: A top-level root folder for production data. Project folders
         will be created beneath this location.
-    shotgun_storage_id: 36
+    shotgun_storage_id: 102
     default: true
