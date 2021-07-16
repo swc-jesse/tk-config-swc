@@ -13,7 +13,9 @@ Hook that defines and executes custom actions that can operate on a file (and it
 """
 import os
 import sgtk
+from sgtk import TankError
 import pprint
+from sgtk.platform.qt import QtGui, QtCore
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -139,14 +141,14 @@ class CustomActions(HookBaseClass):
 
         if action == "p4_file_sync":
             p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
-
+            p4_icon = os.path.join(self.disk_location, os.pardir, os.pardir, "icons", "perforce.png")
             p4 = p4_fw.connection.connection
             if not p4:
                 p4 = p4_fw.connection.connect()
                 if not p4:
                     raise TankError("No Perforce connection!")
 
-            sg_publish_data = self.shotgun.find_one("PublishedFile",
+            sg_publish_data = self.parent.shotgun.find_one("PublishedFile",
                                                     [
                                                         ["version_number", "is", file["version"]],
                                                         ["created_at", "is", file["published_at"]],
