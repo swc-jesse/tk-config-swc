@@ -15,6 +15,33 @@ includes:
 
 ################################################################################
 
+entity_browser_settings: &entity_browser_settings
+  entities:
+  - caption: Content
+    entity_type: Asset
+    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is, [ null ]]
+  - caption: Children
+    entity_type: Asset
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    filters:
+      - [sg_asset_parent, is_not, [ null ]]    
+  - caption: Environment
+    entity_type: CustomEntity01
+    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
+    filters: [] 
+  - caption: Publishing
+    entity_type: CustomEntity03
+    hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
+    filters: []   
+  - caption: My Tasks
+    entity_type: Task
+    filters:
+    - [task_assignees, is, '{context.user}']
+    - [project, is, '{context.project}']
+    hierarchy: [entity, content]    
+
 # 3dsmax
 settings.tk-multi-loader2.3dsmax:
   actions_hook: "{engine}/tk-multi-loader2/basic/scene_actions.py"
@@ -24,34 +51,8 @@ settings.tk-multi-loader2.3dsmax:
     Image: [texture_node]
     Rendered Image: [texture_node]
     Texture: [texture_node]
-  entities:
-  - caption: Content
-    entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Children
-    entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]           
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, '{context.user}']
-    - [project, is, '{context.project}']
-    hierarchy: [entity, content]
+  <<: *entity_browser_settings 
+  publish_filters: [["sg_status_list", "is_not", null]]  
   location: "@apps.tk-multi-loader2.location"
 
 # houdini
@@ -63,34 +64,7 @@ settings.tk-multi-loader2.houdini:
     Photoshop Image: [file_cop]
     Rendered Image: [file_cop]
     Texture: [file_cop]
-  entities:
-  - caption: Content
-    entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Child Content
-    entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]  
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]               
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, '{context.user}']
-    - [project, is, '{context.project}']
-    hierarchy: [entity, content]
+  <<: *entity_browser_settings 
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 
@@ -103,34 +77,7 @@ settings.tk-multi-loader2.maya:
     Photoshop Image: [texture_node, image_plane]
     Rendered Image: [texture_node, image_plane]
     Texture: [texture_node, image_plane]
-  entities:
-  - caption: Content
-    entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Children
-    entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]           
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, "{context.user}"]
-    - [project, is, "{context.project}"]
-    hierarchy: [entity, content]
+  <<: *entity_browser_settings   
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 
@@ -141,34 +88,7 @@ settings.tk-multi-loader2.photoshop:
     Rendered Image: [add_as_a_layer, open_file]
     Image: [add_as_a_layer, open_file]
     Texture: [add_as_a_layer, open_file]
-  entities:
-  - caption: Content
-    entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]
-  - caption: Children
-    entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]     
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, '{context.user}']
-    - [project, is, '{context.project}']
-    hierarchy: [entity, content]
+  <<: *entity_browser_settings   
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 
@@ -193,34 +113,7 @@ settings.tk-multi-loader2.substancepainter:
     Sbsar File: [basematerial, alpha, texture, filter, procedural, generator]
     Substance Smart Mask: [smartmask]
     Spmsk File: [smartmask]
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Children
-    entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]   
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]              
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, '{context.user}']
-    - [project, is, '{context.project}']
-    hierarchy: [entity, content]
+  <<: *entity_browser_settings 
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 
@@ -239,33 +132,6 @@ settings.tk-multi-loader2.substancedesigner:
     IES File: [light_profile]
     Ies File: [light_profile]
     MDSDF File: [bsdf_measurement]
-  entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Children
-    entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
-    filters:
-      - [sg_asset_parent, is_not, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, not_in, [ 'Products', 'Events', 'Sales']]      
-  - caption: Publishing
-    entity_type: Asset
-    hierarchy: [sg_for_project.Project.name, sg_asset_type, sg_asset_library, sg_purpose, code]
-    filters:
-      - [sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']
-      - [sg_asset_type, in, [ 'Products', 'Events', 'Sales' ]]           
-  - caption: My Tasks
-    entity_type: Task
-    filters:
-    - [task_assignees, is, '{context.user}']
-    - [project, is, '{context.project}']
-    hierarchy: [entity, content]
+  <<: *entity_browser_settings 
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"

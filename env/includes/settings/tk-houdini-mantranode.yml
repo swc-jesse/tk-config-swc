@@ -43,9 +43,9 @@ settings.tk-houdini-mantranode.asset_child_step:
     output_extra_plane_template: houdini_asset_extra_plane
   location: "@apps.tk-houdini-mantranode.location"
 
-# asset_other step
-settings.tk-houdini-mantranode.asset_other_step:
-  work_file_template: houdini_asset_other_work
+# pub_asset step
+settings.tk-houdini-mantranode.pub_asset_step:
+  work_file_template: houdini_pub_asset_work
   default_node_name: sg_mantra_out
   output_profiles:
   - name: Default Render
@@ -57,9 +57,9 @@ settings.tk-houdini-mantranode.asset_other_step:
     output_extra_plane_template: houdini_asset_extra_plane
   location: "@apps.tk-houdini-mantranode.location"
 
-# asset_other_child_step
-settings.tk-houdini-mantranode.asset_other_child_step:
-  work_file_template: houdini_asset_other_work
+# env_asset_step
+settings.tk-houdini-mantranode.env_asset_step:
+  work_file_template: houdini_env_asset_work
   default_node_name: sg_mantra_out
   output_profiles:
   - name: Default Render

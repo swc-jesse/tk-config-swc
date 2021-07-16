@@ -83,18 +83,18 @@ settings.tk-photoshopcc.asset_child_step:
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   location: '@engines.tk-photoshopcc.location'
 
-# asset_other_step
-settings.tk-photoshopcc.asset_other_step:
+# pub_asset_step
+settings.tk-photoshopcc.pub_asset_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-pythonconsole:
       location: "@apps.tk-multi-pythonconsole.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.photoshop"
-    tk-multi-publish2: "@settings.tk-multi-publish2.photoshop.asset_other_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.photoshop.pub_asset_step"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.photoshop"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.asset_other_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.asset_other_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.pub_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.pub_asset_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.photoshop"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   shelf_favorites:
@@ -105,18 +105,18 @@ settings.tk-photoshopcc.asset_other_step:
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   location: '@engines.tk-photoshopcc.location'
 
-# asset_other_child_step
-settings.tk-photoshopcc.asset_other_child_step:
+# env_asset_step
+settings.tk-photoshopcc.env_asset_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-pythonconsole:
       location: "@apps.tk-multi-pythonconsole.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.photoshop"
-    tk-multi-publish2: "@settings.tk-multi-publish2.photoshop.asset_other_child_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.photoshop.env_asset_step"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.photoshop"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.asset_other_child_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.asset_other_child_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.env_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.env_asset_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.photoshop"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   shelf_favorites:

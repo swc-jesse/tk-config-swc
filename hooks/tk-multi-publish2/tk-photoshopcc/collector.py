@@ -27,7 +27,9 @@ class PhotoshopCCSceneCollector(HookBaseClass):
         A dictionary of file type info that allows the basic collector to
         identify common production file types and associate them with a display
         name, item type, and config icon.
+
         The dictionary returned is of the form::
+
             {
                 <Publish Type>: {
                     "extensions": [<ext>, <ext>, ...],
@@ -41,12 +43,84 @@ class PhotoshopCCSceneCollector(HookBaseClass):
                 },
                 ...
             }
+
         See the collector source to see the default values returned.
+
         Subclasses can override this property, get the default values via
         ``super``, then update the dictionary as necessary by
         adding/removing/modifying values.
         """
-        self._common_file_info = super.common_file_info()
+
+        if not hasattr(self, "_common_file_info"):
+
+            # do this once to avoid unnecessary processing
+            self._common_file_info = {
+                "Alias File": {
+                    "extensions": ["wire"],
+                    "icon": self._get_icon_path("alias.png"),
+                    "item_type": "file.alias",
+                },
+                "Alembic Cache": {
+                    "extensions": ["abc"],
+                    "icon": self._get_icon_path("alembic.png"),
+                    "item_type": "file.alembic",
+                },
+                "3dsmax Scene": {
+                    "extensions": ["max"],
+                    "icon": self._get_icon_path("3dsmax.png"),
+                    "item_type": "file.3dsmax",
+                },
+                "Hiero Project": {
+                    "extensions": ["hrox"],
+                    "icon": self._get_icon_path("hiero.png"),
+                    "item_type": "file.hiero",
+                },
+                "Houdini Scene": {
+                    "extensions": ["hip", "hipnc"],
+                    "icon": self._get_icon_path("houdini.png"),
+                    "item_type": "file.houdini",
+                },
+                "Maya Scene": {
+                    "extensions": ["ma", "mb"],
+                    "icon": self._get_icon_path("maya.png"),
+                    "item_type": "file.maya",
+                },
+                "Motion Builder FBX": {
+                    "extensions": ["fbx"],
+                    "icon": self._get_icon_path("motionbuilder.png"),
+                    "item_type": "file.motionbuilder",
+                },
+                "Nuke Script": {
+                    "extensions": ["nk"],
+                    "icon": self._get_icon_path("nuke.png"),
+                    "item_type": "file.nuke",
+                },
+                "Photoshop Image": {
+                    "extensions": ["psd", "psb"],
+                    "icon": self._get_icon_path("photoshop.png"),
+                    "item_type": "file.photoshop",
+                },
+                "VRED Scene": {
+                    "extensions": ["vpb", "vpe", "osb"],
+                    "icon": self._get_icon_path("vred.png"),
+                    "item_type": "file.vred",
+                },
+                "Rendered Image": {
+                    "extensions": ["dpx", "exr"],
+                    "icon": self._get_icon_path("image_sequence.png"),
+                    "item_type": "file.image",
+                },
+                "Texture Image": {
+                    "extensions": ["tif", "tiff", "tx", "tga", "dds", "rat"],
+                    "icon": self._get_icon_path("texture.png"),
+                    "item_type": "file.texture",
+                },
+                "PDF": {
+                    "extensions": ["pdf"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.image",
+                },
+            }
 
         return self._common_file_info
 
@@ -128,7 +202,7 @@ class PhotoshopCCSceneCollector(HookBaseClass):
         # a work template configured, for now we'll only collect the current,
         # active document. Once we have proper multi context support, we can
         # remove this.
-        if work_template:
+        if False: #work_template:
             # same logic as the loop below but only processing the active doc
             if not document:
                 return
@@ -144,6 +218,15 @@ class PhotoshopCCSceneCollector(HookBaseClass):
                 document_item.set_thumbnail_from_path(path)
             document_item.properties["work_template"] = work_template
             self.logger.debug("Work template defined for Photoshop collection.")
+
+            save_options = engine.adobe.PNGSaveOptions()
+
+            # You may want to add these as settings for the publisher plugin instead of hard-coding them here
+            save_options.compression = 2
+            save_options.interlaced = False
+
+            document.saveAs(engine.adobe.File(path.split('.')[0]), save_options, True)
+
             if path:
                 self.logger.info("Looking for additional files at " + str(path))
             return
@@ -205,7 +288,12 @@ class PhotoshopCCSceneCollector(HookBaseClass):
             if work_template:
                 document_item.properties["work_template"] = work_template
                 self.logger.debug("Work template defined for Photoshop collection.")
-
+            
+            self.logger.debug(document_item.context)
+            
+            # document.saveAs(engine.adobe.File(path.split('.')[0]), save_options, True)
+            # export_item = self.process_file(None,document_item,path.split('.')[0]+".png")
+            # export_item.properties["document"] = document
         # reset the original document to restore the state for the user
         engine.adobe.app.activeDocument = current_document
 
@@ -244,6 +332,7 @@ class PhotoshopCCSceneCollector(HookBaseClass):
 
         # get info for the extension
         item_info = self._get_item_info(path)
+        self.logger.debug(item_info.__str__())
         item_type = item_info["item_type"]
         type_display = item_info["type_display"]
         evaluated_path = path
@@ -265,15 +354,15 @@ class PhotoshopCCSceneCollector(HookBaseClass):
         file_item.set_icon_from_path(item_info["icon_path"])
 
         # Collect a sub item
-        sub_item = file_item.create_item(item_type, type_display, display_name + "_sub")
-        sub_item.set_icon_from_path(item_info["icon_path"])
-        sub_item.properties["path"] = evaluated_path
+        # sub_item = file_item.create_item(item_type, type_display, display_name + "_sub")
+        # sub_item.set_icon_from_path(item_info["icon_path"])
+        # sub_item.properties["path"] = evaluated_path
         # Collect a sub item
-        subsub_item = sub_item.create_item(
-            item_type, type_display, display_name + "_evenmoresub"
-        )
-        subsub_item.set_icon_from_path(item_info["icon_path"])
-        subsub_item.properties["path"] = evaluated_path
+        # subsub_item = sub_item.create_item(
+        #     item_type, type_display, display_name + "_evenmoresub"
+        # )
+        # subsub_item.set_icon_from_path(item_info["icon_path"])
+        # subsub_item.properties["path"] = evaluated_path
 
         # if the supplied path is an image, use the path as the thumbnail.
         if item_type.startswith("file.image") or item_type.startswith("file.texture"):
@@ -452,7 +541,7 @@ class PhotoshopCCSceneCollector(HookBaseClass):
         """
 
         # ensure the publisher's icons folder is included in the search
-        app_icon_folder = os.path.join(self.disk_location, "icons")
+        app_icon_folder = os.path.join(self.disk_location, os.pardir, os.pardir, os.pardir, "icons")
 
         # build the list of folders to search
         if icons_folders:
