@@ -40,7 +40,7 @@ settings.tk-houdini.asset:
 
 # asset_step
 settings.tk-houdini.asset_step:
-  apps:
+  apps: &settings_tk-houdini_apps
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.houdini"
@@ -51,75 +51,84 @@ settings.tk-houdini.asset_step:
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_step"
     tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
+  menu_favourites: &settings_tk-houdini_menu
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  location: '@engines.tk-houdini.location'
+
+# asset_master_step
+settings.tk-houdini.asset_master_step:
+  apps:
+    <<: *settings_tk-houdini_apps 
+    tk-multi-publish2: "@settings.tk-multi-publish2.houdini.asset_master_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.asset_master_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_master_step"
+    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_master_step"
+    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_master_step"
+  menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
 # asset_child_step
 settings.tk-houdini.asset_child_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.houdini"
+    <<: *settings_tk-houdini_apps 
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.asset_child_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.houdini"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_child_step"
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-houdini_menu
+  location: '@engines.tk-houdini.location'
+
+# asset_child_master_step
+settings.tk-houdini.asset_child_master_step:
+  apps:
+    <<: *settings_tk-houdini_apps 
+    tk-multi-publish2: "@settings.tk-multi-publish2.houdini.asset_child_master_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.asset_child_master_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_child_master_step"
+    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_master_step"
+    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_master_step"
+  menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
 # pub_asset_step
 settings.tk-houdini.pub_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.houdini"
+    <<: *settings_tk-houdini_apps 
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.pub_asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.houdini"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.pub_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.pub_asset_step"
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.pub_asset_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.pub_asset_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
 # env_asset_step
 settings.tk-houdini.env_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.houdini"
+    <<: *settings_tk-houdini_apps 
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.env_asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.houdini"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.env_asset_step"
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.env_asset_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.env_asset_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-houdini_menu
+  location: '@engines.tk-houdini.location'
+
+# env_asset_master_step
+settings.tk-houdini.env_asset_master_step:
+  apps:
+    <<: *settings_tk-houdini_apps 
+    tk-multi-publish2: "@settings.tk-multi-publish2.houdini.env_asset_master_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.env_asset_master_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.env_asset_master_step"
+    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.env_asset_master_step"
+    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.env_asset_master_step"
+  menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
 # project

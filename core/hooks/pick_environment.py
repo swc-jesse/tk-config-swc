@@ -39,7 +39,7 @@ class PickEnvironment(sgtk.Hook):
             return "project"
 
         if context.entity and context.step is None:
-            # We have an entity but no step.
+            # We have an entity but no step.            
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
@@ -56,19 +56,23 @@ class PickEnvironment(sgtk.Hook):
 
         if context.entity and context.step:
             # We have a step and an entity.
+            master_token = "_"
+
+            if context.step["name"]== "Master":
+                master_token = "_master_"            
+
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
                                                                ["sg_asset_parent"])
 
                 if context_entity.get("sg_asset_parent"):
-                    return "asset_child_step"
+                    return "asset_child%sstep" % (master_token)
 
-                return "asset_step"
+                return "asset%sstep" % (master_token)
             elif context.entity["type"] == "CustomEntity01":
-                return "env_asset_step"     
+                return "env_asset%sstep" % (master_token)    
             elif context.entity["type"] == "CustomEntity03":
-                self.logger.info("Jesse: pub_asset_step")
                 return "pub_asset_step"                    
 
         return None

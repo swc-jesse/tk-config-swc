@@ -33,16 +33,34 @@ settings.tk-desktop.asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_step"
   location: "@engines.tk-desktop.location"
 
+# asset_master_step
+settings.tk-desktop.asset_master_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_master_step"
+  location: "@engines.tk-desktop.location"  
+
 # asset_child_step
 settings.tk-desktop.asset_child_step:
   apps:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_step"
   location: "@engines.tk-desktop.location"
 
+# asset_child_master_step
+settings.tk-desktop.asset_child_master_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_master_step"
+  location: "@engines.tk-desktop.location"
+
 # env_asset_step
 settings.tk-desktop.env_asset_step:
   apps:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.env_asset_step"
+  location: "@engines.tk-desktop.location"
+
+# env_asset_master_step
+settings.tk-desktop.env_asset_master_step:
+  apps:
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.env_asset_master_step"
   location: "@engines.tk-desktop.location"
 
 # pub_asset_step

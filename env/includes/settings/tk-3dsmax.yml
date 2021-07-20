@@ -40,7 +40,7 @@ settings.tk-3dsmax.asset:
 
 # asset_step
 settings.tk-3dsmax.asset_step:
-  apps:
+  apps: &settings_tk-3dsmax_apps
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-pythonconsole:
@@ -51,63 +51,69 @@ settings.tk-3dsmax.asset_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_step"
     tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
+  menu_favourites: &settings_tk-3dsmax_menu
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  location: "@engines.tk-3dsmax.location"
+
+# asset_master_step
+settings.tk-3dsmax.asset_master_step:
+  apps:
+    <<: *settings_tk-3dsmax_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.asset_master_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_master_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_master_step"
+  menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
 # asset_child_step
 settings.tk-3dsmax.asset_child_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-pythonconsole:
-      location: "@apps.tk-multi-pythonconsole.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.3dsmax"
+    <<: *settings_tk-3dsmax_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.asset_child_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.3dsmax"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_child_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-3dsmax_menu
+  location: "@engines.tk-3dsmax.location"
+
+# asset_child_master_step
+settings.tk-3dsmax.asset_child_master_step:
+  apps:
+    <<: *settings_tk-3dsmax_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.asset_child_master_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_child_master_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_child_master_step"
+  menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
 # pub_asset_step
 settings.tk-3dsmax.pub_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-pythonconsole:
-      location: "@apps.tk-multi-pythonconsole.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.3dsmax"
+    <<: *settings_tk-3dsmax_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.pub_asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.3dsmax"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.pub_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.pub_asset_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
 # env_asset_step
 settings.tk-3dsmax.env_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-pythonconsole:
-      location: "@apps.tk-multi-pythonconsole.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.3dsmax"
+    <<: *settings_tk-3dsmax_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.env_asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.3dsmax"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.env_asset_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-3dsmax_menu
+  location: "@engines.tk-3dsmax.location"
+
+# env_asset_master_step
+settings.tk-3dsmax.env_asset_master_step:
+  apps:
+    <<: *settings_tk-3dsmax_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.env_asset_master_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.env_asset_master_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.env_asset_master_step"
+  menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
 # project
