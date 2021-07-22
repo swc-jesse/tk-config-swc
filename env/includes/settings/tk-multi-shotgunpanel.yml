@@ -17,6 +17,8 @@ includes:
 
 # generic
 settings.tk-multi-shotgunpanel:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"
   action_mappings:
     PublishedFile:
     - actions: [publish_clipboard]
@@ -31,6 +33,8 @@ settings.tk-multi-shotgunpanel:
 
 # 3dsmax
 settings.tk-multi-shotgunpanel.3dsmax:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"  
   actions_hook: "{engine}/tk-multi-shotgunpanel/basic/scene_actions.py"
   action_mappings:
     PublishedFile:
@@ -56,6 +60,8 @@ settings.tk-multi-shotgunpanel.3dsmax:
 
 # houdini
 settings.tk-multi-shotgunpanel.houdini:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"  
   action_mappings:
     PublishedFile:
     - actions: [import]
@@ -82,6 +88,8 @@ settings.tk-multi-shotgunpanel.houdini:
 
 # maya
 settings.tk-multi-shotgunpanel.maya:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"
   action_mappings:
     PublishedFile:
     - actions: [reference, import]
@@ -110,6 +118,8 @@ settings.tk-multi-shotgunpanel.maya:
 
 # photoshop
 settings.tk-multi-shotgunpanel.photoshop:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"  
   actions_hook: "{self}/general_actions.py"
   action_mappings:
     PublishedFile:
@@ -133,6 +143,8 @@ settings.tk-multi-shotgunpanel.photoshop:
 
 # Substance Painter
 settings.tk-multi-shotgunpanel.substancepainter:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"  
   action_mappings:
     PublishedFile:
     - actions: [publish_clipboard]
@@ -147,6 +159,8 @@ settings.tk-multi-shotgunpanel.substancepainter:
 
 # Substance Designer
 settings.tk-multi-shotgunpanel.substancedesigner:
+  enable_context_switch: true
+  shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"  
   action_mappings:
     PublishedFile:
     - actions: [publish_clipboard]
