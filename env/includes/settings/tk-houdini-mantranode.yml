@@ -86,6 +86,20 @@ settings.tk-houdini-mantranode.pub_asset_step:
     output_extra_plane_template: houdini_asset_extra_plane
   location: "@apps.tk-houdini-mantranode.location"
 
+# prod_asset step
+settings.tk-houdini-mantranode.prod_asset_step:
+  work_file_template: houdini_prod_asset_work
+  default_node_name: sg_mantra_out
+  output_profiles:
+  - name: Default Render
+    settings: {}
+    color: []
+    output_render_template: houdini_asset_render
+    output_ifd_template: houdini_asset_ifd
+    output_dcm_template: houdini_asset_dcm
+    output_extra_plane_template: houdini_asset_extra_plane
+  location: "@apps.tk-houdini-mantranode.location"  
+
 # env_asset_step
 settings.tk-houdini-mantranode.env_asset_step:
   work_file_template: houdini_env_asset_work

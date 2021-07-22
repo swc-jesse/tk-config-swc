@@ -79,6 +79,12 @@ settings.tk-multi-publish2.3dsmax.pub_asset_step:
   collector_settings:
       Work Template: pub_asset_max_workfile
 
+# prod_asset_step
+settings.tk-multi-publish2.3dsmax.prod_asset_step: 
+  <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
+  collector_settings:
+      Work Template: prod_asset_max_workfile
+
 # env_asset_step
 settings.tk-multi-publish2.3dsmax.env_asset_step: 
   <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
@@ -136,6 +142,12 @@ settings.tk-multi-publish2.houdini.pub_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_houdini
   collector_settings:
       Work Template: pub_asset_houdini_workfile
+
+# prod_asset_step
+settings.tk-multi-publish2.houdini.prod_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: prod_asset_houdini_workfile      
 
 # env_asset_step
 settings.tk-multi-publish2.houdini.env_asset_step:
@@ -195,6 +207,12 @@ settings.tk-multi-publish2.maya.pub_asset_step:
   collector_settings:
       Work Template: pub_asset_maya_workfile
 
+# prod_asset_step
+settings.tk-multi-publish2.maya.prod_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_maya
+  collector_settings:
+      Work Template: prod_asset_maya_workfile      
+
 # env_asset_step
 settings.tk-multi-publish2.maya.env_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_maya
@@ -253,7 +271,7 @@ settings.tk-multi-publish2.photoshop.pub_asset_step:
   collector: "{self}/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
   collector_settings:
       Work Template: pub_asset_photoshop_workfile
-  publish_plugins:
+  publish_plugins: &publish_plugins_prod_assets
   - name: Publish to ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
     settings: {}
@@ -263,6 +281,14 @@ settings.tk-multi-publish2.photoshop.pub_asset_step:
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/tk-photoshopcc/upload_version.py"
     settings: {}
+
+# prod_asset_step
+settings.tk-multi-publish2.photoshop.prod_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_photoshop
+  collector: "{self}/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
+  collector_settings:
+      Work Template: prod_asset_photoshop_workfile
+  publish_plugins: *publish_plugins_prod_assets
 
 # env_asset_step
 settings.tk-multi-publish2.photoshop.env_asset_step:
@@ -335,6 +361,12 @@ settings.tk-multi-publish2.substancepainter.pub_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
   collector_settings:
       Work Template: pub_asset_substancepainter_workfile
+
+# prod_asset step
+settings.tk-multi-publish2.substancepainter.prod_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
+  collector_settings:
+      Work Template: prod_asset_substancepainter_workfile      
 
 # env_asset_step
 settings.tk-multi-publish2.substancepainter.env_asset_step:
@@ -433,6 +465,12 @@ settings.tk-multi-publish2.substancedesigner.pub_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
   collector_settings:
       Work Template: pub_asset_substancedesigner_workfile
+
+# prod_asset step
+settings.tk-multi-publish2.substancedesigner.prod_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
+  collector_settings:
+      Work Template: prod_asset_substancedesigner_workfile      
 
 # env_asset_step
 settings.tk-multi-publish2.substancedesigner.env_asset_step:

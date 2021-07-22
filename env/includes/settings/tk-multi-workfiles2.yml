@@ -177,6 +177,16 @@ settings.tk-multi-workfiles2.pub_asset_step:
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# prod_asset_step
+settings.tk-multi-workfiles2.prod_asset_step:
+  template_publish: prod_asset_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_workfile
+  template_work_area: prod_asset_root
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
+
 # env_asset_step
 settings.tk-multi-workfiles2.env_asset_step:
   template_publish: env_asset_workfile
@@ -250,6 +260,16 @@ settings.tk-multi-workfiles2.3dsmax.pub_asset_step:
   <<: *common_workfiles_settings
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
+
+# prod_asset_step
+settings.tk-multi-workfiles2.3dsmax.prod_asset_step:
+  template_publish: prod_asset_max_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_max_workfile
+  template_work_area: prod_asset_root
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
 
 # env_asset_step
 settings.tk-multi-workfiles2.3dsmax.env_asset_step:
@@ -325,6 +345,16 @@ settings.tk-multi-workfiles2.houdini.pub_asset_step:
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# prod_asset_step
+settings.tk-multi-workfiles2.houdini.prod_asset_step:
+  template_publish: prod_asset_houdini_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_houdini_workfile
+  template_work_area: prod_asset_root
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
+
 # env_asset_step
 settings.tk-multi-workfiles2.houdini.env_asset_step:
   template_publish: env_asset_houdini_workfile
@@ -399,6 +429,16 @@ settings.tk-multi-workfiles2.maya.pub_asset_step:
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# prod_asset_step
+settings.tk-multi-workfiles2.maya.prod_asset_step:
+  template_publish: prod_asset_maya_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_maya_workfile
+  template_work_area: prod_asset_root
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
+
 # env_asset_step
 settings.tk-multi-workfiles2.maya.env_asset_step:
   template_publish: env_asset_maya_workfile
@@ -469,6 +509,16 @@ settings.tk-multi-workfiles2.photoshop.pub_asset_step:
   template_publish_area: pub_asset_root
   template_work: pub_asset_photoshop_workfile
   template_work_area: pub_asset_root
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# prod_asset_step
+settings.tk-multi-workfiles2.photoshop.prod_asset_step:
+  template_publish: prod_asset_photoshop_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_photoshop_workfile
+  template_work_area: prod_asset_root
   <<: *common_workfiles_settings
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
@@ -579,6 +629,16 @@ settings.tk-multi-workfiles2.substancepainter.pub_asset_step:
   <<: *common_workfiles_settings
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
+
+# prod_asset_step
+settings.tk-multi-workfiles2.substancepainter.prod_asset_step:
+  template_publish: prod_asset_substancepainter_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_substancepainter_workfile
+  template_work_area: prod_asset_root
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
 
 # env_asset_step
 settings.tk-multi-workfiles2.substancepainter.env_asset_step:
@@ -692,6 +752,17 @@ settings.tk-multi-workfiles2.substancedesigner.pub_asset_step:
   <<: *common_workfiles_settings
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
+
+# prod_asset_step
+settings.tk-multi-workfiles2.substancedesigner.prod_asset_step:
+  template_publish: prod_asset_substancedesigner_workfile
+  template_publish_area: prod_asset_root
+  template_work: prod_asset_substancedesigner_workfile
+  template_work_area: prod_asset_root
+  # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
+  <<: *common_workfiles_settings
+  <<: *pub_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
 
 # asset_child_step
 settings.tk-multi-workfiles2.substancedesigner.env_asset_step:

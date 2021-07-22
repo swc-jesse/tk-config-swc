@@ -103,6 +103,17 @@ settings.tk-maya.pub_asset_step:
   template_project: pub_asset_root
   location: "@engines.tk-maya.location"    
 
+# prod_asset_step
+settings.tk-maya.prod_asset_step:
+  apps:
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.prod_asset_step"  
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.prod_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.prod_asset_step"
+  menu_favourites: *settings_tk-maya_menu 
+  template_project: prod_asset_root
+  location: "@engines.tk-maya.location"     
+
 # env_asset_step
 settings.tk-maya.env_asset_step:
   apps:

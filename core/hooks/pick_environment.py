@@ -52,7 +52,12 @@ class PickEnvironment(sgtk.Hook):
             elif context.entity["type"] == "CustomEntity01":
                 return "env_asset"  
             elif context.entity["type"] == "CustomEntity03":
-                return "pub_asset"                        
+                context_entity = context.sgtk.shotgun.find_one("CustomEntity03",
+                                                               [["id", "is", context.entity["id"]]],
+                                                               ["sg_asset_type"])
+                if context_entity.get("sg_asset_type") == "Campaigns":
+                    return "pub_asset"
+                return "prod_asset"                        
 
         if context.entity and context.step:
             # We have a step and an entity.
@@ -73,6 +78,11 @@ class PickEnvironment(sgtk.Hook):
             elif context.entity["type"] == "CustomEntity01":
                 return "env_asset%sstep" % (master_token)    
             elif context.entity["type"] == "CustomEntity03":
-                return "pub_asset_step"                    
+                context_entity = context.sgtk.shotgun.find_one("CustomEntity03",
+                                                               [["id", "is", context.entity["id"]]],
+                                                               ["sg_asset_type"])
+                if context_entity.get("sg_asset_type") == "Campaigns":
+                    return "pub_asset_step"
+                return "prod_asset_step"                    
 
         return None

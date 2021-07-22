@@ -101,6 +101,16 @@ settings.tk-photoshopcc.pub_asset_step:
   shelf_favorites: *settings_tk-photoshopcc_menu
   location: '@engines.tk-photoshopcc.location'
 
+# prod_asset_step
+settings.tk-photoshopcc.prod_asset_step:
+  apps:
+    <<: *settings_tk-photoshopcc_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.photoshop.prod_asset_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.photoshop.prod_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.photoshop.prod_asset_step"
+  shelf_favorites: *settings_tk-photoshopcc_menu
+  location: '@engines.tk-photoshopcc.location'
+
 # env_asset_step
 settings.tk-photoshopcc.env_asset_step:
   apps:

@@ -96,6 +96,16 @@ settings.tk-3dsmax.pub_asset_step:
   menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
+# prod_asset_step
+settings.tk-3dsmax.prod_asset_step:
+  apps:
+    <<: *settings_tk-3dsmax_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.prod_asset_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.prod_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.prod_asset_step"
+  menu_favourites: *settings_tk-3dsmax_menu
+  location: "@engines.tk-3dsmax.location"  
+
 # env_asset_step
 settings.tk-3dsmax.env_asset_step:
   apps:

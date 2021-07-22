@@ -55,8 +55,8 @@ settings.tk-substancepainter.asset:
   location: "@engines.tk-substancepainter.location"
 
 # asset_step
-settings.tk-substancepainter.asset_step:
-  apps:
+settings.tk-substancepainter.asset_step: 
+  apps: &settings_tk-substancepainter_apps
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
@@ -65,7 +65,7 @@ settings.tk-substancepainter.asset_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_step"
     tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
+  menu_favourites: &settings_tk-substancepainter_menus
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
@@ -77,119 +77,76 @@ settings.tk-substancepainter.asset_step:
 # asset_master_step
 settings.tk-substancepainter.asset_master_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
+    <<: *settings_tk-substancepainter_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.asset_master_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancepainter"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.asset_master_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_master_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-substancepainter_menus
   template_project: asset_master_root
   location: "@engines.tk-substancepainter.location"
 
 # asset_child_step
 settings.tk-substancepainter.asset_child_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
+    <<: *settings_tk-substancepainter_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.asset_child_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancepainter"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_child_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-substancepainter_menus
   template_project: asset_child_root
   location: "@engines.tk-substancepainter.location"
 
 # asset_child_master_step
 settings.tk-substancepainter.asset_child_master_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
+    <<: *settings_tk-substancepainter_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.asset_child_master_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancepainter"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.asset_child_master_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_child_master_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-substancepainter_menus
   template_project: asset_child_master_root
   location: "@engines.tk-substancepainter.location"
 
 # pub_asset_step
 settings.tk-substancepainter.pub_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
+    <<: *settings_tk-substancepainter_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.pub_asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancepainter"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.pub_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.pub_asset_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-substancepainter_menus
   template_project: pub_asset_root
   location: "@engines.tk-substancepainter.location"
+
+# prod_asset_step
+settings.tk-substancepainter.prod_asset_step:
+  apps:
+    <<: *settings_tk-substancepainter_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.prod_asset_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.prod_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.prod_asset_step"
+  menu_favourites: *settings_tk-substancepainter_menus
+  template_project: prod_asset_root
+  location: "@engines.tk-substancepainter.location"  
 
 # env_asset_step
 settings.tk-substancepainter.env_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
+    <<: *settings_tk-substancepainter_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.env_asset_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancepainter"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.env_asset_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-substancepainter_menus
   template_project: env_asset_root
   location: "@engines.tk-substancepainter.location"
 
 # env_asset_master_step
 settings.tk-substancepainter.env_asset_master_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.substancepainter"
+    <<: *settings_tk-substancepainter_apps
     tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.env_asset_master_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.substancepainter"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.env_asset_master_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.env_asset_master_step"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  menu_favourites: *settings_tk-substancepainter_menus
   template_project: env_asset_master_root
   location: "@engines.tk-substancepainter.location"
