@@ -5,7 +5,7 @@ type: "shotgun_entity"
 entity_type: "Asset"
 
 # the shotgun field to use for the folder name
-name: "Content/{sg_asset_library}/{sg_asset_type}/{sg_asset_category}/{code}"
+name: "Content/{sg_asset_library}/{sg_asset_type}/{code}"
 
 # shotgun filters to apply when getting the list of items
 # this should be a list of dicts, each dict containing

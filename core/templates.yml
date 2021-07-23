@@ -244,24 +244,24 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
-    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    asset_root: 'Content/{asset_library}/{asset_type}/{Asset}'
+    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_parent}/{asset_category}/{Asset}'
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{CustomEntity01}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
     prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
-    asset_filename: '@asset_root/_work/{task_step}/{Asset}[_{name}]_{Task}'
-    asset_snapshot_filename: '@asset_root/_work/{task_step}/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_filename: '@asset_root/_raw/{task_step}/{Asset}[_{name}]_{Task}'
+    asset_snapshot_filename: '@asset_root/_raw/{task_step}/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
     asset_master_filename: '@asset_root/{Asset}[_{name}]'
     asset_master_snapshot_filename: '@asset_root/snapshots/{Asset}[_{name}].{timestamp}'
     
-    asset_child_filename: '@asset_child_root/_work/{task_step}/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}'
-    asset_child_snapshot_filename: '@asset_child_root/_work/{task_step}/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_child_filename: '@asset_child_root/_raw/{task_step}/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}'
+    asset_child_snapshot_filename: '@asset_child_root/_raw/{task_step}/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}.{timestamp}'
     asset_child_master_filename: '@asset_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
     asset_child_master_snapshot_filename: '@asset_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'
 
-    env_asset_filename: '@env_asset_root/_work/{task_step}/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}'
-    env_asset_snapshot_filename: '@env_asset_root/_work/{task_step}/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}.{timestamp}'
+    env_asset_filename: '@env_asset_root/_raw/{task_step}/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}'
+    env_asset_snapshot_filename: '@env_asset_root/_raw/{task_step}/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}.{timestamp}'
     env_asset_master_filename: '@env_asset_root/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]'
     env_asset_master_snapshot_filename: '@env_asset_root/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}].{timestamp}'
     
