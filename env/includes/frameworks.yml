@@ -108,7 +108,7 @@ frameworks:
       # type: dev
       # path: ~/Projects/swc/tk-framework-perforce
       ### Github
+      path: https://github.com/studiowildcard/tk-framework-perforce.git
+      version: e1b38ab
       type: git_branch
       branch: swc_beta
-      path: https://github.com/nimbleheroes/tk-framework-perforce.git
-      version: '7a05872'

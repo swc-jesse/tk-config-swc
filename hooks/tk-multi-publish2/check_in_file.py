@@ -212,7 +212,7 @@ class MayaPerforceFileCheckin(HookBaseClass):
              {'submittedChange': '35'}
             ]
             """
-            change_number = int(p4_submit_data[0].get('change'))
+            change_number = int(p4_submit_data[2].get('submittedChange'))
             rev_number = int(p4_submit_data[1].get('rev'))
             depo_path = "{}#{}".format(p4_submit_data[1].get('depotFile'), int(p4_submit_data[1].get('rev')))
             update_data = {'version_number': rev_number,
