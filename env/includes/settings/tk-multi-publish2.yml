@@ -23,6 +23,7 @@ publish_help_url: &help_url "https://support.shotgunsoftware.com/hc/en-us/articl
 
 settings.tk-multi-publish2.standalone:
   collector: "{self}/collector.py"
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"

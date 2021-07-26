@@ -28,6 +28,7 @@ class PostPhaseHook(HookBaseClass):
 
     def post_publish(self, publish_tree):
 
+        self.logger.debug("Starting Post-publish phase.")
         publisher = self.parent
 
         # Make the p4 connection
@@ -67,6 +68,7 @@ class PostPhaseHook(HookBaseClass):
                 change_items.append(item)
 
         for result in p4.run('files', '@=' + new_change):
+            # NOTE: well this shit doesnt work at all.
 
             self.logger.debug(
                 "Perforce Change details...",
@@ -94,20 +96,48 @@ class PostPhaseHook(HookBaseClass):
             },
         )
 
+        changed_files = [i for i in [s for s in submission if isinstance(s, dict)] if i.get('depotFile')]
+        """
+        [{'action': 'edit',
+          'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept.psd',
+          'rev': '4'},
+         {'action': 'edit',
+          'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept_alt.psd',
+          'rev': '6'}]
+        """
+
+        submitted_change = next((int(i['submittedChange']) for i in [s for s in submission if isinstance(s, dict)] if i.get('submittedChange')), None)
+        """
+        {'submittedChange': '92'}
+        """
+
         for item in change_items:
 
             # TODO: iterate thru the submission and update each items publish_data with
             # the perforce data (version_number, sg_p4_change_number, sg_p4_depo_path)
 
-            item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
-            self.logger.info("Publish registered!")
-            self.logger.debug(
-                "ShotGrid Publish data...",
-                extra={
-                    "action_show_more_info": {
-                        "label": "ShotGrid Publish Data",
-                        "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
-                        "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
-                    }
-                },
-            )
+            depot_path = self.p4_fw.util.client_to_depot_paths(p4, item.properties.get("path"))[0]
+            self.logger.debug("depot_path = {}".format(depot_path))
+            change_data = next(i for i in changed_files if i['depotFile'] == depot_path)
+
+            if change_data:
+
+                # use the p4 revision number as the version number
+                item.properties.publish_data["version_number"] = int(change_data["rev"])
+
+                # attach the p4 data to the "sg_fields" dict which updates the published file entry in SG
+                item.properties.publish_data["sg_fields"]["sg_p4_depo_path"] = change_data["depotFile"]
+                item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
+
+                item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
+                self.logger.info("Publish registered!")
+                self.logger.debug(
+                    "ShotGrid Publish data...",
+                    extra={
+                        "action_show_more_info": {
+                            "label": "ShotGrid Publish Data",
+                            "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
+                            "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
+                        }
+                    },
+                )
