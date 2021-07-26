@@ -18,103 +18,9 @@ import sgtk
 HookBaseClass = sgtk.get_hook_baseclass()
 
 
-class BasicFilePublishPlugin(HookBaseClass):
+class PublishPlugin(HookBaseClass):
     """
-    Plugin for creating generic publishes in ShotGrid.
-
-    This plugin is typically configured to act upon files that are dragged and
-    dropped into the publisher UI. It can also be used as a base class for
-    other file-based publish plugins as it contains standard operations for
-    validating and registering publishes with ShotGrid.
-
-    Once attached to a publish item, the plugin will key off of properties that
-    drive how the item is published.
-
-    The ``path`` property, set on the item, is the only required property as it
-    informs the plugin where the file to publish lives on disk.
-
-    The following properties can be set on the item via the collector or by
-    subclasses prior to calling methods on the base class::
-
-        ``sequence_paths`` - If set in the item properties dictionary, implies
-            the "path" property represents a sequence of files (typically using
-            a frame identifier such as %04d). This property should be a list of
-            files on disk matching the "path". If the ``work_template`` property
-            is set, and corresponds to the listed frames, fields will be
-            extracted and applied to the publish_template (if set) and copied to
-            that publish location.
-
-        ``work_template`` - If set in the item properties dictionary, this
-            value is used to validate ``path`` and extract fields for further
-            processing and contextual discovery. For example, if configured and
-            a version key can be extracted, it will be used as the publish
-            version to be registered in ShotGrid.
-
-    The following properties can also be set by a subclass of this plugin via
-    :meth:`Item.properties` or :meth:`Item.local_properties`.
-
-        publish_template - If set, used to determine where "path" should be
-            copied prior to publishing. If not specified, "path" will be
-            published in place.
-
-        publish_type - If set, will be supplied to SG as the publish type when
-            registering "path" as a new publish. If not set, will be determined
-            via the plugin's "File Type" setting.
-
-        publish_path - If set, will be supplied to SG as the publish path when
-            registering the new publish. If not set, will be determined by the
-            "published_file" property if available, falling back to publishing
-            "path" in place.
-
-        publish_name - If set, will be supplied to SG as the publish name when
-            registering the new publish. If not available, will be determined
-            by the "work_template" property if available, falling back to the
-            ``path_info`` hook logic.
-
-        publish_version - If set, will be supplied to SG as the publish version
-            when registering the new publish. If not available, will be
-            determined by the "work_template" property if available, falling
-            back to the ``path_info`` hook logic.
-
-        publish_dependencies - A list of files to include as dependencies when
-            registering the publish. If the item's parent has been published,
-            it's path will be appended to this list.
-
-        publish_user - If set, will be supplied to SG as the publish user
-            when registering the new publish. If not available, the publishing
-            will fall back to the :meth:`tank.util.register_publish` logic.
-
-        publish_fields - If set, will be passed to
-            :meth:`tank.util.register_publish` as the ``sg_fields`` keyword
-            argument. A dictionary of additional fields that should be used
-            for the publish entity in ShotGrid.
-
-        publish_kwargs - If set, will be used to update the dictionary of kwargs
-            passed to :meth:`tank.util.register_publish`. Because this
-            dictionary updates the kwargs built from other ``property``
-            and ``local_property`` values, any kwargs set in this property will
-            supersede those values.
-
-    NOTE: accessing these ``publish_*`` values on the item does not necessarily
-    return the value used during publish execution. Use the corresponding
-    ``get_publish_*`` methods which include fallback logic when no property is
-    set. For example, if a ``work_template`` is used, the publish version and
-    name might be extracted from the template fields in the fallback logic.
-
-    This plugin will also set an ``sg_publish_data`` property on the item during
-    the ``publish`` method which may be useful for child items.
-
-        ``sg_publish_data`` - The dictionary of publish information returned
-            from the tk-core register_publish method.
-
-    NOTE: If you have multiple plugins acting on the same item, and you need to
-    access or operate on the publish data, you can extract the
-    ``sg_publish_data`` from the item after calling the base class ``publish``
-    method in your plugin subclass.
     """
-
-    ############################################################################
-    # standard publish plugin properties
 
     @property
     def icon(self):
@@ -123,14 +29,14 @@ class BasicFilePublishPlugin(HookBaseClass):
         """
 
         # look for icon one level up from this hook's folder in "icons" folder
-        return os.path.join(self.disk_location, "icons", "publish.png")
+        return os.path.join(self.disk_location, os.pardir, os.pardir, "icons", "perforce.png")
 
     @property
     def name(self):
         """
         One line display name describing the plugin
         """
-        return "Publish to ShotGrid"
+        return "Publish to Perforce & ShotGrid"
 
     @property
     def description(self):
@@ -139,8 +45,8 @@ class BasicFilePublishPlugin(HookBaseClass):
         contain simple html for formatting.
         """
         return """
-        Publishes the file to ShotGrid. A <b>Publish</b> entry will be
-        created in ShotGrid which will include a reference to the file's current
+        Checks the file into to Perforce and creates the <b>Published File</b>
+        entry in ShotGrid which will include a reference to the file's current
         path on disk.
         """
 
@@ -203,9 +109,6 @@ class BasicFilePublishPlugin(HookBaseClass):
         """
         return ["file.*"]
 
-    ############################################################################
-    # standard publish plugin methods
-
     def accept(self, settings, item):
         """
         Method called by the publisher to determine if an item is of any
@@ -236,7 +139,7 @@ class BasicFilePublishPlugin(HookBaseClass):
 
         # log the accepted file and display a button to reveal it in the fs
         self.logger.info(
-            "File publisher plugin accepted: %s" % (path,),
+            "Perforce publish plugin accepted: {}".format(path),
             extra={"action_show_folder": {"path": path}},
         )
 
@@ -314,7 +217,7 @@ class BasicFilePublishPlugin(HookBaseClass):
         # self._copy_work_to_publish(settings, item)
 
         # arguments for publish registration
-        self.logger.info("Registering publish...")
+        self.logger.info("Collecting publish data...")
         publish_data = {
             "tk": publisher.sgtk,
             "context": item.context,
@@ -333,9 +236,9 @@ class BasicFilePublishPlugin(HookBaseClass):
         # add extra kwargs
         publish_data.update(publish_kwargs)
 
-        # log the publish data for debugging
-        self.logger.debug(
-            "Populated Publish data...",
+        # store the publish data for the post_phase hook to pick up
+        self.logger.info(
+            "Storing Publish data...",
             extra={
                 "action_show_more_info": {
                     "label": "Publish Data",
@@ -345,21 +248,7 @@ class BasicFilePublishPlugin(HookBaseClass):
             },
         )
 
-        # create the publish and stash it in the item properties for other
-        # plugins to use.
-        item.properties.sg_publish_data = sgtk.util.register_publish(**publish_data)
-        self.logger.info("Publish registered!")
-        self.logger.debug(
-            "ShotGrid Publish data...",
-            extra={
-                "action_show_more_info": {
-                    "label": "ShotGrid Publish Data",
-                    "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
-                    "text": "<pre>%s</pre>"
-                    % (pprint.pformat(item.properties.sg_publish_data),),
-                }
-            },
-        )
+        item.properties.publish_data = publish_data
 
     def finalize(self, settings, item):
         """
@@ -376,26 +265,27 @@ class BasicFilePublishPlugin(HookBaseClass):
         publisher = self.parent
 
         # get the data for the publish that was just created in SG
-        publish_data = item.properties.sg_publish_data
+        publish_data = item.properties.get('sg_publish_data')
 
-        # ensure conflicting publishes have their status cleared
-        publisher.util.clear_status_for_conflicting_publishes(
-            item.context, publish_data
-        )
+        if publish_data:
+            # ensure conflicting publishes have their status cleared
+            publisher.util.clear_status_for_conflicting_publishes(
+                item.context, publish_data
+            )
 
-        self.logger.info("Cleared the status of all previous, conflicting publishes")
+            self.logger.info("Cleared the status of all previous, conflicting publishes")
 
-        path = item.properties.path
-        self.logger.info(
-            "Publish created for file: %s" % (path,),
-            extra={
-                "action_show_in_shotgun": {
-                    "label": "Show Publish",
-                    "tooltip": "Open the Publish in ShotGrid.",
-                    "entity": publish_data,
-                }
-            },
-        )
+            path = item.properties.path
+            self.logger.info(
+                "Publish created for file: %s" % (path,),
+                extra={
+                    "action_show_in_shotgun": {
+                        "label": "Show Publish",
+                        "tooltip": "Open the Publish in ShotGrid.",
+                        "entity": publish_data,
+                    }
+                },
+            )
 
     def get_publish_template(self, settings, item):
         """

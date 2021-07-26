@@ -23,8 +23,9 @@ publish_help_url: &help_url "https://support.shotgunsoftware.com/hc/en-us/articl
 
 settings.tk-multi-publish2.standalone:
   collector: "{self}/collector.py"
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
     settings: {}
   - name: Upload for review
@@ -42,12 +43,10 @@ settings.tk-multi-publish2.3dsmax.asset_step: &settings_tk-multi-publish2_3dsmax
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_max_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-3dsmax/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -60,12 +59,10 @@ settings.tk-multi-publish2.3dsmax.asset_child_step: &settings_tk-multi-publish2_
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_max_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-3dsmax/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -78,12 +75,10 @@ settings.tk-multi-publish2.3dsmax.asset_other_step: &settings_tk-multi-publish2_
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_max_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-3dsmax/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -96,12 +91,10 @@ settings.tk-multi-publish2.3dsmax.asset_other_child_step: &settings_tk-multi-pub
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_child_max_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-3dsmax/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -118,12 +111,10 @@ settings.tk-multi-publish2.houdini.asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_houdini_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-houdini/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -136,12 +127,10 @@ settings.tk-multi-publish2.houdini.asset_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_houdini_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-houdini/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -154,12 +143,10 @@ settings.tk-multi-publish2.houdini.asset_other_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_houdini_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-houdini/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -172,12 +159,10 @@ settings.tk-multi-publish2.houdini.asset_other_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_child_houdini_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-houdini/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -194,12 +179,10 @@ settings.tk-multi-publish2.maya.asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_maya_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -212,12 +195,10 @@ settings.tk-multi-publish2.maya.asset_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_maya_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -230,12 +211,10 @@ settings.tk-multi-publish2.maya.asset_other_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_maya_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -248,12 +227,10 @@ settings.tk-multi-publish2.maya.asset_other_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_child_maya_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-maya/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -267,15 +244,14 @@ settings.tk-multi-publish2.maya.asset_other_child_step:
 
 # asset_step
 settings.tk-multi-publish2.photoshop.asset_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_photoshop_workfile
+      Work Area: asset_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -285,15 +261,14 @@ settings.tk-multi-publish2.photoshop.asset_step:
 
 # asset_child_step
 settings.tk-multi-publish2.photoshop.asset_child_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_photoshop_workfile
+      Work Area: asset_child_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -303,15 +278,14 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
 
 # asset_other_step
 settings.tk-multi-publish2.photoshop.asset_other_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_photoshop_workfile
+      Work Area: asset_other_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -321,15 +295,14 @@ settings.tk-multi-publish2.photoshop.asset_other_step:
 
 # asset_other_child_step
 settings.tk-multi-publish2.photoshop.asset_other_child_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_child_photoshop_workfile
+      Work Area: asset_other_child_root
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to ShotGrid
+  - name: Publish to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
-    settings: {}
-  - name: Check-in to Perforce
-    hook: "{config}/tk-multi-publish2/check_in_file.py:{config}/tk-multi-publish2/tk-photoshopcc/check_in_workfile.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
@@ -348,16 +321,17 @@ settings.tk-multi-publish2.substancepainter.asset_step:
       Work Template: asset_substancepainter_workfile
       # Work Export Template: substancepainter_asset_textures_path_export
       # Publish Textures as Folder: true
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
   #   settings:
   #     Publish Template: substancepainter_asset_textures_path_publish
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
   #   settings:
   #     Publish Template: substancepainter_asset_texture_path_publish
   - name: Upload for review
@@ -366,8 +340,8 @@ settings.tk-multi-publish2.substancepainter.asset_step:
   # - name: Begin file versioning
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
   #   settings:
   #       Publish Template: substancepainter_asset_publish
   help_url: *help_url
@@ -380,16 +354,17 @@ settings.tk-multi-publish2.substancepainter.asset_child_step:
       Work Template: asset_child_substancepainter_workfile
       # Work Export Template: substancepainter_asset_textures_path_export
       # Publish Textures as Folder: true
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
   #   settings:
   #     Publish Template: substancepainter_asset_textures_path_publish
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
   #   settings:
   #     Publish Template: substancepainter_asset_texture_path_publish
   - name: Upload for review
@@ -398,8 +373,8 @@ settings.tk-multi-publish2.substancepainter.asset_child_step:
   # - name: Begin file versioning
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
   #   settings:
   #       Publish Template: substancepainter_asset_publish
   help_url: *help_url
@@ -412,16 +387,17 @@ settings.tk-multi-publish2.substancepainter.asset_other_step:
       Work Template: asset_other_substancepainter_workfile
       # Work Export Template: substancepainter_asset_other_textures_path_export
       # Publish Textures as Folder: true
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
   #   settings:
   #     Publish Template: substancepainter_asset_other_textures_path_publish
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
   #   settings:
   #     Publish Template: substancepainter_asset_other_texture_path_publish
   - name: Upload for review
@@ -430,8 +406,8 @@ settings.tk-multi-publish2.substancepainter.asset_other_step:
   # - name: Begin file versioning
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
   #   settings:
   #       Publish Template: substancepainter_asset_other_publish
   help_url: *help_url
@@ -444,16 +420,17 @@ settings.tk-multi-publish2.substancepainter.asset_other_child_step:
       Work Template: asset_other_child_substancepainter_workfile
       # Work Export Template: substancepainter_asset_other_textures_path_export
       # Publish Textures as Folder: true
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
   #   settings:
   #     Publish Template: substancepainter_asset_other_textures_path_publish
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
   #   settings:
   #     Publish Template: substancepainter_asset_other_texture_path_publish
   - name: Upload for review
@@ -462,8 +439,8 @@ settings.tk-multi-publish2.substancepainter.asset_other_child_step:
   # - name: Begin file versioning
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
   #   settings:
   #       Publish Template: substancepainter_asset_other_publish
   help_url: *help_url
@@ -478,9 +455,10 @@ settings.tk-multi-publish2.substancedesigner.asset_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_substancedesigner_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
 
   - name: Upload for review
@@ -491,8 +469,8 @@ settings.tk-multi-publish2.substancedesigner.asset_step:
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
 
-  # - name: Publish Package to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
+  # - name: Publish Package to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_package_publish
 
@@ -502,29 +480,29 @@ settings.tk-multi-publish2.substancedesigner.asset_step:
   # won't need all these publishers, so feel free to comment the ones
   # that you/your pipeline is not interested in.
 
-  # - name: Publish Package Archive to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
+  # - name: Publish Package Archive to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_package_archive_publish
 
-  # - name: Publish Package as MDL to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
+  # - name: Publish Package as MDL to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_package_mdl_publish
 
-  # - name: Publish Graph Output Textures to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
+  # - name: Publish Graph Output Textures to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_textures_path_publish
   #       Texture Format: exr
 
-  # - name: Publish Graph in MDLE format to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
+  # - name: Publish Graph in MDLE format to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
 
-  # - name: Publish Publish Graph as a preset to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
+  # - name: Publish Publish Graph as a preset to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
 
@@ -536,9 +514,10 @@ settings.tk-multi-publish2.substancedesigner.asset_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_child_substancedesigner_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
 
   - name: Upload for review
@@ -549,8 +528,8 @@ settings.tk-multi-publish2.substancedesigner.asset_child_step:
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
 
-  # - name: Publish Package to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
+  # - name: Publish Package to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_package_publish
 
@@ -560,43 +539,44 @@ settings.tk-multi-publish2.substancedesigner.asset_child_step:
   # won't need all these publishers, so feel free to comment the ones
   # that you/your pipeline is not interested in.
 
-  # - name: Publish Package Archive to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
+  # - name: Publish Package Archive to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_package_archive_publish
 
-  # - name: Publish Package as MDL to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
+  # - name: Publish Package as MDL to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_package_mdl_publish
 
-  # - name: Publish Graph Output Textures to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
+  # - name: Publish Graph Output Textures to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_textures_path_publish
   #       Texture Format: exr
 
-  # - name: Publish Graph in MDLE format to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
+  # - name: Publish Graph in MDLE format to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
 
-  # - name: Publish Publish Graph as a preset to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
+  # - name: Publish Publish Graph as a preset to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_graph_mdle_path_publish
-  
+
   help_url: *help_url
-  location: "@apps.tk-multi-publish2.location"  
+  location: "@apps.tk-multi-publish2.location"
 
 # asset_other step
 settings.tk-multi-publish2.substancedesigner.asset_other_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_substancedesigner_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
 
   - name: Upload for review
@@ -607,8 +587,8 @@ settings.tk-multi-publish2.substancedesigner.asset_other_step:
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
 
-  # - name: Publish Package to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
+  # - name: Publish Package to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_package_publish
 
@@ -618,29 +598,29 @@ settings.tk-multi-publish2.substancedesigner.asset_other_step:
   # won't need all these publishers, so feel free to comment the ones
   # that you/your pipeline is not interested in.
 
-  # - name: Publish Package Archive to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
+  # - name: Publish Package Archive to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_package_archive_publish
 
-  # - name: Publish Package as MDL to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
+  # - name: Publish Package as MDL to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_package_mdl_publish
 
-  # - name: Publish Graph Output Textures to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
+  # - name: Publish Graph Output Textures to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_graph_textures_path_publish
   #       Texture Format: exr
 
-  # - name: Publish Graph in MDLE format to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
+  # - name: Publish Graph in MDLE format to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_graph_mdle_path_publish
 
-  # - name: Publish Publish Graph as a preset to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
+  # - name: Publish Publish Graph as a preset to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_graph_mdle_path_publish
 
@@ -652,9 +632,10 @@ settings.tk-multi-publish2.substancedesigner.asset_other_child_step:
   collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
   collector_settings:
       Work Template: asset_other_child_substancedesigner_workfile
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  # - name: Publish to ShotGrid
-  #   hook: "{self}/publish_file.py"
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
   #   settings: {}
 
   - name: Upload for review
@@ -665,8 +646,8 @@ settings.tk-multi-publish2.substancedesigner.asset_other_child_step:
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
   #   settings: {}
 
-  # - name: Publish Package to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
+  # - name: Publish Package to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_package_publish
 
@@ -676,29 +657,29 @@ settings.tk-multi-publish2.substancedesigner.asset_other_child_step:
   # won't need all these publishers, so feel free to comment the ones
   # that you/your pipeline is not interested in.
 
-  # - name: Publish Package Archive to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
+  # - name: Publish Package Archive to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_archive.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_package_archive_publish
 
-  # - name: Publish Package as MDL to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
+  # - name: Publish Package as MDL to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_package_mdl.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_package_mdl_publish
 
-  # - name: Publish Graph Output Textures to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
+  # - name: Publish Graph Output Textures to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_textures.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_graph_textures_path_publish
   #       Texture Format: exr
 
-  # - name: Publish Graph in MDLE format to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
+  # - name: Publish Graph in MDLE format to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_mdle.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_graph_mdle_path_publish
 
-  # - name: Publish Publish Graph as a preset to ShotGrid
-  #   hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
+  # - name: Publish Publish Graph as a preset to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_package_base.py:{engine}/tk-multi-publish2/basic/publish_graph_as_preset.py"
   #   settings:
   #       Publish Template: substancedesigner_asset_other_graph_mdle_path_publish
 
