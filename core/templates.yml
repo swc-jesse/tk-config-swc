@@ -35,13 +35,13 @@ keys:
     Project:
         type: str
         shotgun_entity_type: Project
-        shotgun_field_name: code     
+        shotgun_field_name: code
     Asset:
         type: str    
     Task:
         type: str
         shotgun_entity_type: Task
-        shotgun_field_name: content        
+        shotgun_field_name: content
     task_step:
         type: str
         shotgun_entity_type: Task
@@ -53,7 +53,7 @@ keys:
     asset_library:
         type: str
         shotgun_entity_type: Asset
-        shotgun_field_name: sg_asset_library.AssetLibrary.code 
+        shotgun_field_name: sg_asset_library.AssetLibrary.code
     asset_library_parent:
         type: str
         shotgun_entity_type: Asset
@@ -298,6 +298,7 @@ paths:
     # Generic
     #
 
+    # asset
     asset_workfile:
         definition: '@asset_filename.{ext}'
     asset_snapshot:
@@ -347,6 +348,7 @@ paths:
     # Photoshop
     #
 
+    # asset
     asset_photoshop_workfile:
         definition: '@asset_filename.{photoshop_extension}'
     asset_photoshop_snapshot:
@@ -391,6 +393,7 @@ paths:
     # Maya
     #
 
+    # asset
     asset_maya_workfile:
         definition: '@asset_filename.{maya_extension}'
     asset_maya_snapshot:
@@ -440,6 +443,7 @@ paths:
     # Houdini
     #
 
+    # asset
     asset_houdini_workfile:
         definition: '@asset_filename.hip'
     asset_houdini_snapshot:
@@ -489,6 +493,7 @@ paths:
     # 3dsmax
     #
 
+    # asset
     asset_max_workfile:
         definition: '@asset_filename.max'
     asset_max_snapshot:
@@ -538,6 +543,7 @@ paths:
     # Substance Painter
     #
 
+    # asset
     asset_substancepainter_workfile:
         definition: '@asset_filename.spp'
     asset_substancepainter_snapshot:
@@ -582,6 +588,7 @@ paths:
     # Substance Designer
     #
 
+    # asset
     asset_substancedesigner_workfile:
         definition: '@asset_filename.{substancedesigner.extension}'
     asset_substancedesigner_snapshot:
