@@ -29,7 +29,7 @@ apps.tk-multi-about.location:
 apps.tk-multi-demo.location:
   type: app_store
   name: tk-multi-demo
-  version: v1.2.0
+  version: v1.3.0
 
 # launchapp
 apps.tk-multi-launchapp.location:
@@ -71,7 +71,7 @@ apps.tk-multi-shotgunpanel.location:
 apps.tk-multi-devutils.location:
   type: app_store
   name: tk-multi-devutils
-  version: v1.1.0
+  version: v1.2.0
 
 # ---- Houdini apps
 
@@ -79,13 +79,13 @@ apps.tk-multi-devutils.location:
 apps.tk-houdini-alembicnode.location:
   type: app_store
   name: tk-houdini-alembicnode
-  version: v0.4.1
+  version: v0.5.0
 
 # houdini mantranode
 apps.tk-houdini-mantranode.location:
   type: app_store
   name: tk-houdini-mantranode
-  version: v0.4.1
+  version: v0.5.0
 
 # ---- Shotgun app takeovers
 
@@ -148,7 +148,7 @@ apps.tk-multi-perforce.location:
   type: git_branch
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: 8c4581a
+  version: 8c4581ac7d8e98bbade0f383f8a23365d3d62a6a
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
