@@ -104,6 +104,11 @@ keys:
         type: str
         alias: extension  
 
+    step_subfolder:
+        type: str
+        shotgun_entity_type: Project
+        shotgun_field_name: sg_step_subfolder  
+
     # Environment Asset
     CustomEntity01:
         type: str
@@ -246,22 +251,27 @@ paths:
     # will be set within each template that uses the alias.
     asset_root: 'Content/{asset_library}/{asset_type}/{Asset}'
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_parent}/{asset_category}/{Asset}'
+    special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_parent}/{asset_type}/{asset_category}/{Asset}'    
+
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{CustomEntity01}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
     prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
-    asset_filename: '@asset_root/_raw/{task_step}/{Asset}[_{name}]_{Task}'
-    asset_snapshot_filename: '@asset_root/_raw/{task_step}/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_filename: '@asset_root/{step_subfolder}/{task_step}/{Asset}[_{name}]_{Task}'
+    asset_snapshot_filename: '@asset_root/{step_subfolder}/{task_step}/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
     asset_master_filename: '@asset_root/{Asset}[_{name}]'
     asset_master_snapshot_filename: '@asset_root/snapshots/{Asset}[_{name}].{timestamp}'
     
-    asset_child_filename: '@asset_child_root/_raw/{task_step}/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}'
-    asset_child_snapshot_filename: '@asset_child_root/_raw/{task_step}/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_child_filename: '@asset_child_root/{step_subfolder}/{task_step}/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}'
+    asset_child_snapshot_filename: '@asset_child_root/{step_subfolder}/{task_step}/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}.{timestamp}'
     asset_child_master_filename: '@asset_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
     asset_child_master_snapshot_filename: '@asset_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'
 
-    env_asset_filename: '@env_asset_root/_raw/{task_step}/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}'
-    env_asset_snapshot_filename: '@env_asset_root/_raw/{task_step}/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}.{timestamp}'
+    special_child_filename: '@special_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
+    special_child_snapshot_filename: '@special_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'    
+
+    env_asset_filename: '@env_asset_root/{step_subfolder}/{task_step}/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}'
+    env_asset_snapshot_filename: '@env_asset_root/{step_subfolder}/{task_step}/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}.{timestamp}'
     env_asset_master_filename: '@env_asset_root/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]'
     env_asset_master_snapshot_filename: '@env_asset_root/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}].{timestamp}'
     
@@ -307,6 +317,11 @@ paths:
         definition: '@asset_child_master_filename.{ext}'
     asset_child_master_snapshot:
         definition: '@asset_child_master_snapshot_filename.{ext}'
+
+    special_child_workfile:
+        definition: '@special_child_filename.{ext}'
+    special_child_snapshot:
+        definition: '@special_child_snapshot_filename.{ext}'        
 
     env_asset_workfile:
         definition: '@env_asset_filename.{ext}'
@@ -396,6 +411,11 @@ paths:
     asset_child_master_maya_snapshot:
         definition: '@asset_child_master_snapshot_filename.{maya_extension}'
 
+    special_child_maya_workfile:
+        definition: '@special_child_filename.{maya_extension}'
+    special_child_maya_snapshot:
+        definition: '@special_child_snapshot_filename.{maya_extension}'        
+
     env_asset_maya_workfile:
         definition: '@env_asset_filename.{maya_extension}'
     env_asset_maya_snapshot:
@@ -438,7 +458,12 @@ paths:
     asset_child_master_houdini_workfile:
         definition: '@asset_child_master_filename.hip'
     asset_child_master_houdini_snapshot:
-        definition: '@asset_child_master_snapshot_filename.hip'        
+        definition: '@asset_child_master_snapshot_filename.hip'     
+        
+    special_child_houdini_workfile:
+        definition: '@special_child_filename.hip'
+    special_child_houdini_snapshot:
+        definition: '@special_child_snapshot_filename.hip'        
 
     env_asset_houdini_workfile:
         definition: '@env_asset_filename.hip'
@@ -482,7 +507,12 @@ paths:
     asset_child_master_max_workfile:
         definition: '@asset_child_master_filename.max'
     asset_child_master_max_snapshot:
-        definition: '@asset_child_master_snapshot_filename.max'        
+        definition: '@asset_child_master_snapshot_filename.max'    
+        
+    special_child_max_workfile:
+        definition: '@special_child_filename.max'
+    special_child_max_snapshot:
+        definition: '@special_child_snapshot_filename.max'        
 
     env_asset_max_workfile:
         definition: '@env_asset_filename.max'

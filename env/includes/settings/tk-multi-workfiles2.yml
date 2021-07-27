@@ -167,6 +167,16 @@ settings.tk-multi-workfiles2.asset_child_master_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
 
+# special_child_step
+settings.tk-multi-workfiles2.special_child_step:
+  template_publish: special_child_workfile
+  template_publish_area: special_child_root
+  template_work: special_child_workfile
+  template_work_area: special_child_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
+
 # pub_asset_step
 settings.tk-multi-workfiles2.pub_asset_step:
   template_publish: pub_asset_workfile
@@ -251,6 +261,16 @@ settings.tk-multi-workfiles2.3dsmax.asset_child_master_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# special_child_step
+settings.tk-multi-workfiles2.3dsmax.special_child_step:
+  template_publish: special_child_max_workfile
+  template_publish_area: special_child_root
+  template_work: special_child_max_workfile
+  template_work_area: special_child_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
+
 # pub_asset_step
 settings.tk-multi-workfiles2.3dsmax.pub_asset_step:
   template_publish: pub_asset_max_workfile
@@ -331,6 +351,16 @@ settings.tk-multi-workfiles2.houdini.asset_child_master_step:
   template_publish_area: asset_child_root
   template_work: asset_child_master_houdini_workfile
   template_work_area: asset_child_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
+
+# special_child_step
+settings.tk-multi-workfiles2.houdini.special_child_step:
+  template_publish: special_child_houdini_workfile
+  template_publish_area: special_child_root
+  template_work: special_child_houdini_workfile
+  template_work_area: special_child_root
   <<: *common_workfiles_settings
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
@@ -418,6 +448,16 @@ settings.tk-multi-workfiles2.maya.asset_child_master_step:
   <<: *common_workfiles_settings
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
+
+# special_child_step
+settings.tk-multi-workfiles2.maya.special_child_step:
+  template_publish: special_child_maya_workfile
+  template_publish_area: special_child_root
+  template_work: special_child_maya_workfile
+  template_work_area: special_child_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"  
 
 # pub_asset_step
 settings.tk-multi-workfiles2.maya.pub_asset_step:

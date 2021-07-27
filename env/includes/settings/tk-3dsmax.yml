@@ -86,6 +86,16 @@ settings.tk-3dsmax.asset_child_master_step:
   menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
+# special_child_step
+settings.tk-3dsmax.special_child_step:
+  apps:
+    <<: *settings_tk-3dsmax_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.special_child_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.special_child_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.special_child_step"
+  menu_favourites: *settings_tk-3dsmax_menu
+  location: "@engines.tk-3dsmax.location"  
+
 # pub_asset_step
 settings.tk-3dsmax.pub_asset_step:
   apps:

@@ -73,6 +73,12 @@ settings.tk-multi-publish2.3dsmax.asset_child_master_step:
   collector_settings:
       Work Template: asset_child_master_max_workfile
 
+# special_child_step
+settings.tk-multi-publish2.3dsmax.special_child_step: 
+  <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
+  collector_settings:
+      Work Template: special_child_max_workfile      
+
 # pub_asset_step
 settings.tk-multi-publish2.3dsmax.pub_asset_step: 
   <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
@@ -137,6 +143,12 @@ settings.tk-multi-publish2.houdini.asset_child_master_step:
   collector_settings:
       Work Template: asset_child_master_houdini_workfile
 
+# special_child_step
+settings.tk-multi-publish2.houdini.special_child_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: special_child_houdini_workfile      
+
 # pub_asset_step
 settings.tk-multi-publish2.houdini.pub_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_houdini
@@ -200,6 +212,12 @@ settings.tk-multi-publish2.maya.asset_child_master_step:
   <<: *settings_publish_plugins_tk-multi-publish2_maya
   collector_settings:
       Work Template: asset_child_master_maya_workfile
+
+# special_child_step
+settings.tk-multi-publish2.maya.special_child_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_maya
+  collector_settings:
+      Work Template: special_child_maya_workfile      
 
 # pub_asset_step
 settings.tk-multi-publish2.maya.pub_asset_step:

@@ -45,6 +45,13 @@ settings.tk-multi-snapshot.3dsmax.asset_child_master_step:
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
   location: "@apps.tk-multi-snapshot.location"
 
+# special_child_step
+settings.tk-multi-snapshot.3dsmax.special_child_step:
+  template_snapshot: special_child_max_snapshot
+  template_work: special_child_max_workfile
+  hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
+  location: "@apps.tk-multi-snapshot.location"  
+
 # pub_asset_step
 settings.tk-multi-snapshot.3dsmax.pub_asset_step:
   template_snapshot: pub_asset_max_snapshot
@@ -101,6 +108,12 @@ settings.tk-multi-snapshot.houdini.asset_child_master_step:
   template_work: asset_child_master_houdini_workfile
   location: "@apps.tk-multi-snapshot.location"
 
+# special_child_step
+settings.tk-multi-snapshot.houdini.special_child_step:
+  template_snapshot: special_child_houdini_snapshot
+  template_work: special_child_houdini_workfile
+  location: "@apps.tk-multi-snapshot.location"  
+
 # pub_asset_step
 settings.tk-multi-snapshot.houdini.pub_asset_step:
   template_snapshot: pub_asset_houdini_snapshot
@@ -152,6 +165,12 @@ settings.tk-multi-snapshot.maya.asset_child_master_step:
   template_snapshot: asset_child_master_maya_snapshot
   template_work: asset_child_master_maya_workfile
   location: "@apps.tk-multi-snapshot.location"
+
+# special_child_step
+settings.tk-multi-snapshot.maya.special_child_step:
+  template_snapshot: special_child_maya_snapshot
+  template_work: special_child_maya_workfile
+  location: "@apps.tk-multi-snapshot.location"  
 
 # pub_asset_step
 settings.tk-multi-snapshot.maya.pub_asset_step:
