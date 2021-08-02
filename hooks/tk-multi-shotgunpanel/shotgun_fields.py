@@ -182,6 +182,7 @@ class ShotgunFields(HookBaseClass):
         elif entity_type == "Asset":
             values = std_values + [
                 "sg_asset_type",
+                "sg_asset_category",
                 "shots",
                 "parents",
                 "sequences",

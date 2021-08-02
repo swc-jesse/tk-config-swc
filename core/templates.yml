@@ -249,9 +249,9 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    asset_root: 'Content/{asset_library}/{asset_type}/{Asset}'
-    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_parent}/{asset_category}/{Asset}'
-    special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_parent}/{asset_type}/{asset_category}/{Asset}'    
+    asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
+    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{Asset}'    
 
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{CustomEntity01}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
