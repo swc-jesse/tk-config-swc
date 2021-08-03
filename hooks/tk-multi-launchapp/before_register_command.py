@@ -8,7 +8,7 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import sgtk
+import sgtk, os
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
@@ -42,5 +42,8 @@ class BeforeRegisterCommand(HookBaseClass):
         # we'll redirect to tk-nukestudio.
         if software_version.product == "NukeStudio":
             engine_instance_name = "tk-nukestudio"
+
+        os.environ["MAYA_ENV_DIR"] = os.path.normpath("T:\\Tools\\Maya\\sgtk")
+        sgtk.util.append_path_to_env_var("PYTHONPATH", os.path.normpath("T:\\Tools\\Maya\\sgtk"))
 
         return engine_instance_name
