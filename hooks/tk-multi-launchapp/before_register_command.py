@@ -43,7 +43,4 @@ class BeforeRegisterCommand(HookBaseClass):
         if software_version.product == "NukeStudio":
             engine_instance_name = "tk-nukestudio"
 
-        os.environ["MAYA_ENV_DIR"] = os.path.normpath("T:\\Tools\\Maya\\sgtk")
-        sgtk.util.append_path_to_env_var("PYTHONPATH", os.path.normpath("T:\\Tools\\Maya\\sgtk"))
-
         return engine_instance_name

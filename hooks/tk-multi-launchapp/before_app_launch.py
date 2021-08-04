@@ -16,12 +16,13 @@ to set environment variables or run scripts as part of the app initialization.
 """
 
 import os
+import tank
 import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
 
-class BeforeAppLaunch(HookBaseClass):
+class BeforeAppLaunch(tank.Hook):
     """
     Hook to set up the system prior to app launch.
     """
@@ -51,6 +52,10 @@ class BeforeAppLaunch(HookBaseClass):
         # you can set environment variables like this:
         # os.environ["MY_SETTING"] = "foo bar"
 
-        # if engine_name == 'tk-maya':
-        #     os.environ["MAYA_ENV_DIR"] = os.path.normpath("T:\\Tools\\Maya")
-        #     sgtk.util.append_path_to_env_var("PYTHONPATH", os.path.normpath("T:\\Tools\\Maya\\userSetup.py"))
+        # Append to PYTHONPATH
+        if "sg_windows_tools_path" in software_entity.keys():
+            sgtk.util.append_path_to_env_var("PYTHONPATH", software_entity["sg_windows_tools_path"])
+
+            if engine_name == 'tk-maya':
+                # Point to the desired Maya.env file
+                os.environ["MAYA_ENV_DIR"] = software_entity["sg_windows_tools_path"] 

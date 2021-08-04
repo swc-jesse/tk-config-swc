@@ -18,6 +18,7 @@ includes:
 # auto discover DCCs for launch
 settings.tk-multi-launchapp:
   use_software_entity: true
+  software_entity_extra_fields: ["sg_windows_tools_path"]
   hook_before_register_command: "{config}/tk-multi-launchapp/before_register_command.py"
   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
   location: "@apps.tk-multi-launchapp.location"
@@ -25,6 +26,7 @@ settings.tk-multi-launchapp:
 # shotgun
 settings.tk-multi-launchapp.shotgun:
   use_software_entity: true
+  software_entity_extra_fields: ["sg_windows_tools_path"]
   skip_engine_instances: []
   hook_before_register_command: "{config}/tk-multi-launchapp/before_register_command.py"
   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
