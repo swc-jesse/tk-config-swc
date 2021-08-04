@@ -53,9 +53,12 @@ class BeforeAppLaunch(tank.Hook):
         # os.environ["MY_SETTING"] = "foo bar"
 
         # Append to PYTHONPATH
-        if "sg_windows_tools_path" in software_entity.keys():
-            sgtk.util.append_path_to_env_var("PYTHONPATH", software_entity["sg_windows_tools_path"])
+    
+        tools_path = software_entity["sg_windows_tools_path"]
+
+        if tools_path:
+            sgtk.util.append_path_to_env_var("PYTHONPATH", tools_path)
 
             if engine_name == 'tk-maya':
                 # Point to the desired Maya.env file
-                os.environ["MAYA_ENV_DIR"] = software_entity["sg_windows_tools_path"] 
+                os.environ["MAYA_ENV_DIR"] = tools_path 
