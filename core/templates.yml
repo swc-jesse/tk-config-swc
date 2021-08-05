@@ -103,6 +103,14 @@ keys:
     ext:
         type: str
         alias: extension  
+    short_code:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_short_code        
+    parent_short_code:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Asset.sg_short_code
 
     step_subfolder:
         type: str
@@ -267,8 +275,8 @@ paths:
     asset_child_master_filename: '@asset_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
     asset_child_master_snapshot_filename: '@asset_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'
 
-    special_child_filename: '@special_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
-    special_child_snapshot_filename: '@special_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'    
+    special_child_filename: '@special_child_root/{parent_short_code}_{short_code}_{asset_category}_{Task}[_{name}]'
+    special_child_snapshot_filename: '@special_child_root/snapshots/{parent_short_code}_{short_code}_{asset_category}_{Task}[_{name}].{timestamp}'    
 
     env_asset_filename: '@env_asset_root/{step_subfolder}/{task_step}/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}'
     env_asset_snapshot_filename: '@env_asset_root/{step_subfolder}/{task_step}/snapshots/{biome}_{env_asset_category}_{env_asset_class}_{CustomEntity01}[_{name}]_{Task}.{timestamp}'
