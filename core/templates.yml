@@ -117,9 +117,18 @@ keys:
         shotgun_entity_type: Project
         shotgun_field_name: sg_step_subfolder  
 
+    step_folder:
+        type: str
+        shotgun_entity_type: Step
+        shotgun_field_name: sg_step_folder  
+
     # Environment Asset
     CustomEntity01:
         type: str
+    env_asset_name:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: code
     env_asset_library:
         type: str
         shotgun_entity_type: CustomEntity01
@@ -265,7 +274,7 @@ paths:
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
     special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{Asset}'    
 
-    env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{env_folder_name}'
+    env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{env_folder_name}/{Step}/{Task}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
     prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
@@ -282,8 +291,8 @@ paths:
     special_child_filename: '@special_child_root/{parent_short_code}_{short_code}_{asset_category}_{Task}[_{name}]'
     special_child_snapshot_filename: '@special_child_root/snapshots/{parent_short_code}_{short_code}_{asset_category}_{Task}[_{name}].{timestamp}'    
 
-    env_asset_filename: '@env_asset_root/{step_subfolder}/{task_step}/{CustomEntity01}[_{name}]_{Task}'
-    env_asset_snapshot_filename: '@env_asset_root/{step_subfolder}/{task_step}/snapshots/{CustomEntity01}[_{name}]_{Task}.{timestamp}'
+    env_asset_filename: '@env_asset_root/{env_asset_name}[_{name}]_{Task}'
+    env_asset_snapshot_filename: '@env_asset_root/{env_asset_name}[_{name}]_{Task}.{timestamp}'
     env_asset_master_filename: '@env_asset_root/{CustomEntity01}[_{name}]'
     env_asset_master_snapshot_filename: '@env_asset_root/snapshots/{CustomEntity01}[_{name}].{timestamp}'
     

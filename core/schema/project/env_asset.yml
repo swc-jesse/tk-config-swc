@@ -7,6 +7,8 @@ entity_type: "CustomEntity01"
 # the shotgun field to use for the folder name
 name: "Content/{sg_asset_library}/{sg_asset_type}/{sg_biome}/{sg_asset_category}/{sg_asset_class}/{sg_folder_name}"
 
+associated_entity_type: CustomEntity01
+
 # shotgun filters to apply when getting the list of items
 # this should be a list of dicts, each dict containing
 # three fields: path, relation and values
