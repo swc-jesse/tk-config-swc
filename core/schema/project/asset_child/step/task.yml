@@ -1,0 +1,5 @@
+# the type of dynamic content
+type: "shotgun_task"
+
+# the shotgun field to use for the folder name. This field needs to come from a task entity.
+name: "content"
