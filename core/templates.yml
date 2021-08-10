@@ -121,6 +121,14 @@ keys:
         type: str
         shotgun_entity_type: Step
         shotgun_field_name: sg_step_folder  
+    folder_name:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_folder_name       
+    asset_name:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: code            
 
     # Environment Asset
     CustomEntity01:
@@ -271,8 +279,8 @@ paths:
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
-    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
-    special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{Asset}'
+    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
+    special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{folder_name}'
 
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{env_folder_name}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
@@ -283,13 +291,13 @@ paths:
     asset_master_filename: '@asset_root/{Asset}[_{name}]'
     asset_master_snapshot_filename: '@asset_root/snapshots/{Asset}[_{name}].{timestamp}'
     
-    asset_child_filename: '@asset_child_root/{Step}/{Task}/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}'
-    asset_child_snapshot_filename: '@asset_child_root/{Step}/{Task}/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_child_filename: '@asset_child_root/{Step}/{Task}/{asset_name}[_{name}]_{Task}'
+    asset_child_snapshot_filename: '@asset_child_root/{Step}/{Task}/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
     asset_child_master_filename: '@asset_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
     asset_child_master_snapshot_filename: '@asset_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'
 
-    special_child_filename: '@special_child_root/{parent_short_code}_{short_code}_{Asset}_{Task}[_{name}]'
-    special_child_snapshot_filename: '@special_child_root/snapshots/{parent_short_code}_{short_code}_{Asset}_{Task}[_{name}].{timestamp}'    
+    special_child_filename: '@special_child_root/{asset_name}_{Task}[_{name}]'
+    special_child_snapshot_filename: '@special_child_root/snapshots/{asset_name}_{Task}[_{name}].{timestamp}'    
 
     env_asset_filename: '@env_asset_root/{Step}/{Task}/{env_asset_name}[_{name}]_{Task}'
     env_asset_snapshot_filename: '@env_asset_root/{Step}/{Task}/{env_asset_name}[_{name}]_{Task}.{timestamp}'
