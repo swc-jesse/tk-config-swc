@@ -24,6 +24,9 @@ common_workfiles_settings: &common_workfiles_settings
   # hook_get_badge: "{config}/tk-multi-workfiles2/get_badge.py"
   hook_scene_operation: "{config}/tk-multi-workfiles2/scene_operation_perforce.py:{config}/tk-multi-workfiles2/scene_operation_{engine_name}.py"
   my_tasks_extra_display_fields: [entity.Asset.sg_asset_parent.Asset.code, entity.Asset.sg_asset_category]
+  my_tasks_filters: 
+    - [task_assignees, is, '{context.user}']
+    - [sg_status_list, in, ['rdy','ip']]
 
 # entity_browser_settings
 entity_browser_settings: &entity_browser_settings
