@@ -46,7 +46,7 @@ settings.tk-multi-publish2.3dsmax.asset_step: &settings_tk-multi-publish2_3dsmax
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_file.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -62,7 +62,7 @@ settings.tk-multi-publish2.3dsmax.asset_child_step: &settings_tk-multi-publish2_
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_file.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -78,7 +78,7 @@ settings.tk-multi-publish2.3dsmax.asset_other_step: &settings_tk-multi-publish2_
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_file.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
@@ -94,7 +94,7 @@ settings.tk-multi-publish2.3dsmax.asset_other_child_step: &settings_tk-multi-pub
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_file.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
