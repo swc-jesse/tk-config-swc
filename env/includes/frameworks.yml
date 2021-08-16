@@ -106,9 +106,9 @@ frameworks:
     location:
       ### Dev
       # type: dev
-      # path: ~/Projects/swc/tk-framework-perforce
+      # path: 'C:/swc-configs/tk-framework-perforce'
       ### Github
       type: git_branch
       branch: swc_beta
       path: https://github.com/nimbleheroes/tk-framework-perforce.git
-      version: '6c02e62'
+      version: 'cd2d772'
