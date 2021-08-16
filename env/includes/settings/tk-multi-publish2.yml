@@ -46,7 +46,7 @@ settings.tk-multi-publish2.3dsmax.asset_step: &settings_publish_plugins_tk-multi
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_file.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"
