@@ -44,6 +44,6 @@
 primary:
     description: A top-level root folder for production data. Project folders
         will be created beneath this location.
-    #shotgun_storage_id: 102 # Ark2Depot
-    shotgun_storage_id: 36  # Publishing, ArkDinoBattles, etc
+    shotgun_storage_id: 102 # Ark2Depot
+    #shotgun_storage_id: 36  # Publishing, ArkDinoBattles, etc
     default: true
