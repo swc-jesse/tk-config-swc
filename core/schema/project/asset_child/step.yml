@@ -11,7 +11,7 @@
 # the type of dynamic content
 type: "shotgun_step"
 
-defer_creation: true
+defer_creation: false
 
 # the shotgun field to use for the folder name
 name: "short_name"
