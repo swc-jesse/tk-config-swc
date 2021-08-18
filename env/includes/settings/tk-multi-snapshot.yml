@@ -24,24 +24,10 @@ settings.tk-multi-snapshot.3dsmax.asset_step:
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
   location: "@apps.tk-multi-snapshot.location"
 
-# asset_master_step
-settings.tk-multi-snapshot.3dsmax.asset_master_step:
-  template_snapshot: asset_master_max_snapshot
-  template_work: asset_master_max_workfile
-  hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
-  location: "@apps.tk-multi-snapshot.location"
-
 # asset_child_step
 settings.tk-multi-snapshot.3dsmax.asset_child_step:
   template_snapshot: asset_child_max_snapshot
   template_work: asset_child_max_workfile
-  hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_master_step
-settings.tk-multi-snapshot.3dsmax.asset_child_master_step:
-  template_snapshot: asset_child_master_max_snapshot
-  template_work: asset_child_master_max_workfile
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
   location: "@apps.tk-multi-snapshot.location"
 
@@ -73,13 +59,6 @@ settings.tk-multi-snapshot.3dsmax.env_asset_step:
   hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
   location: "@apps.tk-multi-snapshot.location"
 
-# env_asset_master_step
-settings.tk-multi-snapshot.3dsmax.env_asset_master_step:
-  template_snapshot: env_asset_master_max_snapshot
-  template_work: env_asset_master_max_workfile
-  hook_scene_operation: "{engine}/tk-multi-snapshot/basic/scene_operation.py"
-  location: "@apps.tk-multi-snapshot.location"
-
 ################################################################################
 
 # ---- Houdini
@@ -90,22 +69,10 @@ settings.tk-multi-snapshot.houdini.asset_step:
   template_work: asset_houdini_workfile
   location: "@apps.tk-multi-snapshot.location"
 
-# asset_master_step
-settings.tk-multi-snapshot.houdini.asset_master_step:
-  template_snapshot: asset_master_houdini_snapshot
-  template_work: asset_master_houdini_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
 # asset_child_step
 settings.tk-multi-snapshot.houdini.asset_child_step:
   template_snapshot: asset_child_houdini_snapshot
   template_work: asset_child_houdini_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_master_step
-settings.tk-multi-snapshot.houdini.asset_child_master_step:
-  template_snapshot: asset_child_master_houdini_snapshot
-  template_work: asset_child_master_houdini_workfile
   location: "@apps.tk-multi-snapshot.location"
 
 # special_child_step
@@ -132,12 +99,6 @@ settings.tk-multi-snapshot.houdini.env_asset_step:
   template_work: env_asset_houdini_workfile
   location: "@apps.tk-multi-snapshot.location"
 
-# env_asset_master_step
-settings.tk-multi-snapshot.houdini.env_asset_master_step:
-  template_snapshot: env_asset_master_houdini_snapshot
-  template_work: env_asset_master_houdini_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
 ################################################################################
 
 # ---- Maya
@@ -148,22 +109,10 @@ settings.tk-multi-snapshot.maya.asset_step:
   template_work: asset_maya_workfile
   location: "@apps.tk-multi-snapshot.location"
 
-# asset_master_step
-settings.tk-multi-snapshot.maya.asset_master_step:
-  template_snapshot: asset_master_maya_snapshot
-  template_work: asset_master_maya_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
 # asset_child_step
 settings.tk-multi-snapshot.maya.asset_child_step:
   template_snapshot: asset_child_maya_snapshot
   template_work: asset_child_maya_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_master_step
-settings.tk-multi-snapshot.maya.asset_child_master_step:
-  template_snapshot: asset_child_master_maya_snapshot
-  template_work: asset_child_master_maya_workfile
   location: "@apps.tk-multi-snapshot.location"
 
 # special_child_step
@@ -190,12 +139,6 @@ settings.tk-multi-snapshot.maya.env_asset_step:
   template_work: env_asset_maya_workfile
   location: "@apps.tk-multi-snapshot.location"
 
-# env_asset_master_step
-settings.tk-multi-snapshot.maya.env_asset_master_step:
-  template_snapshot: env_asset_master_maya_snapshot
-  template_work: env_asset_master_maya_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
 ################################################################################
 
 # ---- Photoshop
@@ -206,22 +149,10 @@ settings.tk-multi-snapshot.photoshop.asset_step:
   template_work: asset_photoshop_workfile
   location: "@apps.tk-multi-snapshot.location"
 
-# asset_master_step
-settings.tk-multi-snapshot.photoshop.asset_master_step:
-  template_snapshot: asset_master_photoshop_snapshot
-  template_work: asset_master_photoshop_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
 # asset_child_step
 settings.tk-multi-snapshot.photoshop.asset_child_step:
   template_snapshot: asset_child_photoshop_snapshot
   template_work: asset_child_photoshop_workfile
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_master_step
-settings.tk-multi-snapshot.photoshop.asset_child_master_step:
-  template_snapshot: asset_child_master_photoshop_snapshot
-  template_work: asset_child_master_photoshop_workfile
   location: "@apps.tk-multi-snapshot.location"
 
 # pub_asset_step
@@ -242,12 +173,6 @@ settings.tk-multi-snapshot.photoshop.env_asset_step:
   template_work: env_asset_photoshop_workfile
   location: "@apps.tk-multi-snapshot.location"  
 
-# env_asset_master_step
-settings.tk-multi-snapshot.photoshop.env_asset_master_step:
-  template_snapshot: env_asset_master_photoshop_snapshot
-  template_work: env_asset_master_photoshop_workfile
-  location: "@apps.tk-multi-snapshot.location"  
-
 ################################################################################
 
 # ---- Substance Painter
@@ -260,27 +185,11 @@ settings.tk-multi-snapshot.substancepainter.asset_step:
   hook_thumbnail: "{engine}/thumbnail.py"
   location: "@apps.tk-multi-snapshot.location"
 
-# asset_master_step
-settings.tk-multi-snapshot.substancepainter.asset_master_step:
-  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancepainter.py"
-  template_snapshot: asset_master_substancepainter_snapshot
-  template_work: asset_master_substancepainter_workfile
-  hook_thumbnail: "{engine}/thumbnail.py"
-  location: "@apps.tk-multi-snapshot.location"
-
 # asset_child_step
 settings.tk-multi-snapshot.substancepainter.asset_child_step:
   hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancepainter.py"
   template_snapshot: asset_child_substancepainter_snapshot
   template_work: asset_child_substancepainter_workfile
-  hook_thumbnail: "{engine}/thumbnail.py"
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_master_step
-settings.tk-multi-snapshot.substancepainter.asset_child_master_step:
-  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancepainter.py"
-  template_snapshot: asset_child_master_substancepainter_snapshot
-  template_work: asset_child_master_substancepainter_workfile
   hook_thumbnail: "{engine}/thumbnail.py"
   location: "@apps.tk-multi-snapshot.location"
 
@@ -308,15 +217,6 @@ settings.tk-multi-snapshot.substancepainter.env_asset_step:
   hook_thumbnail: "{engine}/thumbnail.py"
   location: "@apps.tk-multi-snapshot.location"
 
-# env_asset_master_step
-settings.tk-multi-snapshot.substancepainter.env_asset_master_step:
-  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancepainter.py"
-  template_snapshot: env_asset_master_substancepainter_snapshot
-  template_work: env_asset_master_substancepainter_workfile
-  hook_thumbnail: "{engine}/thumbnail.py"
-  location: "@apps.tk-multi-snapshot.location"
-
-
 ################################################################################
 
 # ---- Substance Designer
@@ -329,27 +229,11 @@ settings.tk-multi-snapshot.substancedesigner.asset_step:
   hook_thumbnail: "{engine}/thumbnail.py"
   location: "@apps.tk-multi-snapshot.location"
 
-# asset_master_step
-settings.tk-multi-snapshot.substancedesigner.asset_master_step:
-  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
-  template_snapshot: asset_master_substancedesigner_snapshot
-  template_work: asset_master_substancedesigner_workfile
-  hook_thumbnail: "{engine}/thumbnail.py"
-  location: "@apps.tk-multi-snapshot.location"
-
 # asset_child_step
 settings.tk-multi-snapshot.substancedesigner.asset_child_step:
   hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
   template_snapshot: asset_child_substancedesigner_snapshot
   template_work: asset_child_substancedesigner_workfile
-  hook_thumbnail: "{engine}/thumbnail.py"
-  location: "@apps.tk-multi-snapshot.location"
-
-# asset_child_master_step
-settings.tk-multi-snapshot.substancedesigner.asset_child_master_step:
-  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
-  template_snapshot: asset_child_master_substancedesigner_snapshot
-  template_work: asset_child_master_substancedesigner_workfile
   hook_thumbnail: "{engine}/thumbnail.py"
   location: "@apps.tk-multi-snapshot.location"
 
@@ -374,13 +258,5 @@ settings.tk-multi-snapshot.substancedesigner.env_asset_step:
   hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
   template_snapshot: env_asset_substancedesigner_snapshot
   template_work: env_asset_substancedesigner_workfile
-  hook_thumbnail: "{engine}/thumbnail.py"
-  location: "@apps.tk-multi-snapshot.location"
-
-# env_asset_master_step
-settings.tk-multi-snapshot.substancedesigner.env_asset_master_step:
-  hook_scene_operation: "{engine}/tk-multi-snapshot/scene_operation_tk-substancedesigner.py"
-  template_snapshot: env_asset_master_substancedesigner_snapshot
-  template_work: env_asset_master_substancedesigner_workfile
   hook_thumbnail: "{engine}/thumbnail.py"
   location: "@apps.tk-multi-snapshot.location"

@@ -57,16 +57,6 @@ settings.tk-3dsmax.asset_step:
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   location: "@engines.tk-3dsmax.location"
 
-# asset_master_step
-settings.tk-3dsmax.asset_master_step:
-  apps:
-    <<: *settings_tk-3dsmax_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.asset_master_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_master_step"
-  menu_favourites: *settings_tk-3dsmax_menu
-  location: "@engines.tk-3dsmax.location"
-
 # asset_child_step
 settings.tk-3dsmax.asset_child_step:
   apps:
@@ -74,16 +64,6 @@ settings.tk-3dsmax.asset_child_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.asset_child_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_child_step"
-  menu_favourites: *settings_tk-3dsmax_menu
-  location: "@engines.tk-3dsmax.location"
-
-# asset_child_master_step
-settings.tk-3dsmax.asset_child_master_step:
-  apps:
-    <<: *settings_tk-3dsmax_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.asset_child_master_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.asset_child_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.asset_child_master_step"
   menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 
@@ -124,16 +104,6 @@ settings.tk-3dsmax.env_asset_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.env_asset_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.env_asset_step"
-  menu_favourites: *settings_tk-3dsmax_menu
-  location: "@engines.tk-3dsmax.location"
-
-# env_asset_master_step
-settings.tk-3dsmax.env_asset_master_step:
-  apps:
-    <<: *settings_tk-3dsmax_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.3dsmax.env_asset_master_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.3dsmax.env_asset_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.3dsmax.env_asset_master_step"
   menu_favourites: *settings_tk-3dsmax_menu
   location: "@engines.tk-3dsmax.location"
 

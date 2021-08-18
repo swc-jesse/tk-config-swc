@@ -59,17 +59,6 @@ settings.tk-maya.asset_step:
   template_project: asset_root
   location: "@engines.tk-maya.location"
 
-# asset_master_step
-settings.tk-maya.asset_master_step:
-  apps:
-    <<: *settings_tk-maya_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_master_step"  
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_master_step"
-  menu_favourites: *settings_tk-maya_menu
-  template_project: asset_root
-  location: "@engines.tk-maya.location"
-
 # asset_child_step
 settings.tk-maya.asset_child_step:
   apps:
@@ -80,17 +69,6 @@ settings.tk-maya.asset_child_step:
   menu_favourites: *settings_tk-maya_menu
   template_project: asset_child_root
   location: "@engines.tk-maya.location"  
-
-# asset_child_master_step
-settings.tk-maya.asset_child_master_step:
-  apps:
-    <<: *settings_tk-maya_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_child_master_step"  
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_child_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_child_master_step"
-  menu_favourites: *settings_tk-maya_menu
-  template_project: asset_child_root
-  location: "@engines.tk-maya.location"    
 
 # special_child_step
 settings.tk-maya.special_child_step:
@@ -132,17 +110,6 @@ settings.tk-maya.env_asset_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.maya.env_asset_step"  
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.env_asset_step"
-  menu_favourites: *settings_tk-maya_menu  
-  template_project: env_asset_root
-  location: "@engines.tk-maya.location"    
-
-# env_asset_master_step
-settings.tk-maya.env_asset_master_step:
-  apps:
-    <<: *settings_tk-maya_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.env_asset_master_step"  
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.env_asset_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.env_asset_master_step"
   menu_favourites: *settings_tk-maya_menu  
   template_project: env_asset_root
   location: "@engines.tk-maya.location"    

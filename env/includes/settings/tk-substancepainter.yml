@@ -74,17 +74,6 @@ settings.tk-substancepainter.asset_step:
   template_project: asset_root
   location: "@engines.tk-substancepainter.location"
 
-# asset_master_step
-settings.tk-substancepainter.asset_master_step:
-  apps:
-    <<: *settings_tk-substancepainter_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.asset_master_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.asset_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_master_step"
-  menu_favourites: *settings_tk-substancepainter_menus
-  template_project: asset_master_root
-  location: "@engines.tk-substancepainter.location"
-
 # asset_child_step
 settings.tk-substancepainter.asset_child_step:
   apps:
@@ -94,17 +83,6 @@ settings.tk-substancepainter.asset_child_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_child_step"
   menu_favourites: *settings_tk-substancepainter_menus
   template_project: asset_child_root
-  location: "@engines.tk-substancepainter.location"
-
-# asset_child_master_step
-settings.tk-substancepainter.asset_child_master_step:
-  apps:
-    <<: *settings_tk-substancepainter_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.asset_child_master_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.asset_child_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.asset_child_master_step"
-  menu_favourites: *settings_tk-substancepainter_menus
-  template_project: asset_child_master_root
   location: "@engines.tk-substancepainter.location"
 
 # pub_asset_step
@@ -138,15 +116,4 @@ settings.tk-substancepainter.env_asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.env_asset_step"
   menu_favourites: *settings_tk-substancepainter_menus
   template_project: env_asset_root
-  location: "@engines.tk-substancepainter.location"
-
-# env_asset_master_step
-settings.tk-substancepainter.env_asset_master_step:
-  apps:
-    <<: *settings_tk-substancepainter_apps
-    tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.env_asset_master_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.env_asset_master_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.env_asset_master_step"
-  menu_favourites: *settings_tk-substancepainter_menus
-  template_project: env_asset_master_root
   location: "@engines.tk-substancepainter.location"

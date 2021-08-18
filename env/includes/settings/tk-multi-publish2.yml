@@ -54,23 +54,11 @@ settings.tk-multi-publish2.3dsmax.asset_step: &settings_publish_plugins_tk-multi
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_master_step
-settings.tk-multi-publish2.3dsmax.asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
-  collector_settings:
-      Work Template: asset_master_max_workfile
-
 # asset_child_step
 settings.tk-multi-publish2.3dsmax.asset_child_step: 
   <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
   collector_settings:
       Work Template: asset_child_max_workfile
-
-# asset_child_master_step
-settings.tk-multi-publish2.3dsmax.asset_child_master_step: 
-  <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
-  collector_settings:
-      Work Template: asset_child_master_max_workfile
 
 # special_child_step
 settings.tk-multi-publish2.3dsmax.special_child_step: 
@@ -96,12 +84,6 @@ settings.tk-multi-publish2.3dsmax.env_asset_step:
   collector_settings:
       Work Template: env_asset_max_workfile
 
-# env_asset_master_step
-settings.tk-multi-publish2.3dsmax.env_asset_master_step: 
-  <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
-  collector_settings:
-      Work Template: env_asset_master_max_workfile
-
 ################################################################################
 
 # ---- Houdini
@@ -122,23 +104,11 @@ settings.tk-multi-publish2.houdini.asset_step: &settings_publish_plugins_tk-mult
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_master_step
-settings.tk-multi-publish2.houdini.asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_houdini
-  collector_settings:
-      Work Template: asset_master_houdini_workfile
-
 # asset_child_step
 settings.tk-multi-publish2.houdini.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_houdini
   collector_settings:
       Work Template: asset_child_houdini_workfile
-
-# asset_child_master_step
-settings.tk-multi-publish2.houdini.asset_child_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_houdini
-  collector_settings:
-      Work Template: asset_child_master_houdini_workfile
 
 # special_child_step
 settings.tk-multi-publish2.houdini.special_child_step:
@@ -164,12 +134,6 @@ settings.tk-multi-publish2.houdini.env_asset_step:
   collector_settings:
       Work Template: env_asset_houdini_workfile
 
-# env_asset_master_step
-settings.tk-multi-publish2.houdini.env_asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_houdini
-  collector_settings:
-      Work Template: env_asset_master_houdini_workfile
-
 ################################################################################
 
 # ---- Maya
@@ -190,23 +154,11 @@ settings.tk-multi-publish2.maya.asset_step: &settings_publish_plugins_tk-multi-p
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_master_step
-settings.tk-multi-publish2.maya.asset_master_step: 
-  <<: *settings_publish_plugins_tk-multi-publish2_maya
-  collector_settings:
-      Work Template: asset_master_maya_workfile
-
 # asset_child_step
 settings.tk-multi-publish2.maya.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_maya
   collector_settings:
       Work Template: asset_child_maya_workfile
-
-# asset_child_master_step
-settings.tk-multi-publish2.maya.asset_child_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_maya
-  collector_settings:
-      Work Template: asset_child_master_maya_workfile
 
 # special_child_step
 settings.tk-multi-publish2.maya.special_child_step:
@@ -232,12 +184,6 @@ settings.tk-multi-publish2.maya.env_asset_step:
   collector_settings:
       Work Template: env_asset_maya_workfile
 
-# env_asset_master_step
-settings.tk-multi-publish2.maya.env_asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_maya
-  collector_settings:
-      Work Template: env_asset_master_maya_workfile
-
 ################################################################################
 
 # ---- Photoshop
@@ -259,26 +205,12 @@ settings.tk-multi-publish2.photoshop.asset_step: &settings_publish_plugins_tk-mu
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_master_step
-settings.tk-multi-publish2.photoshop.asset_master_step: 
-  <<: *settings_publish_plugins_tk-multi-publish2_photoshop
-  collector_settings:
-      Work Template: asset_master_photoshop_workfile
-      Work Area: asset_master_root
-
 # asset_child_step
 settings.tk-multi-publish2.photoshop.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_photoshop
   collector_settings:
       Work Template: asset_child_photoshop_workfile
       Work Area: asset_child_root
-
-# asset_child_master_step
-settings.tk-multi-publish2.photoshop.asset_child_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_photoshop
-  collector_settings:
-      Work Template: asset_child_master_photoshop_workfile
-      Work Area: asset_child_master_root
 
 # pub_asset_step
 settings.tk-multi-publish2.photoshop.pub_asset_step:
@@ -302,13 +234,6 @@ settings.tk-multi-publish2.photoshop.env_asset_step:
   collector_settings:
       Work Template: env_asset_photoshop_workfile
       Work Area: env_asset_root
-
-# env_asset_master_step
-settings.tk-multi-publish2.photoshop.env_asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_photoshop
-  collector_settings:
-      Work Template: env_asset_master_photoshop_workfile
-      Work Area: env_asset_master_root
 
 ################################################################################
 
@@ -347,12 +272,6 @@ settings.tk-multi-publish2.substancepainter.asset_step: &settings_publish_plugin
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset master step
-settings.tk-multi-publish2.substancepainter.asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
-  collector_settings:
-      Work Template: asset_master_substancepainter_workfile
-
 # asset_child_step
 settings.tk-multi-publish2.substancepainter.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
@@ -386,12 +305,6 @@ settings.tk-multi-publish2.substancepainter.asset_child_step:
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset_child_master_step
-settings.tk-multi-publish2.substancepainter.asset_child_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
-  collector_settings:
-      Work Template: asset_child_master_substancepainter_workfile
-
 # pub_asset step
 settings.tk-multi-publish2.substancepainter.pub_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
@@ -409,12 +322,6 @@ settings.tk-multi-publish2.substancepainter.env_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
   collector_settings:
       Work Template: env_asset_substancepainter_workfile
-
-# env_asset_master_step
-settings.tk-multi-publish2.substancepainter.env_asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
-  collector_settings:
-      Work Template: env_asset_master_substancepainter_workfile
 
 ################################################################################
 
@@ -479,23 +386,11 @@ settings.tk-multi-publish2.substancedesigner.asset_step: &settings_publish_plugi
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
-# asset master step
-settings.tk-multi-publish2.substancedesigner.asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
-  collector_settings:
-      Work Template: asset_master_substancedesigner_workfile
-
 # asset_child_step
 settings.tk-multi-publish2.substancedesigner.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
   collector_settings:
       Work Template: asset_child_substancedesigner_workfile
-
-# asset_child_master_step
-settings.tk-multi-publish2.substancedesigner.asset_child_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
-  collector_settings:
-      Work Template: asset_child_master_substancedesigner_workfile
 
 # pub_asset step
 settings.tk-multi-publish2.substancedesigner.pub_asset_step:
@@ -514,9 +409,3 @@ settings.tk-multi-publish2.substancedesigner.env_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
   collector_settings:
       Work Template: env_asset_substancedesigner_workfile
-
-# env_asset_master_step
-settings.tk-multi-publish2.substancedesigner.env_asset_master_step:
-  <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
-  collector_settings:
-      Work Template: env_asset_master_substancedesigner_workfile
