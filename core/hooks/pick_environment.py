@@ -63,11 +63,6 @@ class PickEnvironment(sgtk.Hook):
 
         if context.entity and context.step:
             # We have a step and an entity.
-            master_token = "_"
-
-            if context.step["name"]== "Master":
-                master_token = "_master_"            
-
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
@@ -76,11 +71,11 @@ class PickEnvironment(sgtk.Hook):
                 if context_entity.get("sg_asset_parent"):
                     if context_entity.get("sg_asset_type") in ["Animations"]:
                         return "special_child_step"
-                    return "asset_child%sstep" % (master_token)
+                    return "asset_child_step"
 
-                return "asset%sstep" % (master_token)
+                return "asset_step"
             elif context.entity["type"] == "CustomEntity01":
-                return "env_asset%sstep" % (master_token)    
+                return "env_asset_step"  
             elif context.entity["type"] == "CustomEntity03":
                 context_entity = context.sgtk.shotgun.find_one("CustomEntity03",
                                                                [["id", "is", context.entity["id"]]],
