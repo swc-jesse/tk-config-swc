@@ -15,6 +15,8 @@ associated_entity_type: CustomEntity01
 
 defer_creation: false
 
+create_with_parent: true
+
 # the shotgun field to use for the folder name
 name: "short_name"
 
