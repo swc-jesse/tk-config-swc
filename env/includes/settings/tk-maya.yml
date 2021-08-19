@@ -36,6 +36,7 @@ settings.tk-maya.asset:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   debug_logging: false
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"
 
 # asset_step
@@ -57,6 +58,7 @@ settings.tk-maya.asset_step:
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   template_project: asset_root
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"
 
 # asset_child_step
@@ -68,6 +70,7 @@ settings.tk-maya.asset_child_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_child_step"
   menu_favourites: *settings_tk-maya_menu
   template_project: asset_child_root
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"  
 
 # special_child_step
@@ -79,6 +82,7 @@ settings.tk-maya.special_child_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.special_child_step"
   menu_favourites: *settings_tk-maya_menu
   template_project: special_child_root
+  automatic_context_switch: False
   location: "@engines.tk-maya.location"    
 
 # pub_asset_step
@@ -90,6 +94,7 @@ settings.tk-maya.pub_asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.pub_asset_step"
   menu_favourites: *settings_tk-maya_menu 
   template_project: pub_asset_root
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"    
 
 # prod_asset_step
@@ -101,6 +106,7 @@ settings.tk-maya.prod_asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.prod_asset_step"
   menu_favourites: *settings_tk-maya_menu 
   template_project: prod_asset_root
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"     
 
 # env_asset_step
@@ -112,6 +118,7 @@ settings.tk-maya.env_asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.env_asset_step"
   menu_favourites: *settings_tk-maya_menu  
   template_project: env_asset_root
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"    
 
 # project
@@ -125,4 +132,5 @@ settings.tk-maya.project:
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"
