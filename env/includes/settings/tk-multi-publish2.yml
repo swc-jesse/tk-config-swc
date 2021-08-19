@@ -140,7 +140,7 @@ settings.tk-multi-publish2.houdini.env_asset_step:
 
 # asset_step
 settings.tk-multi-publish2.maya.asset_step: &settings_publish_plugins_tk-multi-publish2_maya
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/collector.py:{config}/tk-multi-publish2/tk-maya/collector.py"
   collector_settings:
       Work Template: asset_maya_workfile
   post_phase: "{config}/tk-multi-publish2/post_phase.py"

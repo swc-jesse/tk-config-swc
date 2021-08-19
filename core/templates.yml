@@ -288,21 +288,15 @@ paths:
 
     asset_filename: '@asset_root/{Step}/{Task}/{Asset}[_{name}]_{Task}'
     asset_snapshot_filename: '@asset_root/{Step}/{Task}/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
-    asset_master_filename: '@asset_root/{Asset}[_{name}]'
-    asset_master_snapshot_filename: '@asset_root/snapshots/{Asset}[_{name}].{timestamp}'
     
     asset_child_filename: '@asset_child_root/{Step}/{Task}/{asset_name}[_{name}]_{Task}'
     asset_child_snapshot_filename: '@asset_child_root/{Step}/{Task}/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
-    asset_child_master_filename: '@asset_child_root/{asset_parent}_{asset_category}_{Asset}[_{name}]'
-    asset_child_master_snapshot_filename: '@asset_child_root/snapshots/{asset_parent}_{asset_category}_{Asset}[_{name}].{timestamp}'
 
     special_child_filename: '@special_child_root/{asset_name}_{Task}[_{name}]'
-    special_child_snapshot_filename: '@special_child_root/snapshots/{asset_name}_{Task}[_{name}].{timestamp}'    
+    special_child_snapshot_filename: '@special_child_root/snapshots/{asset_name}_{Task}[_{name}].{timestamp}'     
 
     env_asset_filename: '@env_asset_root/{Step}/{Task}/{env_asset_name}[_{name}]_{Task}'
     env_asset_snapshot_filename: '@env_asset_root/{Step}/{Task}/{env_asset_name}[_{name}]_{Task}.{timestamp}'
-    env_asset_master_filename: '@env_asset_root/{CustomEntity01}[_{name}]'
-    env_asset_master_snapshot_filename: '@env_asset_root/snapshots/{CustomEntity01}[_{name}].{timestamp}'
     
     pub_asset_filename: '@pub_asset_root/{task_step}/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
     pub_asset_snapshot_filename: '@pub_asset_root/{task_step}/snapshots/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'
@@ -338,16 +332,6 @@ paths:
     asset_child_snapshot:
         definition: '@asset_child_snapshot_filename.{ext}'
 
-    asset_master_workfile:
-        definition: '@asset_master_filename.{ext}'
-    asset_master_snapshot:
-        definition: '@asset_master_snapshot_filename.{ext}'
-
-    asset_child_master_workfile:
-        definition: '@asset_child_master_filename.{ext}'
-    asset_child_master_snapshot:
-        definition: '@asset_child_master_snapshot_filename.{ext}'
-
     special_child_workfile:
         definition: '@special_child_filename.{ext}'
     special_child_snapshot:
@@ -357,11 +341,6 @@ paths:
         definition: '@env_asset_filename.{ext}'
     env_asset_snapshot:
         definition: '@env_asset_snapshot_filename.{ext}'
-
-    env_asset_master_workfile:
-        definition: '@env_asset_master_filename.{ext}'
-    env_asset_master_snapshot:
-        definition: '@env_asset_master_snapshot_filename.{ext}'
 
     pub_asset_workfile:
         definition: '@pub_asset_filename.{ext}'
@@ -388,25 +367,10 @@ paths:
     asset_child_photoshop_snapshot:
         definition: '@asset_child_snapshot_filename.{photoshop_extension}'
 
-    asset_master_photoshop_workfile:
-        definition: '@asset_master_filename.{photoshop_extension}'
-    asset_master_photoshop_snapshot:
-        definition: '@asset_master_snapshot_filename.{photoshop_extension}'
-
-    asset_child_master_photoshop_workfile:
-        definition: '@asset_child_master_filename.{photoshop_extension}'
-    asset_child_master_photoshop_snapshot:
-        definition: '@asset_child_master_snapshot_filename.{photoshop_extension}'
-
     env_asset_photoshop_workfile:
         definition: '@env_asset_filename.{photoshop_extension}'
     env_asset_photoshop_snapshot:
         definition: '@env_asset_snapshot_filename.{photoshop_extension}'
-
-    env_asset_master_photoshop_workfile:
-        definition: '@env_asset_master_filename.{photoshop_extension}'
-    env_asset_master_photoshop_snapshot:
-        definition: '@env_asset_master_snapshot_filename.{photoshop_extension}'
 
     pub_asset_photoshop_workfile:
         definition: '@pub_asset_filename.{photoshop_extension}'
@@ -433,16 +397,6 @@ paths:
     asset_child_maya_snapshot:
         definition: '@asset_child_snapshot_filename.{maya_extension}'
 
-    asset_master_maya_workfile:
-        definition: '@asset_master_filename.{maya_extension}'
-    asset_master_maya_snapshot:
-        definition: '@asset_master_snapshot_filename.{maya_extension}'
-
-    asset_child_master_maya_workfile:
-        definition: '@asset_child_master_filename.{maya_extension}'
-    asset_child_master_maya_snapshot:
-        definition: '@asset_child_master_snapshot_filename.{maya_extension}'
-
     special_child_maya_workfile:
         definition: '@special_child_filename.{maya_extension}'
     special_child_maya_snapshot:
@@ -452,11 +406,6 @@ paths:
         definition: '@env_asset_filename.{maya_extension}'
     env_asset_maya_snapshot:
         definition: '@env_asset_snapshot_filename.{maya_extension}'
-
-    env_asset_master_maya_workfile:
-        definition: '@env_asset_master_filename.{maya_extension}'
-    env_asset_master_maya_snapshot:
-        definition: '@env_asset_master_snapshot_filename.{maya_extension}'
 
     pub_asset_maya_workfile:
         definition: '@pub_asset_filename.{maya_extension}'
@@ -483,16 +432,6 @@ paths:
     asset_child_houdini_snapshot:
         definition: '@asset_child_snapshot_filename.hip'
 
-    asset_master_houdini_workfile:
-        definition: '@asset_master_filename.hip'
-    asset_master_houdini_snapshot:
-        definition: '@asset_master_snapshot_filename.hip'
-        
-    asset_child_master_houdini_workfile:
-        definition: '@asset_child_master_filename.hip'
-    asset_child_master_houdini_snapshot:
-        definition: '@asset_child_master_snapshot_filename.hip'     
-        
     special_child_houdini_workfile:
         definition: '@special_child_filename.hip'
     special_child_houdini_snapshot:
@@ -502,11 +441,6 @@ paths:
         definition: '@env_asset_filename.hip'
     env_asset_houdini_snapshot:
         definition: '@env_asset_snapshot_filename.hip'
-
-    env_asset_master_houdini_workfile:
-        definition: '@env_asset_master_filename.hip'
-    env_asset_master_houdini_snapshot:
-        definition: '@env_asset_master_snapshot_filename.hip'        
 
     pub_asset_houdini_workfile:
         definition: '@pub_asset_filename.hip'
@@ -533,16 +467,6 @@ paths:
     asset_child_max_snapshot:
         definition: '@asset_child_snapshot_filename.max'
 
-    asset_master_max_workfile:
-        definition: '@asset_master_filename.max'
-    asset_master_max_snapshot:
-        definition: '@asset_master_snapshot_filename.max'
-        
-    asset_child_master_max_workfile:
-        definition: '@asset_child_master_filename.max'
-    asset_child_master_max_snapshot:
-        definition: '@asset_child_master_snapshot_filename.max'    
-        
     special_child_max_workfile:
         definition: '@special_child_filename.max'
     special_child_max_snapshot:
@@ -552,11 +476,6 @@ paths:
         definition: '@env_asset_filename.max'
     env_asset_max_snapshot:
         definition: '@env_asset_snapshot_filename.max'
-
-    env_asset_master_max_workfile:
-        definition: '@env_asset_master_filename.max'
-    env_asset_master_max_snapshot:
-        definition: '@env_asset_master_snapshot_filename.max'        
 
     pub_asset_max_workfile:
         definition: '@pub_asset_filename.max'
@@ -583,25 +502,10 @@ paths:
     asset_child_substancepainter_snapshot:
         definition: '@asset_child_snapshot_filename.spp'
 
-    asset_master_substancepainter_workfile:
-        definition: '@asset_master_filename.spp'
-    asset_master_substancepainter_snapshot:
-        definition: '@asset_master_snapshot_filename.spp'
-        
-    asset_child_master_substancepainter_workfile:
-        definition: '@asset_child_master_filename.spp'
-    asset_child_master_substancepainter_snapshot:
-        definition: '@asset_child_master_snapshot_filename.spp'        
-
     env_asset_substancepainter_workfile:
         definition: '@env_asset_filename.spp'
     env_asset_substancepainter_snapshot:
         definition: '@env_asset_snapshot_filename.spp'
-
-    env_asset_master_substancepainter_workfile:
-        definition: '@env_asset_master_filename.spp'
-    env_asset_master_substancepainter_snapshot:
-        definition: '@env_asset_master_snapshot_filename.spp'        
 
     pub_asset_substancepainter_workfile:
         definition: '@pub_asset_filename.spp'
@@ -628,25 +532,10 @@ paths:
     asset_child_substancedesigner_snapshot:
         definition: '@asset_child_snapshot_filename.{substancedesigner.extension}'
 
-    asset_master_substancedesigner_workfile:
-        definition: '@asset_master_filename.{substancedesigner.extension}'
-    asset_master_substancedesigner_snapshot:
-        definition: '@asset_master_snapshot_filename.{substancedesigner.extension}'
-        
-    asset_child_master_substancedesigner_workfile:
-        definition: '@asset_child_master_filename.{substancedesigner.extension}'
-    asset_child_master_substancedesigner_snapshot:
-        definition: '@asset_child_master_snapshot_filename.{substancedesigner.extension}'        
-
     env_asset_substancedesigner_workfile:
         definition: '@env_asset_filename.{substancedesigner.extension}'
     env_asset_substancedesigner_snapshot:
         definition: '@env_asset_snapshot_filename.{substancedesigner.extension}'
-
-    env_asset_master_substancedesigner_workfile:
-        definition: '@env_asset_master_filename.{substancedesigner.extension}'
-    env_asset_master_substancedesigner_snapshot:
-        definition: '@env_asset_master_snapshot_filename.{substancedesigner.extension}'        
 
     pub_asset_substancedesigner_workfile:
         definition: '@pub_asset_filename.{substancedesigner.extension}'

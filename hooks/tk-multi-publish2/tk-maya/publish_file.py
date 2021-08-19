@@ -17,6 +17,10 @@ from tank_vendor import six
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
+# import ptvsd
+
+# # Allow other computers to attach to ptvsd at this IP address and port.
+# ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
 class MayaSessionPublishPlugin(HookBaseClass):
     """
@@ -89,7 +93,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
         accept() method. Strings can contain glob patters such as *, for example
         ["maya.*", "file.maya"]
         """
-        return ["maya.session"]
+        return ["maya.session", "file.*"]
 
     def accept(self, settings, item):
         """
@@ -120,22 +124,28 @@ class MayaSessionPublishPlugin(HookBaseClass):
         # if a publish template is configured, disable context change. This
         # is a temporary measure until the publisher handles context switching
         # natively.
-        if settings.get("Publish Template").value:
-            item.context_change_allowed = False
 
-        path = _session_path()
+        if(item.type == "maya.session"):
+            if settings.get("Publish Template").value:
+                item.context_change_allowed = False
 
-        if not path:
-            # the session has not been saved before (no path determined).
-            # provide a save button. the session will need to be saved before
-            # validation will succeed.
-            self.logger.warn(
-                "The Maya session has not been saved.", extra=_get_save_as_action()
+            path = _session_path()
+
+            if not path:
+                # the session has not been saved before (no path determined).
+                # provide a save button. the session will need to be saved before
+                # validation will succeed.
+                self.logger.warn(
+                    "The Maya session has not been saved.", extra=_get_save_as_action()
+                )
+
+            self.logger.info(
+                "Maya '%s' plugin accepted the current Maya session." % (self.name,)
             )
-
-        self.logger.info(
-            "Maya '%s' plugin accepted the current Maya session." % (self.name,)
-        )
+        else:
+            self.logger.info(
+                "Maya '%s' plugin accepted dropped file." % (self.name,)
+            )            
         return {"accepted": True, "checked": True}
 
     def validate(self, settings, item):
@@ -154,75 +164,75 @@ class MayaSessionPublishPlugin(HookBaseClass):
         path = _session_path()
 
         # ---- ensure the session has been saved
+        if(item.type == "maya.session"):
+            if not path:
+                # the session still requires saving. provide a save button.
+                # validation fails.
+                error_msg = "The Maya session has not been saved."
+                self.logger.error(error_msg, extra=_get_save_as_action())
+                raise Exception(error_msg)
 
-        if not path:
-            # the session still requires saving. provide a save button.
-            # validation fails.
-            error_msg = "The Maya session has not been saved."
-            self.logger.error(error_msg, extra=_get_save_as_action())
-            raise Exception(error_msg)
+            # ensure we have an updated project root
+            project_root = cmds.workspace(q=True, rootDirectory=True)
+            item.properties["project_root"] = project_root
 
-        # ensure we have an updated project root
-        project_root = cmds.workspace(q=True, rootDirectory=True)
-        item.properties["project_root"] = project_root
-
-        # log if no project root could be determined.
-        if not project_root:
-            self.logger.info(
-                "Your session is not part of a maya project.",
-                extra={
-                    "action_button": {
-                        "label": "Set Project",
-                        "tooltip": "Set the maya project",
-                        "callback": lambda: mel.eval('setProject ""'),
-                    }
-                },
-            )
-
-        # ---- check the session against any attached work template
-
-        # get the path in a normalized state. no trailing separator,
-        # separators are appropriate for current os, no double separators,
-        # etc.
-        path = sgtk.util.ShotgunPath.normalize(path)
-
-        # if the session item has a known work template, see if the path
-        # matches. if not, warn the user and provide a way to save the file to
-        # a different path
-        work_template = item.properties.get("work_template")
-        if work_template:
-            if not work_template.validate(path):
-                self.logger.warning(
-                    "The current session does not match the configured work "
-                    "file template.",
+            # log if no project root could be determined.
+            if not project_root:
+                self.logger.info(
+                    "Your session is not part of a maya project.",
                     extra={
                         "action_button": {
-                            "label": "Save File",
-                            "tooltip": "Save the current Maya session to a "
-                            "different file name",
-                            # will launch wf2 if configured
-                            "callback": _get_save_as_action(),
+                            "label": "Set Project",
+                            "tooltip": "Set the maya project",
+                            "callback": lambda: mel.eval('setProject ""'),
                         }
                     },
                 )
+
+            # ---- check the session against any attached work template
+
+            # get the path in a normalized state. no trailing separator,
+            # separators are appropriate for current os, no double separators,
+            # etc.
+            path = sgtk.util.ShotgunPath.normalize(path)
+
+            # if the session item has a known work template, see if the path
+            # matches. if not, warn the user and provide a way to save the file to
+            # a different path
+            work_template = item.properties.get("work_template")
+            if work_template:
+                if not work_template.validate(path):
+                    self.logger.warning(
+                        "The current session does not match the configured work "
+                        "file template.",
+                        extra={
+                            "action_button": {
+                                "label": "Save File",
+                                "tooltip": "Save the current Maya session to a "
+                                "different file name",
+                                # will launch wf2 if configured
+                                "callback": _get_save_as_action(),
+                            }
+                        },
+                    )
+                else:
+                    self.logger.debug("Work template configured and matches session file.")
             else:
-                self.logger.debug("Work template configured and matches session file.")
-        else:
-            self.logger.debug("No work template configured.")
+                self.logger.debug("No work template configured.")
 
-        # ---- populate the necessary properties and call base class validation
+            # ---- populate the necessary properties and call base class validation
 
-        # populate the publish template on the item if found
-        publish_template_setting = settings.get("Publish Template")
-        publish_template = publisher.engine.get_template_by_name(
-            publish_template_setting.value
-        )
-        if publish_template:
-            item.properties["publish_template"] = publish_template
+            # populate the publish template on the item if found
+            publish_template_setting = settings.get("Publish Template")
+            publish_template = publisher.engine.get_template_by_name(
+                publish_template_setting.value
+            )
+            if publish_template:
+                item.properties["publish_template"] = publish_template
 
-        # set the session path on the item for use by the base plugin validation
-        # step. NOTE: this path could change prior to the publish phase.
-        item.properties["path"] = path
+            # set the session path on the item for use by the base plugin validation
+            # step. NOTE: this path could change prior to the publish phase.
+            item.properties["path"] = path
 
         # run the base class validation
         return super(MayaSessionPublishPlugin, self).validate(settings, item)
@@ -241,16 +251,17 @@ class MayaSessionPublishPlugin(HookBaseClass):
         # are appropriate for current os, no double separators, etc.
         path = sgtk.util.ShotgunPath.normalize(_session_path())
 
-        # ensure the session is saved
-        _save_session(path)
+        if(item.type == "maya.session"):
+            # ensure the session is saved
+            _save_session(path)
 
-        # update the item with the saved session path
-        item.properties["path"] = path
+            # update the item with the saved session path
+            item.properties["path"] = path
 
-        # add dependencies for the base class to register when publishing
-        item.properties[
-            "publish_dependencies"
-        ] = _maya_find_additional_session_dependencies()
+            # add dependencies for the base class to register when publishing
+            item.properties[
+                "publish_dependencies"
+            ] = _maya_find_additional_session_dependencies()
 
         # let the base class register the publish
         super(MayaSessionPublishPlugin, self).publish(settings, item)
