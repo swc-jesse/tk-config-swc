@@ -57,7 +57,7 @@ settings.tk-maya.asset_step:
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  template_project: asset_root
+  template_project: asset_work_area
   automatic_context_switch: True
   location: "@engines.tk-maya.location"
 
@@ -69,7 +69,7 @@ settings.tk-maya.asset_child_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_child_step"
   menu_favourites: *settings_tk-maya_menu
-  template_project: asset_child_root
+  template_project: asset_child_work_area
   automatic_context_switch: True
   location: "@engines.tk-maya.location"  
 
@@ -117,7 +117,7 @@ settings.tk-maya.env_asset_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.env_asset_step"
   menu_favourites: *settings_tk-maya_menu  
-  template_project: env_asset_root
+  template_project: env_asset_work_area
   automatic_context_switch: True
   location: "@engines.tk-maya.location"    
 

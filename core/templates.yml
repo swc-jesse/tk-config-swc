@@ -286,17 +286,21 @@ paths:
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
     prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
-    asset_filename: '@asset_root/{Step}/{Task}/{Asset}[_{name}]_{Task}'
-    asset_snapshot_filename: '@asset_root/{Step}/{Task}/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_work_area: '@asset_root/{Step}/{Task}' 
+    asset_filename: '@asset_work_area/{Asset}[_{name}]_{Task}'
+    asset_snapshot_filename: '@asset_work_area/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
     
-    asset_child_filename: '@asset_child_root/{Step}/{Task}/{asset_name}[_{name}]_{Task}'
-    asset_child_snapshot_filename: '@asset_child_root/{Step}/{Task}/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
+    asset_child_work_area: '@asset_child_root/{Step}/{Task}'
+    asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}]_{Task}'
+    asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
 
+    # special_child_work_area: '@special_child_root'
     special_child_filename: '@special_child_root/{asset_name}_{Task}[_{name}]'
     special_child_snapshot_filename: '@special_child_root/snapshots/{asset_name}_{Task}[_{name}].{timestamp}'     
 
-    env_asset_filename: '@env_asset_root/{Step}/{Task}/{env_asset_name}[_{name}]_{Task}'
-    env_asset_snapshot_filename: '@env_asset_root/{Step}/{Task}/{env_asset_name}[_{name}]_{Task}.{timestamp}'
+    env_asset_work_area: '@env_asset_root/{Step}/{Task}'
+    env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}'
+    env_asset_snapshot_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}.{timestamp}'
     
     pub_asset_filename: '@pub_asset_root/{task_step}/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
     pub_asset_snapshot_filename: '@pub_asset_root/{task_step}/snapshots/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'
