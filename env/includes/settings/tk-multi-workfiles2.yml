@@ -19,6 +19,7 @@ includes:
 common_workfiles_settings: &common_workfiles_settings
   # file_browser_tabs: ['Working']
   # hook_filter_publishes: "{config}/tk-multi-workfiles2/filter_publishes.py"
+  show_change_context: true
   hook_filter_work_files: "{config}/tk-multi-workfiles2/filter_work_files.py"
   custom_actions_hook: "{config}/tk-multi-workfiles2/custom_actions.py"
   # hook_get_badge: "{config}/tk-multi-workfiles2/get_badge.py"
@@ -40,26 +41,26 @@ entity_browser_settings: &entity_browser_settings
       entity_type: Task
       filters:
       link_field: entity
-      hierarchy: [step]
+      hierarchy: []
   - caption: Children
     entity_type: Asset
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name]
     filters: 
       - [sg_asset_parent, is_not, [ null ]]  
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
-      hierarchy: [step]
+      hierarchy: [entity]
   - caption: Environment
     entity_type: CustomEntity01
-    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, sg_folder_name]
     filters: 
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
-      hierarchy: [step]    
+      hierarchy: [entity]    
   - caption: Publishing
     entity_type: CustomEntity03
     hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
@@ -75,13 +76,26 @@ entity_browser_settings: &env_entity_browser_settings
   entities:
   - caption: Environment
     entity_type: CustomEntity01
-    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, sg_folder_name]
     filters:
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
-      hierarchy: [step]
+      hierarchy: [entity]
+
+# anim_entity_browser_settings
+entity_browser_settings: &anim_entity_browser_settings
+  entities:
+  - caption: Animation
+    entity_type: CustomEntity05
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [entity]      
 
 # pub_entity_browser_settings
 entity_browser_settings: &pub_entity_browser_settings
@@ -156,7 +170,8 @@ settings.tk-multi-workfiles2.anim_asset_step:
   template_work: anim_asset_workfile
   template_work_area: anim_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  my_tasks_extra_display_fields: [entity.CustomEntity05.sg_asset_parent.Asset.code, entity.CustomEntity05.sg_asset_category]  
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
 
 # pub_asset_step
@@ -186,6 +201,7 @@ settings.tk-multi-workfiles2.env_asset_step:
   template_work: env_asset_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []  
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
@@ -220,7 +236,8 @@ settings.tk-multi-workfiles2.3dsmax.anim_asset_step:
   template_work: anim_asset_max_workfile
   template_work_area: anim_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  my_tasks_extra_display_fields: [entity.CustomEntity05.sg_asset_parent.Asset.code, entity.CustomEntity05.sg_asset_category]    
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
 
 # pub_asset_step
@@ -250,6 +267,7 @@ settings.tk-multi-workfiles2.3dsmax.env_asset_step:
   template_work: env_asset_max_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
@@ -284,7 +302,8 @@ settings.tk-multi-workfiles2.houdini.anim_asset_step:
   template_work: anim_asset_houdini_workfile
   template_work_area: anim_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  my_tasks_extra_display_fields: [entity.CustomEntity05.sg_asset_parent.Asset.code, entity.CustomEntity05.sg_asset_category]    
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
 
 # pub_asset_step
@@ -314,6 +333,7 @@ settings.tk-multi-workfiles2.houdini.env_asset_step:
   template_work: env_asset_houdini_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
@@ -348,7 +368,8 @@ settings.tk-multi-workfiles2.maya.anim_asset_step:
   template_work: anim_asset_maya_workfile
   template_work_area: anim_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  my_tasks_extra_display_fields: [entity.CustomEntity05.sg_asset_parent.Asset.code, entity.CustomEntity05.sg_asset_category]    
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
 
 # pub_asset_step
@@ -378,6 +399,7 @@ settings.tk-multi-workfiles2.maya.env_asset_step:
   template_work: env_asset_maya_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
@@ -432,6 +454,7 @@ settings.tk-multi-workfiles2.photoshop.env_asset_step:
   template_work: env_asset_photoshop_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
@@ -519,6 +542,7 @@ settings.tk-multi-workfiles2.substancepainter.env_asset_step:
   template_work: env_asset_substancepainter_workfile
   template_work_area: env_asset_root
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
@@ -604,7 +628,7 @@ settings.tk-multi-workfiles2.substancedesigner.prod_asset_step:
   <<: *pub_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"  
 
-# asset_child_step
+# env_asset_step
 settings.tk-multi-workfiles2.substancedesigner.env_asset_step:
   template_publish: env_asset_substancedesigner_workfile
   template_publish_area: env_asset_root
@@ -612,5 +636,6 @@ settings.tk-multi-workfiles2.substancedesigner.env_asset_step:
   template_work_area: env_asset_root
   # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
   <<: *common_workfiles_settings
+  my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"

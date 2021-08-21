@@ -249,6 +249,8 @@ class ShotgunFields(HookBaseClass):
                 "task",
                 "version",
                 "version_number",
+                "sg_p4_change_number",
+                "sg_p4_depo_path"
             ]
 
         elif entity_type == "Task":
@@ -397,7 +399,7 @@ class ShotgunFields(HookBaseClass):
             values[
                 "body"
             ] = """
-                <big>{published_file_type}, Version {version_number}</big><br>
+                <big>{published_file_type},  v{version_number}{[, CL ]sg_p4_change_number}</big><br>
                 For {entity::showtype}{[, Task ]task} <br>
                 Created by {created_by} on {created_at}<br>
 

@@ -24,12 +24,16 @@ entity_browser_settings: &entity_browser_settings
       - [sg_asset_parent, is, [ null ]]
   - caption: Children
     entity_type: Asset
-    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
+    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name]
     filters:
       - [sg_asset_parent, is_not, [ null ]]    
+  - caption: Animations
+    entity_type: CustomEntity05
+    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name]
+    filters: []       
   - caption: Environment
     entity_type: CustomEntity01
-    hierarchy: [project, sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, code]
+    hierarchy: [project, sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, sg_folder_name]
     filters: [] 
   - caption: Publishing
     entity_type: CustomEntity03
