@@ -130,6 +130,11 @@ class PostPhaseHook(HookBaseClass):
                 item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
 
                 item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
+
+                # update the published file 'code' field to match Perforce rev formating (filename.ext#rev) so we can tell them apart in SG
+                update_data = {'code': "{}#{}".format(item.properties.sg_publish_data['code'], change_data["rev"])}
+                publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], update_data)   
+
                 self.logger.info("Publish registered!")
                 self.logger.debug(
                     "ShotGrid Publish data...",
