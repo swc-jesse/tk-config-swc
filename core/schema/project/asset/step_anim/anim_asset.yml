@@ -2,12 +2,10 @@
 type: "shotgun_entity"
 
 # the shotgun entity type to connect to
-entity_type: "Asset"
+entity_type: "CustomEntity05"
 
 # the shotgun field to use for the folder name
-name: "Content/{sg_asset_parent.Asset.sg_asset_library}/{sg_asset_parent.Asset.sg_asset_type}/{sg_asset_parent.Asset.sg_asset_category}/{sg_asset_parent.Asset.code}/{sg_asset_type}/{sg_asset_category}/{sg_folder_name}"
-
-associated_entity_type: Asset
+name: "{sg_asset_category}/{sg_folder_name}"
 
 # shotgun filters to apply when getting the list of items
 # this should be a list of dicts, each dict containing
@@ -16,5 +14,4 @@ associated_entity_type: Asset
 # any values starting with $ are resolved into path objects
 filters:
     - { "path": "project", "relation": "is", "values": [ "$project" ] }
-    - { "path": "sg_asset_parent", "relation": "is_not", "values": [ null ] }
-    - { "path": "sg_asset_type", "relation": "in", "values": [ "Animations" ] }    
+    - { "path": "sg_asset_parent", "relation": "is", "values": [ "$asset" ] }

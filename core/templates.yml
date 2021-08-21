@@ -130,6 +130,42 @@ keys:
         shotgun_entity_type: Asset
         shotgun_field_name: code            
 
+    # Animation Asset
+    CustomEntity05:
+        type: str
+    anim_asset_name:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: code
+    anim_asset_library:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_library.AssetLibrary.code 
+    anim_asset_category:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_category           
+    anim_folder_name:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_folder_name   
+    anim_asset_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.code
+    anim_asset_library_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_library.AssetLibrary.code
+    anim_asset_type_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_type
+    anim_asset_category_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_category        
+
     # Environment Asset
     CustomEntity01:
         type: str
@@ -280,7 +316,7 @@ paths:
     # will be set within each template that uses the alias.
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
-    special_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{folder_name}'
+    special_child_root: 'Content/{anim_asset_library_parent}/{anim_asset_type_parent}/{anim_asset_category_parent}/{anim_asset_parent}/{Step}/{anim_asset_category}/{anim_folder_name}'
 
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{env_folder_name}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
@@ -295,8 +331,8 @@ paths:
     asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
 
     # special_child_work_area: '@special_child_root'
-    special_child_filename: '@special_child_root/{asset_name}_{Task}[_{name}]'
-    special_child_snapshot_filename: '@special_child_root/snapshots/{asset_name}_{Task}[_{name}].{timestamp}'     
+    special_child_filename: '@special_child_root/{anim_asset_name}_{Task}[_{name}]'
+    special_child_snapshot_filename: '@special_child_root/snapshots/{anim_asset_name}_{Task}[_{name}].{timestamp}'     
 
     env_asset_work_area: '@env_asset_root/{Step}/{Task}'
     env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}'

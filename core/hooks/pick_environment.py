@@ -46,8 +46,6 @@ class PickEnvironment(sgtk.Hook):
                                                                ["sg_asset_parent","sg_asset_type"])
 
                 if context_entity.get("sg_asset_parent"):
-                    if context_entity.get("sg_asset_type") in ["Animations"]:
-                        return "special_child"
                     return "asset_child"
 
                 return "asset"
@@ -59,7 +57,9 @@ class PickEnvironment(sgtk.Hook):
                                                                ["sg_asset_type"])
                 if context_entity.get("sg_asset_type") == "Campaigns":
                     return "pub_asset"
-                return "prod_asset"                        
+                return "prod_asset"     
+            elif context.entity["type"] == "CustomEntity05":
+                return "special_child"                  
 
         if context.entity and context.step:
             # We have a step and an entity.
@@ -69,8 +69,6 @@ class PickEnvironment(sgtk.Hook):
                                                                ["sg_asset_parent","sg_asset_type"])
 
                 if context_entity.get("sg_asset_parent"):
-                    if context_entity.get("sg_asset_type") in ["Animations"]:
-                        return "special_child_step"
                     return "asset_child_step"
 
                 return "asset_step"
@@ -82,6 +80,8 @@ class PickEnvironment(sgtk.Hook):
                                                                ["sg_asset_type"])
                 if context_entity.get("sg_asset_type") == "Campaigns":
                     return "pub_asset_step"
-                return "prod_asset_step"                    
+                return "prod_asset_step"
+            elif context.entity["type"] == "CustomEntity05":
+                return "special_child_step"                    
 
         return None

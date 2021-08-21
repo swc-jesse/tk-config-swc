@@ -112,7 +112,7 @@ class ShotgunFields(HookBaseClass):
             values[
                 "body"
             ] = """
-                {entity.CustomEntity01.sg_biome[ - ]}{entity.Asset.sg_asset_parent.Asset.code[ - ]}{entity.CustomEntity01.sg_asset_class[ - ]}{entity.Asset.sg_asset_category[ - ]}{entity.CustomEntity01.sg_asset_category[ - ]}{entity[<br>]}
+                {entity[<br>]}
                 {[Assigned to ]task_assignees[<br>]}
                 {[ Due:]due_date}
                 """
@@ -346,7 +346,7 @@ class ShotgunFields(HookBaseClass):
                 """
 
         elif entity_type == "Task":
-            values["title"] = "{entity.CustomEntity01.sg_biome[ - ]}{entity.Asset.sg_asset_parent.Asset.code[ - ]}{entity.CustomEntity01.sg_asset_class[ - ]}{entity.Asset.sg_asset_category[ - ]}{entity.CustomEntity01.sg_asset_category[ - ]}{entity}"
+            values["title"] = "{entity}"
             values[
                 "body"
             ] = """
