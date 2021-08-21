@@ -152,3 +152,9 @@ apps.tk-multi-perforce.location:
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
+
+# launchfolder
+apps.tk-shotgun-launchfolder.location:
+  type: app_store
+  name: tk-shotgun-launchfolder
+  version: v0.3.0
