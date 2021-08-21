@@ -71,13 +71,13 @@ settings.tk-houdini.asset_child_step:
   menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
-# special_child_step
-settings.tk-houdini.special_child_step:
+# anim_asset_step
+settings.tk-houdini.anim_asset_step:
   apps:
     <<: *settings_tk-houdini_apps 
-    tk-multi-publish2: "@settings.tk-multi-publish2.houdini.special_child_step"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.special_child_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.special_child_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.houdini.anim_asset_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.anim_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.anim_asset_step"
     tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
     tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
   menu_favourites: *settings_tk-houdini_menu

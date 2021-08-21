@@ -316,7 +316,7 @@ paths:
     # will be set within each template that uses the alias.
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
-    special_child_root: 'Content/{anim_asset_library_parent}/{anim_asset_type_parent}/{anim_asset_category_parent}/{anim_asset_parent}/{Step}/{anim_asset_category}/{anim_folder_name}'
+    anim_asset_root: 'Content/{anim_asset_library_parent}/{anim_asset_type_parent}/{anim_asset_category_parent}/{anim_asset_parent}/{Step}/{anim_asset_category}/{anim_folder_name}'
 
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{env_folder_name}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
@@ -330,9 +330,9 @@ paths:
     asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}]_{Task}'
     asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
 
-    # special_child_work_area: '@special_child_root'
-    special_child_filename: '@special_child_root/{anim_asset_name}_{Task}[_{name}]'
-    special_child_snapshot_filename: '@special_child_root/snapshots/{anim_asset_name}_{Task}[_{name}].{timestamp}'     
+    # anim_asset_work_area: '@anim_asset_root'
+    anim_asset_filename: '@anim_asset_root/{anim_asset_name}_{Task}[_{name}]'
+    anim_asset_snapshot_filename: '@anim_asset_root/snapshots/{anim_asset_name}_{Task}[_{name}].{timestamp}'     
 
     env_asset_work_area: '@env_asset_root/{Step}/{Task}'
     env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}'
@@ -372,10 +372,10 @@ paths:
     asset_child_snapshot:
         definition: '@asset_child_snapshot_filename.{ext}'
 
-    special_child_workfile:
-        definition: '@special_child_filename.{ext}'
-    special_child_snapshot:
-        definition: '@special_child_snapshot_filename.{ext}'        
+    anim_asset_workfile:
+        definition: '@anim_asset_filename.{ext}'
+    anim_asset_snapshot:
+        definition: '@anim_asset_snapshot_filename.{ext}'        
 
     env_asset_workfile:
         definition: '@env_asset_filename.{ext}'
@@ -437,10 +437,10 @@ paths:
     asset_child_maya_snapshot:
         definition: '@asset_child_snapshot_filename.{maya_extension}'
 
-    special_child_maya_workfile:
-        definition: '@special_child_filename.{maya_extension}'
-    special_child_maya_snapshot:
-        definition: '@special_child_snapshot_filename.{maya_extension}'        
+    anim_asset_maya_workfile:
+        definition: '@anim_asset_filename.{maya_extension}'
+    anim_asset_maya_snapshot:
+        definition: '@anim_asset_snapshot_filename.{maya_extension}'        
 
     env_asset_maya_workfile:
         definition: '@env_asset_filename.{maya_extension}'
@@ -472,10 +472,10 @@ paths:
     asset_child_houdini_snapshot:
         definition: '@asset_child_snapshot_filename.hip'
 
-    special_child_houdini_workfile:
-        definition: '@special_child_filename.hip'
-    special_child_houdini_snapshot:
-        definition: '@special_child_snapshot_filename.hip'        
+    anim_asset_houdini_workfile:
+        definition: '@anim_asset_filename.hip'
+    anim_asset_houdini_snapshot:
+        definition: '@anim_asset_snapshot_filename.hip'        
 
     env_asset_houdini_workfile:
         definition: '@env_asset_filename.hip'
@@ -507,10 +507,10 @@ paths:
     asset_child_max_snapshot:
         definition: '@asset_child_snapshot_filename.max'
 
-    special_child_max_workfile:
-        definition: '@special_child_filename.max'
-    special_child_max_snapshot:
-        definition: '@special_child_snapshot_filename.max'        
+    anim_asset_max_workfile:
+        definition: '@anim_asset_filename.max'
+    anim_asset_max_snapshot:
+        definition: '@anim_asset_snapshot_filename.max'        
 
     env_asset_max_workfile:
         definition: '@env_asset_filename.max'

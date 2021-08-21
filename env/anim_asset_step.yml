@@ -32,10 +32,10 @@ includes:
 
 engines:
   tk-desktop2: "@settings.tk-desktop2.all"
-  tk-desktop: "@settings.tk-desktop.special_child_step"
-  tk-3dsmax: "@settings.tk-3dsmax.special_child_step"
-  tk-houdini: "@settings.tk-houdini.special_child_step"
-  tk-maya: "@settings.tk-maya.special_child_step"
+  tk-desktop: "@settings.tk-desktop.anim_asset_step"
+  tk-3dsmax: "@settings.tk-3dsmax.anim_asset_step"
+  tk-houdini: "@settings.tk-houdini.anim_asset_step"
+  tk-maya: "@settings.tk-maya.anim_asset_step"
   tk-photoshopcc: "@settings.tk-photoshopcc.asset_child_step"
   tk-substancedesigner: "@settings.tk-substancedesigner.asset_child_step"
   tk-substancepainter: "@settings.tk-substancepainter.asset_child_step"

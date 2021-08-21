@@ -59,7 +59,7 @@ class PickEnvironment(sgtk.Hook):
                     return "pub_asset"
                 return "prod_asset"     
             elif context.entity["type"] == "CustomEntity05":
-                return "special_child"                  
+                return "anim_asset"                  
 
         if context.entity and context.step:
             # We have a step and an entity.
@@ -82,6 +82,6 @@ class PickEnvironment(sgtk.Hook):
                     return "pub_asset_step"
                 return "prod_asset_step"
             elif context.entity["type"] == "CustomEntity05":
-                return "special_child_step"                    
+                return "anim_asset_step"                    
 
         return None
