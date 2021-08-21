@@ -15,9 +15,7 @@ entity_type: Step
 
 associated_entity_type: CustomEntity05
 
-defer_creation: false
-
-create_with_parent: true
+defer_creation: true
 
 # the shotgun field to use for the folder name
 name: "short_name"
