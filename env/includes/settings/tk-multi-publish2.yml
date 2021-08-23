@@ -190,7 +190,7 @@ settings.tk-multi-publish2.maya.env_asset_step:
 
 # asset_step
 settings.tk-multi-publish2.photoshop.asset_step: &settings_publish_plugins_tk-multi-publish2_photoshop
-  collector: "{config}/tk-multi-publish2/base_collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{config}/tk-multi-publish2/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
   collector_settings:
       Work Template: asset_photoshop_workfile
       Work Area: asset_root
@@ -200,7 +200,7 @@ settings.tk-multi-publish2.photoshop.asset_step: &settings_publish_plugins_tk-mu
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
     settings: {}
   - name: Upload for review
-    hook: "{self}/upload_version.py:{engine}/tk-multi-publish2/basic/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/tk-photoshopcc/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -215,18 +215,26 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
 # pub_asset_step
 settings.tk-multi-publish2.photoshop.pub_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_photoshop
-  collector: "{self}/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
+  collector: "{config}/tk-multi-publish2/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
   collector_settings:
       Work Template: pub_asset_photoshop_workfile
       Work Area: pub_asset_root
+  publish_plugins: &publish_plugins_prod_assets
+  - name: Publish to Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
+    settings: {}
+  - name: Upload for review
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/tk-photoshopcc/upload_version.py"
+    settings: {}
 
 # prod_asset_step
 settings.tk-multi-publish2.photoshop.prod_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_photoshop
-  collector: "{self}/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
+  collector: "{config}/tk-multi-publish2/collector.py:{config}/tk-multi-publish2/tk-photoshopcc/collector.py"
   collector_settings:
       Work Template: prod_asset_photoshop_workfile
       Work Area: prod_asset_root
+  <<: *publish_plugins_prod_assets
 
 # env_asset_step
 settings.tk-multi-publish2.photoshop.env_asset_step:
