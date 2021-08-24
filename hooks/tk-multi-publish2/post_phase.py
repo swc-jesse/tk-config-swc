@@ -26,7 +26,7 @@ class PostPhaseHook(HookBaseClass):
     on how to traverse the tree and manipulate it.
     """
 
-    def post_publish(self, publish_tree):                                                                                                                                                                                                                                                                                    
+    def post_publish(self, publish_tree):
 
         self.logger.debug("Starting Post-publish phase.")
         publisher = self.parent
