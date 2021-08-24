@@ -96,7 +96,7 @@ settings.tk-multi-publish2.houdini.asset_step: &settings_publish_plugins_tk-mult
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
   - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-houdini/publish_session.py"
     settings: {}
   - name: Upload for review
     hook: "{self}/upload_version.py"

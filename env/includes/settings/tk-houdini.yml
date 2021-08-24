@@ -14,8 +14,8 @@
 includes:
 - ../app_locations.yml
 - ../engine_locations.yml
-- ./tk-houdini-alembicnode.yml
-- ./tk-houdini-mantranode.yml
+# - ./tk-houdini-alembicnode.yml
+# - ./tk-houdini-mantranode.yml
 - ./tk-multi-loader2.yml
 - ./tk-multi-publish2.yml
 - ./tk-multi-shotgunpanel.yml
@@ -48,8 +48,8 @@ settings.tk-houdini.asset_step:
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.houdini"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_step"
-    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_step"
-    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_step"
+    # tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_step"
+    # tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_step"
     tk-multi-perforce: "@settings.tk-multi-perforce"
   menu_favourites: &settings_tk-houdini_menu
   - {app_instance: tk-multi-workfiles2, name: File Open...}
@@ -66,8 +66,8 @@ settings.tk-houdini.asset_child_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.asset_child_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.asset_child_step"
-    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
-    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
+    # tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
+    # tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
   menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
@@ -78,8 +78,8 @@ settings.tk-houdini.anim_asset_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.anim_asset_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.anim_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.anim_asset_step"
-    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
-    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
+    # tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.asset_child_step"
+    # tk-houdini-mantranode: "@settings.tk-houdini-mantranode.asset_child_step"
   menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'  
 
@@ -90,8 +90,8 @@ settings.tk-houdini.pub_asset_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.pub_asset_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.pub_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.pub_asset_step"
-    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.pub_asset_step"
-    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.pub_asset_step"
+    # tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.pub_asset_step"
+    # tk-houdini-mantranode: "@settings.tk-houdini-mantranode.pub_asset_step"
   menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
@@ -102,8 +102,8 @@ settings.tk-houdini.prod_asset_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.prod_asset_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.prod_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.prod_asset_step"
-    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.prod_asset_step"
-    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.prod_asset_step"
+    # tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.prod_asset_step"
+    # tk-houdini-mantranode: "@settings.tk-houdini-mantranode.prod_asset_step"
   menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'  
 
@@ -114,8 +114,8 @@ settings.tk-houdini.env_asset_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.houdini.env_asset_step"
     tk-multi-snapshot: "@settings.tk-multi-snapshot.houdini.env_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.houdini.env_asset_step"
-    tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.env_asset_step"
-    tk-houdini-mantranode: "@settings.tk-houdini-mantranode.env_asset_step"
+    # tk-houdini-alembicnode: "@settings.tk-houdini-alembicnode.env_asset_step"
+    # tk-houdini-mantranode: "@settings.tk-houdini-mantranode.env_asset_step"
   menu_favourites: *settings_tk-houdini_menu
   location: '@engines.tk-houdini.location'
 
