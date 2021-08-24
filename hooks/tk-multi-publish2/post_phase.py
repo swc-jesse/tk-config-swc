@@ -56,14 +56,14 @@ class PostPhaseHook(HookBaseClass):
         for item in publish_tree:
 
             if item.properties.get('publish_data'):
-                self.logger.info(item.properties.get('publish_data'))
+
                 path = item.properties.get("path")
 
                 self.logger.info("Ensuring file is checked out...")
                 self.p4_fw.util.open_file_for_edit(p4, path, add_if_new=True)
 
-                #depo_paths = self.p4_fw.util.client_to_depot_paths(p4, path, add_if_new=True)
-                #self.logger.info("Depo paths: {}".format(depo_paths))
+                # depo_paths = self.p4_fw.util.client_to_depot_paths(p4, path)
+                # self.logger.info("Depo paths: {}".format(depo_paths))
                 # NOTE: This returns an empty string for new files. Presumably
                 # this function only works for files already in the depo.
 
