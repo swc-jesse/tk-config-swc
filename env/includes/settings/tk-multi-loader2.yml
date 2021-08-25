@@ -46,6 +46,21 @@ entity_browser_settings: &entity_browser_settings
     - [project, is, '{context.project}']
     hierarchy: [entity, content]    
 
+# Desktopp
+settings.tk-multi-loader2.desktop:
+  #actions_hook: "{engine}/tk-multi-loader2/basic/scene_actions.py"
+  action_mappings:
+    Alembic Cache: [reference, import]
+    Image: [texture_node, image_plane]
+    Maya Scene: [reference, import]
+    Photoshop Image: [texture_node, image_plane]  
+    3dsmax Scene: [import, reference]
+    Rendered Image: [texture_node]
+    Texture: [texture_node]
+  <<: *entity_browser_settings 
+  publish_filters: [["sg_status_list", "is_not", null]]  
+  location: "@apps.tk-multi-loader2.location"
+
 # 3dsmax
 settings.tk-multi-loader2.3dsmax:
   actions_hook: "{engine}/tk-multi-loader2/basic/scene_actions.py"
