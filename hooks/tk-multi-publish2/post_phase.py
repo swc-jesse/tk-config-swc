@@ -28,124 +28,141 @@ class PostPhaseHook(HookBaseClass):
 
     def post_publish(self, publish_tree):
 
-        self.logger.debug("Starting Post-publish phase.")
-        publisher = self.parent
 
-        # Make the p4 connection
-        self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
-        self.logger.debug("Perforce framework loaded.")
-
-        p4 = self.p4_fw.connection.connect()
-        self.logger.debug("Perforce connection made.")
-
-        # create a new changelist for all files being published:
-        self.logger.info("Creating new Perforce changelist...")
-
-        # collect descriptions from Publish Items to supply P4 with change description
-        change_descriptions = "\n".join(
-            ["- {}".format(item.description) for item in publish_tree
-                if item.description
-            ]
-        )
-
-        new_change = self.p4_fw.util.create_change(p4, change_descriptions)
-        # NOTE: new_change just returns the id of the change
-
-        change_items = []
-
+        # See if anything was Published to Perforce
+        do_post_publish = False
         for item in publish_tree:
 
             if item.properties.get('publish_data'):
+                do_post_publish = True
+        
+            if do_post_publish:
+                break
 
-                path = item.properties.get("path")
+        if do_post_publish:
+            self.logger.debug("Starting Post-publish phase.")
+            publisher = self.parent
 
-                self.logger.info("Ensuring file is checked out...")
-                self.p4_fw.util.open_file_for_edit(p4, path, add_if_new=True)
+            # Make the p4 connection
+            self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
+            self.logger.debug("Perforce framework loaded.")
 
-                # depo_paths = self.p4_fw.util.client_to_depot_paths(p4, path)
-                # self.logger.info("Depo paths: {}".format(depo_paths))
-                # NOTE: This returns an empty string for new files. Presumably
-                # this function only works for files already in the depo.
+            p4 = self.p4_fw.connection.connect()
+            self.logger.debug("Perforce connection made.")
 
-                # and add the file to this change:
-                self.logger.info("Adding the file to the change: {}".format(path))
-                self.p4_fw.util.add_to_change(p4, new_change, path)
-                # NOTE: for some reason this is not adding anything to the change
-                # and I cannot figure out why.
+            # create a new changelist for all files being published:
+            self.logger.info("Creating new Perforce changelist...")
 
-                change_items.append(item)
+            # collect descriptions from Publish Items to supply P4 with change description
+            change_descriptions = "\n".join(
+                ["- {}".format(item.description) for item in publish_tree
+                    if item.description
+                ]
+            )
 
-        for result in p4.run('files', '@=' + new_change):
-            # NOTE: well this shit doesnt work at all.
+            new_change = self.p4_fw.util.create_change(p4, change_descriptions)
+            # NOTE: new_change just returns the id of the change
+
+            change_items = []
+
+            for item in publish_tree:
+
+                if item.properties.get('publish_data'):
+
+                    path = item.properties.get("path")
+
+                    self.logger.info("Ensuring file is checked out...")
+                    self.p4_fw.util.open_file_for_edit(p4, path, add_if_new=True)
+
+                    # depo_paths = self.p4_fw.util.client_to_depot_paths(p4, path)
+                    # self.logger.info("Depo paths: {}".format(depo_paths))
+                    # NOTE: This returns an empty string for new files. Presumably
+                    # this function only works for files already in the depo.
+
+                    # and add the file to this change:
+                    self.logger.info("Adding the file to the change: {}".format(path))
+                    self.p4_fw.util.add_to_change(p4, new_change, path)
+                    # NOTE: for some reason this is not adding anything to the change
+                    # and I cannot figure out why.
+
+                    change_items.append(item)
+
+            for result in p4.run('files', '@=' + new_change):
+                # NOTE: well this shit doesnt work at all.
+
+                self.logger.debug(
+                    "Perforce Change details...",
+                    extra={
+                        "action_show_more_info": {
+                            "label": "P4 Change details",
+                            "tooltip": "Show the Perforce Change details before check-in",
+                            "text": "<pre>%s</pre>".format(pprint.pformat(result)),
+                        }
+                    },
+                )
+
+            # submit the change:
+            self.logger.info("Submitting the change...")
+            submission = self.p4_fw.util.submit_change(p4, new_change)
 
             self.logger.debug(
-                "Perforce Change details...",
+                "Perforce Submission data...",
                 extra={
                     "action_show_more_info": {
-                        "label": "P4 Change details",
-                        "tooltip": "Show the Perforce Change details before check-in",
-                        "text": "<pre>%s</pre>".format(pprint.pformat(result)),
+                        "label": "P4 Submission",
+                        "tooltip": "Show the complete Perforce Submission data",
+                        "text": "<pre>{}</pre>".format(pprint.pformat(submission)),
                     }
                 },
             )
 
-        # submit the change:
-        self.logger.info("Submitting the change...")
-        submission = self.p4_fw.util.submit_change(p4, new_change)
+            changed_files = [i for i in [s for s in submission if isinstance(s, dict)] if i.get('depotFile')]
+            """
+            [{'action': 'edit',
+            'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept.psd',
+            'rev': '4'},
+            {'action': 'edit',
+            'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept_alt.psd',
+            'rev': '6'}]
+            """
 
-        self.logger.debug(
-            "Perforce Submission data...",
-            extra={
-                "action_show_more_info": {
-                    "label": "P4 Submission",
-                    "tooltip": "Show the complete Perforce Submission data",
-                    "text": "<pre>{}</pre>".format(pprint.pformat(submission)),
-                }
-            },
-        )
+            submitted_change = next((int(i['submittedChange']) for i in [s for s in submission if isinstance(s, dict)] if i.get('submittedChange')), None)
+            """
+            {'submittedChange': '92'}
+            """
 
-        changed_files = [i for i in [s for s in submission if isinstance(s, dict)] if i.get('depotFile')]
-        """
-        [{'action': 'edit',
-          'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept.psd',
-          'rev': '4'},
-         {'action': 'edit',
-          'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept_alt.psd',
-          'rev': '6'}]
-        """
+            for item in change_items:
 
-        submitted_change = next((int(i['submittedChange']) for i in [s for s in submission if isinstance(s, dict)] if i.get('submittedChange')), None)
-        """
-        {'submittedChange': '92'}
-        """
+                # TODO: iterate thru the submission and update each items publish_data with
+                # the perforce data (version_number, sg_p4_change_number, sg_p4_depo_path)
 
-        for item in change_items:
+                depot_path = self.p4_fw.util.client_to_depot_paths(p4, item.properties.get("path"))[0]
+                self.logger.debug("depot_path = {}".format(depot_path))
+                change_data = next(i for i in changed_files if i['depotFile'] == depot_path)
 
-            # TODO: iterate thru the submission and update each items publish_data with
-            # the perforce data (version_number, sg_p4_change_number, sg_p4_depo_path)
+                if change_data:
 
-            depot_path = self.p4_fw.util.client_to_depot_paths(p4, item.properties.get("path"))[0]
-            self.logger.debug("depot_path = {}".format(depot_path))
-            change_data = next(i for i in changed_files if i['depotFile'] == depot_path)
+                    # use the p4 revision number as the version number
+                    item.properties.publish_data["version_number"] = int(change_data["rev"])
 
-            if change_data:
+                    # attach the p4 data to the "sg_fields" dict which updates the published file entry in SG
+                    item.properties.publish_data["sg_fields"]["sg_p4_depo_path"] = change_data["depotFile"]
+                    item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
 
-                # use the p4 revision number as the version number
-                item.properties.publish_data["version_number"] = int(change_data["rev"])
+                    item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
 
-                # attach the p4 data to the "sg_fields" dict which updates the published file entry in SG
-                item.properties.publish_data["sg_fields"]["sg_p4_depo_path"] = change_data["depotFile"]
-                item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
+                    # update the published file 'code' field to match Perforce rev formating (filename.ext#rev) so we can tell them apart in SG
+                    update_data = {'code': "{}#{}".format(item.properties.sg_publish_data['code'], change_data["rev"])}
+                    publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], update_data)   
 
-                item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
-                self.logger.info("Publish registered!")
-                self.logger.debug(
-                    "ShotGrid Publish data...",
-                    extra={
-                        "action_show_more_info": {
-                            "label": "ShotGrid Publish Data",
-                            "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
-                            "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
-                        }
-                    },
-                )
+                    self.logger.info("Publish registered!")
+                    self.logger.debug(
+                        "ShotGrid Publish data...",
+                        extra={
+                            "action_show_more_info": {
+                                "label": "ShotGrid Publish Data",
+                                "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
+                                "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
+                            }
+                        },
+                    )

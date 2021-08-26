@@ -102,15 +102,24 @@ class SceneOperation(HookBaseClass):
             # save current script as file_path
             doc = self._get_active_document()
             adobe.save_as(doc, file_path)
+            self.parent.engine._PhotoshopCCEngine__add_to_context_cache(file_path, context)
 
         elif operation == "reset":
             # do nothing and indicate scene was reset to empty
             return True
 
-        elif operation == "prepare_new":
-            # file->new. Not sure how to pop up the actual file->new UI,
-            # this command will create a document with default properties
-            adobe.app.documents.add()
+        elif operation == "prepare_new":      
+            # Get task data from Shotgun context
+            adobe.app.preferences.rulerUnits = adobe.Units.PIXELS
+            context_task = context.sgtk.shotgun.find_one("Task",
+                                                [["id", "is", context.task["id"]]],
+                                                ["sg_width", "sg_height", "sg_resolution"])
+            
+            task_width = context_task.get('sg_width')
+            task_height = context_task.get('sg_height')
+            task_dpi = context_task.get('sg_resolution')
+
+            doc = adobe.app.documents.add(800 if task_width == None else task_width, 600 if task_height == None else task_height, 72 if task_dpi == None else task_dpi)
 
     def _get_active_document(self):
         """

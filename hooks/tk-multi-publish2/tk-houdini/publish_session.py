@@ -15,10 +15,9 @@ import sgtk
 from tank_vendor import six
 
 HookBaseClass = sgtk.get_hook_baseclass()
-TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
 
 
-class HoudiniPerforceFileCheckin(HookBaseClass):
+class HoudiniSessionPublishPlugin(HookBaseClass):
     """
     Plugin for publishing an open houdini session.
 
@@ -29,6 +28,65 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
         hook: "{self}/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
 
     """
+
+    # NOTE: The plugin icon and name are defined by the base file plugin.
+
+    @property
+    def description(self):
+        """
+        Verbose, multi-line description of what the plugin does. This can
+        contain simple html for formatting.
+        """
+
+        loader_url = "https://support.shotgunsoftware.com/hc/en-us/articles/219033078"
+
+        return """
+        Publishes the file to ShotGrid. A <b>Publish</b> entry will be
+        created in ShotGrid which will include a reference to the file's current
+        path on disk. If a publish template is configured, a copy of the
+        current session will be copied to the publish template path which
+        will be the file that is published. Other users will be able to access
+        the published file via the <b><a href='%s'>Loader</a></b> so long as
+        they have access to the file's location on disk.
+
+        If the session has not been saved, validation will fail and a button
+        will be provided in the logging output to save the file.
+
+        <h3>File versioning</h3>
+        If the filename contains a version number, the process will bump the
+        file to the next version after publishing.
+
+        The <code>version</code> field of the resulting <b>Publish</b> in
+        ShotGrid will also reflect the version number identified in the filename.
+        The basic worklfow recognizes the following version formats by default:
+
+        <ul>
+        <li><code>filename.v###.ext</code></li>
+        <li><code>filename_v###.ext</code></li>
+        <li><code>filename-v###.ext</code></li>
+        </ul>
+
+        After publishing, if a version number is detected in the work file, the
+        work file will automatically be saved to the next incremental version
+        number. For example, <code>filename.v001.ext</code> will be published
+        and copied to <code>filename.v002.ext</code>
+
+        If the next incremental version of the file already exists on disk, the
+        validation step will produce a warning, and a button will be provided in
+        the logging output which will allow saving the session to the next
+        available version number prior to publishing.
+
+        <br><br><i>NOTE: any amount of version number padding is supported. for
+        non-template based workflows.</i>
+
+        <h3>Overwriting an existing publish</h3>
+        In non-template workflows, a file can be published multiple times,
+        however only the most recent publish will be available to other users.
+        Warnings will be provided during validation if there are previous
+        publishes.
+        """ % (
+            loader_url,
+        )
 
     @property
     def settings(self):
@@ -51,7 +109,21 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
         """
 
         # inherit the settings from the base publish plugin
-        base_settings = super(HoudiniPerforceFileCheckin, self).settings or {}
+        base_settings = super(HoudiniSessionPublishPlugin, self).settings or {}
+
+        # settings specific to this class
+        houdini_publish_settings = {
+            "Publish Template": {
+                "type": "template",
+                "default": None,
+                "description": "Template path for published work files. Should"
+                "correspond to a template defined in "
+                "templates.yml.",
+            }
+        }
+
+        # update the base settings
+        base_settings.update(houdini_publish_settings)
 
         return base_settings
 
@@ -92,6 +164,12 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
         :returns: dictionary with boolean keys accepted, required and enabled
         """
 
+        # if a publish template is configured, disable context change. This
+        # is a temporary measure until the publisher handles context switching
+        # natively.
+        if settings.get("Publish Template").value:
+            item.context_change_allowed = False
+
         path = _session_path()
 
         if not path:
@@ -127,6 +205,7 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
         path = _session_path()
 
         # ---- ensure the session has been saved
+
         if not path:
             # the session still requires saving. provide a save button.
             # validation fails.
@@ -134,17 +213,53 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
             self.logger.error(error_msg, extra=_get_save_as_action())
             raise Exception(error_msg)
 
+        # ---- check the session against any attached work template
+
         # get the path in a normalized state. no trailing separator,
         # separators are appropriate for current os, no double separators,
         # etc.
         path = sgtk.util.ShotgunPath.normalize(path)
 
+        # if the session item has a known work template, see if the path
+        # matches. if not, warn the user and provide a way to save the file to
+        # a different path
+        work_template = item.properties.get("work_template")
+        if work_template:
+            if not work_template.validate(path):
+                self.logger.warning(
+                    "The current session does not match the configured work "
+                    "template.",
+                    extra={
+                        "action_button": {
+                            "label": "Save File",
+                            "tooltip": "Save the current Houdini session to a "
+                            "different file name",
+                            # will launch wf2 if configured
+                            "callback": _get_save_as_action(),
+                        }
+                    },
+                )
+            else:
+                self.logger.debug("Work template configured and matches session file.")
+        else:
+            self.logger.debug("No work template configured.")
+
+        # ---- populate the necessary properties and call base class validation
+
+        # populate the publish template on the item if found
+        publish_template_setting = settings.get("Publish Template")
+        publish_template = publisher.engine.get_template_by_name(
+            publish_template_setting.value
+        )
+        if publish_template:
+            item.properties["publish_template"] = publish_template
+
         # set the session path on the item for use by the base plugin validation
-        # step.
+        # step. NOTE: this path could change prior to the publish phase.
         item.properties["path"] = path
 
         # run the base class validation
-        return super(HoudiniPerforceFileCheckin, self).validate(settings, item)
+        return super(HoudiniSessionPublishPlugin, self).validate(settings, item)
 
     def publish(self, settings, item):
         """
@@ -167,7 +282,7 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
         item.properties["path"] = path
 
         # let the base class register the publish
-        super(HoudiniPerforceFileCheckin, self).publish(settings, item)
+        super(HoudiniSessionPublishPlugin, self).publish(settings, item)
 
     def finalize(self, settings, item):
         """
@@ -181,8 +296,7 @@ class HoudiniPerforceFileCheckin(HookBaseClass):
         """
 
         # do the base class finalization
-        super(HoudiniPerforceFileCheckin, self).finalize(settings, item)
-
+        super(HoudiniSessionPublishPlugin, self).finalize(settings, item)
 
 def _save_session(path):
     """

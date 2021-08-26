@@ -11,6 +11,8 @@
 import os.path
 
 import maya.cmds as cmds
+import maya.mel as mel
+from pymel.core import optionVar as optionVar
 
 import sgtk
 from sgtk import TankError
@@ -88,6 +90,8 @@ class SceneOperation(HookBaseClass):
             # open the specified scene
             cmds.file(file_path, open=True, force=True)
 
+            self.addToRecentFiles(file_path)
+
         elif operation == "save":
             # save the current scene:
             cmds.file(save=True)
@@ -111,6 +115,8 @@ class SceneOperation(HookBaseClass):
             else:
                 cmds.file(save=True, force=True)
 
+            self.addToRecentFiles(file_path)
+            
         elif operation == "reset":
             """
             Reset the scene to an empty state
@@ -139,4 +145,19 @@ class SceneOperation(HookBaseClass):
 
             # do new file:
             cmds.file(newFile=True, force=True)
-            return True
+            return True       
+        
+    def addToRecentFiles(self, file_path):
+        if(file_path):
+            # Switch to Unix-style paths since this command is going to mel
+            file_path = file_path.replace(os.path.sep, '/')
+
+            # Gotta tell Maya the file type for recent file
+            maya_file_type = None
+            if file_path.lower().endswith(".ma"):
+                maya_file_type = "mayaAscii"
+            elif file_path.lower().endswith(".mb"):
+                maya_file_type = "mayaBinary"
+            
+            # Append recent file. We use the native mel command since it seems to manage duplicates automatically
+            mel.eval('addRecentFile("{}", "{}");'.format(file_path, maya_file_type))

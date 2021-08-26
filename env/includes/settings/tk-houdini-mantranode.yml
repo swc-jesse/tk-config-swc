@@ -17,7 +17,7 @@ includes:
 
 # asset step
 settings.tk-houdini-mantranode.asset_step:
-  work_file_template: houdini_asset_work
+  work_file_template: asset_houdini_workfile
   default_node_name: sg_mantra_out
   output_profiles:
   - name: Default Render
@@ -31,7 +31,7 @@ settings.tk-houdini-mantranode.asset_step:
 
 # asset_child_step
 settings.tk-houdini-mantranode.asset_child_step:
-  work_file_template: houdini_asset_work
+  work_file_template: asset_child_houdini_workfile
   default_node_name: sg_mantra_out
   output_profiles:
   - name: Default Render
@@ -43,9 +43,9 @@ settings.tk-houdini-mantranode.asset_child_step:
     output_extra_plane_template: houdini_asset_extra_plane
   location: "@apps.tk-houdini-mantranode.location"
 
-# asset_other step
-settings.tk-houdini-mantranode.asset_other_step:
-  work_file_template: houdini_asset_other_work
+# pub_asset step
+settings.tk-houdini-mantranode.pub_asset_step:
+  work_file_template: pub_asset_houdini_workfile
   default_node_name: sg_mantra_out
   output_profiles:
   - name: Default Render
@@ -57,9 +57,23 @@ settings.tk-houdini-mantranode.asset_other_step:
     output_extra_plane_template: houdini_asset_extra_plane
   location: "@apps.tk-houdini-mantranode.location"
 
-# asset_other_child_step
-settings.tk-houdini-mantranode.asset_other_child_step:
-  work_file_template: houdini_asset_other_work
+# prod_asset step
+settings.tk-houdini-mantranode.prod_asset_step:
+  work_file_template: prod_asset_houdini_workfile
+  default_node_name: sg_mantra_out
+  output_profiles:
+  - name: Default Render
+    settings: {}
+    color: []
+    output_render_template: houdini_asset_render
+    output_ifd_template: houdini_asset_ifd
+    output_dcm_template: houdini_asset_dcm
+    output_extra_plane_template: houdini_asset_extra_plane
+  location: "@apps.tk-houdini-mantranode.location"  
+
+# env_asset_step
+settings.tk-houdini-mantranode.env_asset_step:
+  work_file_template: env_asset_houdini_workfile
   default_node_name: sg_mantra_out
   output_profiles:
   - name: Default Render

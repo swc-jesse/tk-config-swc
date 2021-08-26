@@ -36,11 +36,12 @@ settings.tk-maya.asset:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   debug_logging: false
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"
 
 # asset_step
-settings.tk-maya.asset_step:
-  apps:
+settings.tk-maya.asset_step: 
+  apps: &settings_tk-maya_apps
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.maya"
@@ -50,77 +51,75 @@ settings.tk-maya.asset_step:
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_step"
     # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
     tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
+  menu_favourites: &settings_tk-maya_menu
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  template_project: asset_root
+  template_project: asset_work_area
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"
 
 # asset_child_step
 settings.tk-maya.asset_child_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_child_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.maya"
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_child_step"  
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_child_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_child_step"
-    # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  template_project: asset_child_root
-  location: "@engines.tk-maya.location"
+  menu_favourites: *settings_tk-maya_menu
+  template_project: asset_child_work_area
+  automatic_context_switch: True
+  location: "@engines.tk-maya.location"  
 
-# asset_other_step
-settings.tk-maya.asset_other_step:
+# anim_asset_step
+settings.tk-maya.anim_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_other_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.maya"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_other_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_other_step"
-    # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  template_project: asset_other_root
-  location: "@engines.tk-maya.location"
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.anim_asset_step"  
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.anim_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.anim_asset_step"
+  menu_favourites: *settings_tk-maya_menu
+  template_project: anim_asset_root
+  automatic_context_switch: False
+  location: "@engines.tk-maya.location"    
 
-# asset_other_child_step
-settings.tk-maya.asset_other_child_step:
+# pub_asset_step
+settings.tk-maya.pub_asset_step:
   apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-publish2: "@settings.tk-multi-publish2.maya.asset_other_child_step"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel.maya"
-    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.asset_other_child_step"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.asset_other_child_step"
-    # tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.maya"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  template_project: asset_other_child_root
-  location: "@engines.tk-maya.location"
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.pub_asset_step"  
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.pub_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.pub_asset_step"
+  menu_favourites: *settings_tk-maya_menu 
+  template_project: pub_asset_root
+  automatic_context_switch: True
+  location: "@engines.tk-maya.location"    
+
+# prod_asset_step
+settings.tk-maya.prod_asset_step:
+  apps:
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.prod_asset_step"  
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.prod_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.prod_asset_step"
+  menu_favourites: *settings_tk-maya_menu 
+  template_project: prod_asset_root
+  automatic_context_switch: True
+  location: "@engines.tk-maya.location"     
+
+# env_asset_step
+settings.tk-maya.env_asset_step:
+  apps:
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.env_asset_step"  
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.env_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.env_asset_step"
+  menu_favourites: *settings_tk-maya_menu  
+  template_project: env_asset_work_area
+  automatic_context_switch: True
+  location: "@engines.tk-maya.location"    
 
 # project
 settings.tk-maya.project:
@@ -133,4 +132,5 @@ settings.tk-maya.project:
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
+  automatic_context_switch: True
   location: "@engines.tk-maya.location"

@@ -14,5 +14,4 @@ name: "Content/{sg_asset_library}/{sg_asset_type}/{sg_asset_category}/{code}"
 # any values starting with $ are resolved into path objects
 filters:
     - { "path": "project", "relation": "is", "values": [ "$project" ] }
-    - { "path": "sg_asset_type", "relation": "not_in", "values": [ "Tool", "Engine", "Publishing" ] }   
-    - { "path": "sg_asset_parent", "relation": "is", "values": [ null ] }
+    - { "path": "sg_asset_parent", "relation": "is", "values": [ null ] }     

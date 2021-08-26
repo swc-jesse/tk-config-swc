@@ -163,20 +163,7 @@ class BasicSceneCollector(HookBaseClass):
         The type string should be one of the data types that toolkit accepts as
         part of its environment configuration.
         """
-
-        collector_settings = {
-            "Work Area": {
-                "type": "template",
-                "default": None,
-                "description": "Template path for work area. Should "
-                "correspond to a folder template defined in "
-                "templates.yml. If configured, is made available"
-                "to publish plugins via the collected item's "
-                "properties. ",
-            },
-        }
-
-        return collector_settings
+        return {}
 
     def process_current_session(self, settings, parent_item):
         """
@@ -244,9 +231,25 @@ class BasicSceneCollector(HookBaseClass):
 
         display_name = publisher.util.get_publish_name(path, sequence=is_sequence)
 
+        # Try to get the context more specifically from the path on disk
+        tk = sgtk.sgtk_from_path( path )
+        context = tk.context_from_path(path)
+
+        # In case the task folder is not registered for some reason, we can try to find it
+        if not context.task:
+            file_folder = os.path.basename(os.path.dirname(path))
+            context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
+            if context_task:
+                context = tk.context_from_entity("Task", context_task["id"])
+
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
         file_item.set_icon_from_path(item_info["icon_path"])
+        file_item.context_change_allowed = True
+
+        # If we found a better context, set it here
+        if context:
+            file_item.context = context
 
         # if the supplied path is an image, use the path as the thumbnail.
         if item_type.startswith("file.image") or item_type.startswith("file.texture"):

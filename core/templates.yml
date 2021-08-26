@@ -37,7 +37,7 @@ keys:
         shotgun_entity_type: Project
         shotgun_field_name: code
     Asset:
-        type: str
+        type: str    
     Task:
         type: str
         shotgun_entity_type: Task
@@ -91,14 +91,137 @@ keys:
     timestamp:
         type: str
     width:
-        type: int
+        type: str
+        shotgun_entity_type: Task
+        shotgun_field_name: sg_width
     height:
-        type: int
+        type: str
+        shotgun_entity_type: Task
+        shotgun_field_name: sg_height        
     segment_name:
         type: str
     ext:
         type: str
-        alias: extension
+        alias: extension  
+    short_code:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_short_code        
+    parent_short_code:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Asset.sg_short_code
+
+    step_subfolder:
+        type: str
+        shotgun_entity_type: Project
+        shotgun_field_name: sg_step_subfolder
+
+    step_folder:
+        type: str
+        shotgun_entity_type: Step
+        shotgun_field_name: sg_step_folder  
+    folder_name:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_folder_name       
+    asset_name:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: code            
+
+    # Animation Asset
+    CustomEntity05:
+        type: str
+    anim_asset_name:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: code
+    anim_asset_library:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_library.AssetLibrary.code 
+    anim_asset_category:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_category           
+    anim_folder_name:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_folder_name   
+    anim_asset_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.code
+    anim_asset_library_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_library.AssetLibrary.code
+    anim_asset_type_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_type
+    anim_asset_category_parent:
+        type: str
+        shotgun_entity_type: CustomEntity05
+        shotgun_field_name: sg_asset_parent.Asset.sg_asset_category        
+
+    # Environment Asset
+    CustomEntity01:
+        type: str
+    env_asset_name:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: code
+    env_asset_library:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_asset_library.AssetLibrary.code 
+    env_asset_category:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_asset_category         
+    env_asset_class:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_asset_class      
+    env_asset_type:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_asset_type  
+    biome:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_biome     
+    env_folder_name:
+        type: str
+        shotgun_entity_type: CustomEntity01
+        shotgun_field_name: sg_folder_name                    
+
+    # Publishing Asset
+    CustomEntity03:
+        type: str 
+    Product:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_product.CustomNonProjectEntity01.sg_short_code
+    Campaign:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_campaign   
+    use:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_use     
+    pub_folder_name:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_folder_name    
+    pub_asset_type:
+        type: str
+        shotgun_entity_type: CustomEntity03
+        shotgun_field_name: sg_asset_type  
+
 
     #
     # Houdini
@@ -192,22 +315,34 @@ paths:
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
-    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
-    asset_other_root: '{asset_type}/{asset_library}/{asset_category}/{Asset}'
-    asset_other_child_root: '{asset_type_parent}/{asset_library_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{Asset}'
+    asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
+    anim_asset_root: 'Content/{anim_asset_library_parent}/{anim_asset_type_parent}/{anim_asset_category_parent}/{anim_asset_parent}/{Step}/{anim_asset_category}/{anim_folder_name}'
 
-    asset_filename: '@asset_root/{asset_category}_{Asset}[_{name}]_{task_step}'
-    asset_snapshot_filename: '@asset_root/snapshots/{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}'
+    env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_folder_name}'
+    pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
+    prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
-    asset_child_filename: '@asset_child_root/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}'
-    asset_child_snapshot_filename: '@asset_child_root/snapshots/{asset_category_parent}_{asset_parent}_{asset_category}_{Asset}[_{name}]_{task_step}.{timestamp}'
+    asset_work_area: '@asset_root/{Step}/{Task}' 
+    asset_filename: '@asset_work_area/{Asset}[_{name}]_{Task}'
+    asset_snapshot_filename: '@asset_work_area/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
+    
+    asset_child_work_area: '@asset_child_root/{Step}/{Task}'
+    asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}]_{Task}'
+    asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
 
-    asset_other_filename: '@asset_other_root/{Project}_{asset_library}_{Asset}_{Task}[_{name}]'
-    asset_other_snapshot_filename: '@asset_other_root/snapshots/{Project}_{asset_library}_{Asset}_{Task}[_{name}].{timestamp}'
+    # anim_asset_work_area: '@anim_asset_root'
+    anim_asset_filename: '@anim_asset_root/{anim_asset_name}_{Task}[_{name}]'
+    anim_asset_snapshot_filename: '@anim_asset_root/snapshots/{anim_asset_name}_{Task}[_{name}].{timestamp}'     
 
-    asset_other_child_filename: '@asset_other_child_root/{Project}_{asset_library_parent}_{asset_parent}_{asset_category}_{Asset}_{Task}[_{name}]'
-    asset_other_child_snapshot_filename: '@asset_other_child_root/snapshots/{Project}_{asset_library_parent}_{asset_parent}_{asset_category}_{Asset}_{Task}[_{name}].{timestamp}'
-
+    env_asset_work_area: '@env_asset_root/{Step}/{Task}'
+    env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}'
+    env_asset_snapshot_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}.{timestamp}'
+    
+    pub_asset_filename: '@pub_asset_root/{task_step}/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
+    pub_asset_snapshot_filename: '@pub_asset_root/{task_step}/snapshots/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'
+    prod_asset_filename: '@prod_asset_root/{task_step}/{Product}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
+    prod_asset_snapshot_filename: '@prod_asset_root/{task_step}/snapshots/{Product}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'    
+    
     ##########################################################################################
     # Asset pipeline
 
@@ -217,8 +352,10 @@ paths:
 
     asset_alembic_cache:
         definition: '@asset_root/caches/{Asset}[_{name}]_{task_step}.abc'
-    asset_other_alembic_cache:
-        definition: '@asset_other_root/caches/{Asset}[_{name}]_{task_step}.abc'
+    env_asset_alembic_cache:
+        definition: '@env_asset_root/caches/{CustomEntity01}[_{name}]_{task_step}.abc'           
+    pub_asset_alembic_cache:
+        definition: '@pub_asset_root/caches/{CustomEntity03}[_{name}]_{task_step}.abc'        
 
     #
     # Generic
@@ -230,23 +367,30 @@ paths:
     asset_snapshot:
         definition: '@asset_snapshot_filename.{ext}'
 
-    # asset_child
     asset_child_workfile:
         definition: '@asset_child_filename.{ext}'
     asset_child_snapshot:
         definition: '@asset_child_snapshot_filename.{ext}'
 
-    # asset_other
-    asset_other_workfile:
-        definition: '@asset_other_filename.{ext}'
-    asset_other_snapshot:
-        definition: '@asset_other_snapshot_filename.{ext}'
+    anim_asset_workfile:
+        definition: '@anim_asset_filename.{ext}'
+    anim_asset_snapshot:
+        definition: '@anim_asset_snapshot_filename.{ext}'        
 
-    # asset_other_child
-    asset_other_child_workfile:
-        definition: '@asset_other_child_filename.{ext}'
-    asset_other_child_snapshot:
-        definition: '@asset_other_child_snapshot_filename.{ext}'
+    env_asset_workfile:
+        definition: '@env_asset_filename.{ext}'
+    env_asset_snapshot:
+        definition: '@env_asset_snapshot_filename.{ext}'
+
+    pub_asset_workfile:
+        definition: '@pub_asset_filename.{ext}'
+    pub_asset_snapshot:
+        definition: '@pub_asset_snapshot_filename.{ext}'
+
+    prod_asset_workfile:
+        definition: '@prod_asset_filename.{ext}'
+    prod_asset_snapshot:
+        definition: '@prod_asset_snapshot_filename.{ext}'        
 
     #
     # Photoshop
@@ -258,23 +402,25 @@ paths:
     asset_photoshop_snapshot:
         definition: '@asset_snapshot_filename.{photoshop_extension}'
 
-    # asset_child
     asset_child_photoshop_workfile:
         definition: '@asset_child_filename.{photoshop_extension}'
     asset_child_photoshop_snapshot:
         definition: '@asset_child_snapshot_filename.{photoshop_extension}'
 
-    # asset_other
-    asset_other_photoshop_workfile:
-        definition: '@asset_other_filename.{photoshop_extension}'
-    asset_other_photoshop_snapshot:
-        definition: '@asset_other_snapshot_filename.{photoshop_extension}'
+    env_asset_photoshop_workfile:
+        definition: '@env_asset_filename.{photoshop_extension}'
+    env_asset_photoshop_snapshot:
+        definition: '@env_asset_snapshot_filename.{photoshop_extension}'
 
-    # asset_other_child
-    asset_other_child_photoshop_workfile:
-        definition: '@asset_other_child_filename.{photoshop_extension}'
-    asset_other_child_photoshop_snapshot:
-        definition: '@asset_other_child_snapshot_filename.{photoshop_extension}'
+    pub_asset_photoshop_workfile:
+        definition: '@pub_asset_filename.{photoshop_extension}'
+    pub_asset_photoshop_snapshot:
+        definition: '@pub_asset_snapshot_filename.{photoshop_extension}'
+
+    prod_asset_photoshop_workfile:
+        definition: '@prod_asset_filename.{photoshop_extension}'
+    prod_asset_photoshop_snapshot:
+        definition: '@prod_asset_snapshot_filename.{photoshop_extension}'
 
     #
     # Maya
@@ -286,23 +432,30 @@ paths:
     asset_maya_snapshot:
         definition: '@asset_snapshot_filename.{maya_extension}'
 
-    # asset_child
     asset_child_maya_workfile:
         definition: '@asset_child_filename.{maya_extension}'
     asset_child_maya_snapshot:
         definition: '@asset_child_snapshot_filename.{maya_extension}'
 
-    # asset_other
-    asset_other_maya_workfile:
-        definition: '@asset_other_filename.{maya_extension}'
-    asset_other_maya_snapshot:
-        definition: '@asset_other_snapshot_filename.{maya_extension}'
+    anim_asset_maya_workfile:
+        definition: '@anim_asset_filename.{maya_extension}'
+    anim_asset_maya_snapshot:
+        definition: '@anim_asset_snapshot_filename.{maya_extension}'        
 
-    # asset_other_child
-    asset_other_child_maya_workfile:
-        definition: '@asset_other_child_filename.{maya_extension}'
-    asset_other_child_maya_snapshot:
-        definition: '@asset_other_child_snapshot_filename.{maya_extension}'
+    env_asset_maya_workfile:
+        definition: '@env_asset_filename.{maya_extension}'
+    env_asset_maya_snapshot:
+        definition: '@env_asset_snapshot_filename.{maya_extension}'
+
+    pub_asset_maya_workfile:
+        definition: '@pub_asset_filename.{maya_extension}'
+    pub_asset_maya_snapshot:
+        definition: '@pub_asset_snapshot_filename.{maya_extension}'
+
+    prod_asset_maya_workfile:
+        definition: '@prod_asset_filename.{maya_extension}'
+    prod_asset_maya_snapshot:
+        definition: '@prod_asset_snapshot_filename.{maya_extension}'        
 
     #
     # Houdini
@@ -314,23 +467,30 @@ paths:
     asset_houdini_snapshot:
         definition: '@asset_snapshot_filename.hip'
 
-    # asset_child
     asset_child_houdini_workfile:
         definition: '@asset_child_filename.hip'
     asset_child_houdini_snapshot:
         definition: '@asset_child_snapshot_filename.hip'
 
-    # asset_other
-    asset_other_houdini_workfile:
-        definition: '@asset_other_filename.hip'
-    asset_other_houdini_snapshot:
-        definition: '@asset_other_snapshot_filename.hip'
+    anim_asset_houdini_workfile:
+        definition: '@anim_asset_filename.hip'
+    anim_asset_houdini_snapshot:
+        definition: '@anim_asset_snapshot_filename.hip'        
 
-    # asset_other_child
-    asset_other_child_houdini_workfile:
-        definition: '@asset_other_child_filename.hip'
-    asset_other_child_houdini_snapshot:
-        definition: '@asset_other_child_snapshot_filename.hip'
+    env_asset_houdini_workfile:
+        definition: '@env_asset_filename.hip'
+    env_asset_houdini_snapshot:
+        definition: '@env_asset_snapshot_filename.hip'
+
+    pub_asset_houdini_workfile:
+        definition: '@pub_asset_filename.hip'
+    pub_asset_houdini_snapshot:
+        definition: '@pub_asset_snapshot_filename.hip'  
+
+    prod_asset_houdini_workfile:
+        definition: '@prod_asset_filename.hip'
+    prod_asset_houdini_snapshot:
+        definition: '@prod_asset_snapshot_filename.hip'  
 
     #
     # 3dsmax
@@ -342,23 +502,30 @@ paths:
     asset_max_snapshot:
         definition: '@asset_snapshot_filename.max'
 
-    # asset_child
     asset_child_max_workfile:
         definition: '@asset_child_filename.max'
     asset_child_max_snapshot:
         definition: '@asset_child_snapshot_filename.max'
 
-    # asset_other
-    asset_other_max_workfile:
-        definition: '@asset_other_filename.max'
-    asset_other_max_snapshot:
-        definition: '@asset_other_snapshot_filename.max'
+    anim_asset_max_workfile:
+        definition: '@anim_asset_filename.max'
+    anim_asset_max_snapshot:
+        definition: '@anim_asset_snapshot_filename.max'        
 
-    # asset_other_child
-    asset_other_child_max_workfile:
-        definition: '@asset_other_child_filename.max'
-    asset_other_child_max_snapshot:
-        definition: '@asset_other_child_snapshot_filename.max'
+    env_asset_max_workfile:
+        definition: '@env_asset_filename.max'
+    env_asset_max_snapshot:
+        definition: '@env_asset_snapshot_filename.max'
+
+    pub_asset_max_workfile:
+        definition: '@pub_asset_filename.max'
+    pub_asset_max_snapshot:
+        definition: '@pub_asset_snapshot_filename.max'
+
+    prod_asset_max_workfile:
+        definition: '@prod_asset_filename.max'
+    prod_asset_max_snapshot:
+        definition: '@prod_asset_snapshot_filename.max'        
 
     #
     # Substance Painter
@@ -370,23 +537,25 @@ paths:
     asset_substancepainter_snapshot:
         definition: '@asset_snapshot_filename.spp'
 
-    # asset_child
     asset_child_substancepainter_workfile:
         definition: '@asset_child_filename.spp'
     asset_child_substancepainter_snapshot:
         definition: '@asset_child_snapshot_filename.spp'
 
-    # asset_other
-    asset_other_substancepainter_workfile:
-        definition: '@asset_other_filename.spp'
-    asset_other_substancepainter_snapshot:
-        definition: '@asset_other_snapshot_filename.spp'
+    env_asset_substancepainter_workfile:
+        definition: '@env_asset_filename.spp'
+    env_asset_substancepainter_snapshot:
+        definition: '@env_asset_snapshot_filename.spp'
 
-    # asset_other_child
-    asset_other_child_substancepainter_workfile:
-        definition: '@asset_other_child_filename.spp'
-    asset_other_child_substancepainter_snapshot:
-        definition: '@asset_other_child_snapshot_filename.spp'
+    pub_asset_substancepainter_workfile:
+        definition: '@pub_asset_filename.spp'
+    pub_asset_substancepainter_snapshot:
+        definition: '@pub_asset_snapshot_filename.spp'
+
+    prod_asset_substancepainter_workfile:
+        definition: '@prod_asset_filename.spp'
+    prod_asset_substancepainter_snapshot:
+        definition: '@prod_asset_snapshot_filename.spp'        
 
     #
     # Substance Designer
@@ -398,23 +567,25 @@ paths:
     asset_substancedesigner_snapshot:
         definition: '@asset_snapshot_filename.{substancedesigner.extension}'
 
-    # asset_child
     asset_child_substancedesigner_workfile:
         definition: '@asset_child_filename.{substancedesigner.extension}'
     asset_child_substancedesigner_snapshot:
         definition: '@asset_child_snapshot_filename.{substancedesigner.extension}'
 
-    # asset_other
-    asset_other_substancedesigner_workfile:
-        definition: '@asset_other_filename.{substancedesigner.extension}'
-    asset_other_substancedesigner_snapshot:
-        definition: '@asset_other_snapshot_filename.{substancedesigner.extension}'
+    env_asset_substancedesigner_workfile:
+        definition: '@env_asset_filename.{substancedesigner.extension}'
+    env_asset_substancedesigner_snapshot:
+        definition: '@env_asset_snapshot_filename.{substancedesigner.extension}'
 
-    # asset_other_child
-    asset_other_child_substancedesigner_workfile:
-        definition: '@asset_other_child_filename.{substancedesigner.extension}'
-    asset_other_child_substancedesigner_snapshot:
-        definition: '@asset_other_child_snapshot_filename.{substancedesigner.extension}'
+    pub_asset_substancedesigner_workfile:
+        definition: '@pub_asset_filename.{substancedesigner.extension}'
+    pub_asset_substancedesigner_snapshot:
+        definition: '@pub_asset_snapshot_filename.{substancedesigner.extension}'
+
+    prod_asset_substancedesigner_workfile:
+        definition: '@prod_asset_filename.{substancedesigner.extension}'
+    prod_asset_substancedesigner_snapshot:
+        definition: '@prod_asset_snapshot_filename.{substancedesigner.extension}'        
 
 #
 # The strings section is similar to the paths section - but rather than defining paths

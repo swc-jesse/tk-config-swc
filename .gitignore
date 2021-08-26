@@ -39,3 +39,4 @@ pip-log.txt
 
 #MacOS
 .DS_Store
+.env

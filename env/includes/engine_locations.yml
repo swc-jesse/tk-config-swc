@@ -67,9 +67,12 @@ engines.tk-shotgun.location:
 
 # Substance Painter
 engines.tk-substancepainter.location:
-  type: git
-  path: https://github.com/diegogarciahuerta/tk-substancepainter.git
-  version: v1.2.2
+  # type: path
+  # windows_path: S:\Projects\ShotgunConfig\tk-substancepainter
+  type: git_branch
+  branch: master
+  path: https://github.com/studiowildcard/tk-substancepainter
+  version: e620d67
 
 # Substance Designer
 engines.tk-substancedesigner.location:

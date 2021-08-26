@@ -39,20 +39,27 @@ class PickEnvironment(sgtk.Hook):
             return "project"
 
         if context.entity and context.step is None:
-            # We have an entity but no step.
+            # We have an entity but no step.            
             if context.entity["type"] == "Asset":
                 context_entity = context.sgtk.shotgun.find_one("Asset",
                                                                [["id", "is", context.entity["id"]]],
                                                                ["sg_asset_parent","sg_asset_type"])
 
-                asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Engine", "Tool", "Publishing"]:
-                    asset_env = "asset_other"
-
                 if context_entity.get("sg_asset_parent"):
-                    return asset_env + "_child"
+                    return "asset_child"
 
-                return asset_env
+                return "asset"
+            elif context.entity["type"] == "CustomEntity01":
+                return "env_asset"  
+            elif context.entity["type"] == "CustomEntity03":
+                context_entity = context.sgtk.shotgun.find_one("CustomEntity03",
+                                                               [["id", "is", context.entity["id"]]],
+                                                               ["sg_asset_type"])
+                if context_entity.get("sg_asset_type") == "Campaigns":
+                    return "pub_asset"
+                return "prod_asset"     
+            elif context.entity["type"] == "CustomEntity05":
+                return "anim_asset"                  
 
         if context.entity and context.step:
             # We have a step and an entity.
@@ -61,13 +68,20 @@ class PickEnvironment(sgtk.Hook):
                                                                [["id", "is", context.entity["id"]]],
                                                                ["sg_asset_parent","sg_asset_type"])
 
-                asset_env = "asset"
-                if context_entity.get("sg_asset_type") in ["Engine", "Tool", "Publishing"]:
-                    asset_env = "asset_other"
-
                 if context_entity.get("sg_asset_parent"):
-                    return asset_env + "_child_step"
+                    return "asset_child_step"
 
-                return asset_env + "_step"
+                return "asset_step"
+            elif context.entity["type"] == "CustomEntity01":
+                return "env_asset_step"  
+            elif context.entity["type"] == "CustomEntity03":
+                context_entity = context.sgtk.shotgun.find_one("CustomEntity03",
+                                                               [["id", "is", context.entity["id"]]],
+                                                               ["sg_asset_type"])
+                if context_entity.get("sg_asset_type") == "Campaigns":
+                    return "pub_asset_step"
+                return "prod_asset_step"
+            elif context.entity["type"] == "CustomEntity05":
+                return "anim_asset_step"                    
 
         return None
