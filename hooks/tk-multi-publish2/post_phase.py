@@ -52,7 +52,15 @@ class PostPhaseHook(HookBaseClass):
 
             # create a new changelist for all files being published:
             self.logger.info("Creating new Perforce changelist...")
-            new_change = self.p4_fw.util.create_change(p4, "Shotgun publish")
+
+            # collect descriptions from Publish Items to supply P4 with change description
+            change_descriptions = "\n".join(
+                ["- {}".format(item.description) for item in publish_tree
+                    if item.description
+                ]
+            )
+
+            new_change = self.p4_fw.util.create_change(p4, change_descriptions)
             # NOTE: new_change just returns the id of the change
 
             change_items = []
