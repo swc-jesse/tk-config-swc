@@ -40,6 +40,11 @@ entity_browser_settings: &entity_browser_settings
     entity_type: CustomEntity03
     hierarchy: [project, sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
     filters: []   
+  - caption: Outsourcing
+    entity_type: Task
+    filters:
+    - [step.Step.code, is, "Vendor"]      
+    hierarchy: [entity, content]      
   - caption: My Tasks
     entity_type: Task
     filters:
