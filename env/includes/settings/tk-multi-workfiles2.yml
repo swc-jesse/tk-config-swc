@@ -76,7 +76,7 @@ entity_browser_settings: &env_entity_browser_settings
   entities:
   - caption: Environment
     entity_type: CustomEntity01
-    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_asset_class, sg_folder_name]
+    hierarchy: [sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_folder_name]
     filters:
     sub_hierarchy:
       entity_type: Task

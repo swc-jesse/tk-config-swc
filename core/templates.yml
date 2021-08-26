@@ -318,7 +318,7 @@ paths:
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
     anim_asset_root: 'Content/{anim_asset_library_parent}/{anim_asset_type_parent}/{anim_asset_category_parent}/{anim_asset_parent}/{Step}/{anim_asset_category}/{anim_folder_name}'
 
-    env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_asset_class}/{env_folder_name}'
+    env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_folder_name}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
     prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
