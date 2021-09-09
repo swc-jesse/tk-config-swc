@@ -54,6 +54,7 @@ settings.tk-3dsmax.asset_step:
   menu_favourites: &settings_tk-3dsmax_menu
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}  
+  - {app_instance: tk-multi-publish2, name: Publish...}  
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
   location: "@engines.tk-3dsmax.location"
 
