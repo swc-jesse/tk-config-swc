@@ -237,10 +237,17 @@ class BasicSceneCollector(HookBaseClass):
 
         # In case the task folder is not registered for some reason, we can try to find it
         if not context.task:
-            file_folder = os.path.basename(os.path.dirname(path))
-            context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
-            if context_task:
-                context = tk.context_from_entity("Task", context_task["id"])
+            if context.step:
+                if context.step["name"] == "Animations":
+                    file_name = os.path.splitext(os.path.basename(path))[0]
+                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_name],["entity", "is", context.entity],["step", "is", context.step]])
+                    if context_task:
+                        context = tk.context_from_entity("Task", context_task["id"])                
+                else:
+                    file_folder = os.path.basename(os.path.dirname(path))
+                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
+                    if context_task:
+                        context = tk.context_from_entity("Task", context_task["id"])
 
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
