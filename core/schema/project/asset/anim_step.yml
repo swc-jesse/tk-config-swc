@@ -9,16 +9,11 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 # the type of dynamic content
-type: "shotgun_entity"
+type: "shotgun_step"
 
-entity_type: Step
-
-associated_entity_type: CustomEntity05
-
-defer_creation: false
+create_with_parent: false
 
 # the shotgun field to use for the folder name
 name: "short_name"
 
-filters:
-    - { "path": "entity_type", "relation": "is", "values": [ "CustomEntity05" ] }
+filters: [ { "path": "short_name", "relation": "in", "values": [ "Animations" ] } ]

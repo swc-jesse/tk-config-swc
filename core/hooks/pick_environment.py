@@ -69,7 +69,10 @@ class PickEnvironment(sgtk.Hook):
                 if context_entity.get("sg_asset_parent"):
                     return "asset_child_step"
 
-                return "asset_step"
+                if context.step["name"] == "Animations":
+                    return "anim_asset_step"
+                else:
+                    return "asset_step"
             elif context.entity["type"] == "CustomEntity01":
                 return "env_asset_step"  
             elif context.entity["type"] == "CustomEntity03":
@@ -79,10 +82,5 @@ class PickEnvironment(sgtk.Hook):
                 if context_entity.get("sg_asset_type") == "Campaigns":
                     return "pub_asset_step"
                 return "prod_asset_step"
-            elif context.entity["type"] == "CustomEntity05":
-                if context.task:
-                    return "anim_asset_step"                    
-                else:
-                    return "anim_asset" 
 
         return None

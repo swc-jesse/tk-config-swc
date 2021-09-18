@@ -15,4 +15,4 @@ name: "Content/{sg_asset_parent.Asset.sg_asset_library}/{sg_asset_parent.Asset.s
 filters:
     - { "path": "project", "relation": "is", "values": [ "$project" ] }
     - { "path": "sg_asset_parent", "relation": "is_not", "values": [ null ] }
-    - { "path": "sg_asset_type", "relation": "not_in", "values": [ "Animations" ] }        
+    - { "path": "sg_asset_category", "relation": "is_not", "values": [ "Animations" ] }

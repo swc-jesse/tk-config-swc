@@ -17,3 +17,5 @@ create_with_parent: true
 
 # the shotgun field to use for the folder name
 name: "short_name"
+
+filters: [ { "path": "short_name", "relation": "not_in", "values": [ "Animations" ] } ]
