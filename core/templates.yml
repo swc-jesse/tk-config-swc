@@ -50,6 +50,10 @@ keys:
         type: str
         shotgun_entity_type: Task
         shotgun_field_name: sg_folder_name
+    task_subfolder:
+        type: str
+        shotgun_entity_type: Task
+        shotgun_field_name: sg_subfolder_name        
     asset_parent:
         type: str
         shotgun_entity_type: Asset
@@ -339,8 +343,8 @@ paths:
     asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
 
     anim_asset_work_area: '@asset_root/{Step}'
-    anim_asset_filename: '@anim_asset_work_area/{task_folder}/{Task}[_{name}]'
-    anim_asset_snapshot_filename: '@anim_asset_work_area/{task_folder}/snapshots/{Task}[_{name}].{timestamp}'     
+    anim_asset_filename: '@anim_asset_work_area/{task_folder}/{task_subfolder}/[{task_short_code}_]{Task}[_{name}]'
+    anim_asset_snapshot_filename: '@anim_asset_work_area/{task_folder}/{task_subfolder}/snapshots/[{task_short_code}_]{Task}[_{name}].{timestamp}'     
 
     env_asset_work_area: '@env_asset_root/{Step}/{Task}'
     env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}'
