@@ -37,42 +37,42 @@ settings.tk-desktop.asset:
 # asset_step
 settings.tk-desktop.asset_step:
   apps:
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_step"
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 
 # asset_child_step
 settings.tk-desktop.asset_child_step:
   apps:
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_step"
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 
 # env_asset_step
 settings.tk-desktop.env_asset_step:
   apps:
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.env_asset_step"
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.env_asset_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 
 # anim_asset_step
 settings.tk-desktop.anim_asset_step:
   apps:
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.anim_asset_step"
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.anim_asset_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"  
 
 # pub_asset_step
 settings.tk-desktop.pub_asset_step:
   apps:
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.pub_asset_step"
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.pub_asset_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 
 # prod_asset_step
 settings.tk-desktop.prod_asset_step:
   apps:
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.prod_asset_step"
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.prod_asset_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"  
 
