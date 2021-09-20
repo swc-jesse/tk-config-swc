@@ -237,10 +237,17 @@ class BasicSceneCollector(HookBaseClass):
 
         # In case the task folder is not registered for some reason, we can try to find it
         if not context.task:
-            file_folder = os.path.basename(os.path.dirname(path))
-            context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
-            if context_task:
-                context = tk.context_from_entity("Task", context_task["id"])
+            if context.step:
+                if context.step["name"] == "Animations":
+                    file_name = os.path.splitext(os.path.basename(path))[0]
+                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_name],["entity", "is", context.entity],["step", "is", context.step]])
+                    if context_task:
+                        context = tk.context_from_entity("Task", context_task["id"])                
+                else:
+                    file_folder = os.path.basename(os.path.dirname(path))
+                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
+                    if context_task:
+                        context = tk.context_from_entity("Task", context_task["id"])
 
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
@@ -277,63 +284,23 @@ class BasicSceneCollector(HookBaseClass):
 
         :param parent_item: parent item instance
         :param folder: Path to analyze
-        :returns: The item that was created
+        :returns: The items that were created
         """
 
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
         folder = sgtk.util.ShotgunPath.normalize(folder)
 
-        publisher = self.parent
-        img_sequences = publisher.util.get_frame_sequences(
-            folder, self._get_image_extensions()
-        )
-
         file_items = []
 
-        for (image_seq_path, img_seq_files) in img_sequences:
-
-            # get info for the extension
-            item_info = self._get_item_info(image_seq_path)
-            item_type = item_info["item_type"]
-            type_display = item_info["type_display"]
-
-            # the supplied image path is part of a sequence. alter the
-            # type info to account for this.
-            type_display = "%s Sequence" % (type_display,)
-            item_type = "%s.%s" % (item_type, "sequence")
-            icon_name = "image_sequence.png"
-
-            # get the first frame of the sequence. we'll use this for the
-            # thumbnail and to generate the display name
-            img_seq_files.sort()
-            first_frame_file = img_seq_files[0]
-            display_name = publisher.util.get_publish_name(
-                first_frame_file, sequence=True
-            )
-
-            # create and populate the item
-            file_item = parent_item.create_item(item_type, type_display, display_name)
-            icon_path = self._get_icon_path(icon_name)
-            file_item.set_icon_from_path(icon_path)
-
-            # use the first frame of the seq as the thumbnail
-            file_item.set_thumbnail_from_path(first_frame_file)
-
-            # disable thumbnail creation since we get it for free
-            file_item.thumbnail_enabled = False
-
-            # all we know about the file is its path. set the path in its
-            # properties for the plugins to use for processing.
-            file_item.properties["path"] = image_seq_path
-            file_item.properties["sequence_paths"] = img_seq_files
-
-            self.logger.info("Collected file: %s" % (image_seq_path,))
-
-            file_items.append(file_item)
+        for dirpath, dirs, files in os.walk(folder):
+            for file in files:
+                item_path = os.path.join(dirpath,file)
+                # Process each file we find
+                file_items.append(self._collect_file(parent_item,item_path))
 
         if not file_items:
-            self.logger.warn("No image sequences found in: %s" % (folder,))
+            self.logger.warn("No files found in: %s" % (folder,))
 
         return file_items
 
