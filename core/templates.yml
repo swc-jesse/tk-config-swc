@@ -335,20 +335,20 @@ paths:
     prod_asset_root: '{pub_asset_type}/{Product}/{use}/{CustomEntity03}'
 
     asset_work_area: '@asset_root/{Step}/{Task}' 
-    asset_filename: '@asset_work_area/{Asset}[_{name}]_{Task}'
-    asset_snapshot_filename: '@asset_work_area/snapshots/{Asset}[_{name}]_{Task}.{timestamp}'
+    asset_filename: '@asset_work_area/{Asset}[_{name}][_{Task}]'
+    asset_snapshot_filename: '@asset_work_area/snapshots/{Asset}[_{name}][_{Task}].{timestamp}'
     
     asset_child_work_area: '@asset_child_root/{Step}/{Task}'
-    asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}]_{Task}'
-    asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}]_{Task}.{timestamp}'
+    asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}][_{Task}]'
+    asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}][_{Task}].{timestamp}'
 
     anim_asset_work_area: '@asset_root/{Step}'
     anim_asset_filename: '@anim_asset_work_area/{task_folder}/{task_subfolder}/[{task_short_code}_]{Task}[_{name}]'
     anim_asset_snapshot_filename: '@anim_asset_work_area/{task_folder}/{task_subfolder}/snapshots/[{task_short_code}_]{Task}[_{name}].{timestamp}'     
 
     env_asset_work_area: '@env_asset_root/{Step}/{Task}'
-    env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}'
-    env_asset_snapshot_filename: '@env_asset_work_area/{env_asset_name}[_{name}]_{Task}.{timestamp}'
+    env_asset_filename: '@env_asset_work_area/{env_asset_name}[_{name}][_{Task}]'
+    env_asset_snapshot_filename: '@env_asset_work_area/{env_asset_name}[_{name}][_{Task}].{timestamp}'
     
     pub_asset_filename: '@pub_asset_root/{task_step}/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}]'
     pub_asset_snapshot_filename: '@pub_asset_root/{task_step}/snapshots/{Product}_{Campaign}_{CustomEntity03}_{Task}[_{width}x{height}][_{name}].{timestamp}'
@@ -373,36 +373,36 @@ paths:
     # Generic
     #
 
-    # asset
-    asset_workfile:
-        definition: '@asset_filename.{ext}'
-    asset_snapshot:
-        definition: '@asset_snapshot_filename.{ext}'
+    # # asset
+    # asset_workfile:
+    #     definition: '@asset_filename.{ext}'
+    # asset_snapshot:
+    #     definition: '@asset_snapshot_filename.{ext}'
 
-    asset_child_workfile:
-        definition: '@asset_child_filename.{ext}'
-    asset_child_snapshot:
-        definition: '@asset_child_snapshot_filename.{ext}'
+    # asset_child_workfile:
+    #     definition: '@asset_child_filename.{ext}'
+    # asset_child_snapshot:
+    #     definition: '@asset_child_snapshot_filename.{ext}'
 
-    anim_asset_workfile:
-        definition: '@anim_asset_filename.{ext}'
-    anim_asset_snapshot:
-        definition: '@anim_asset_snapshot_filename.{ext}'        
+    # anim_asset_workfile:
+    #     definition: '@anim_asset_filename.{ext}'
+    # anim_asset_snapshot:
+    #     definition: '@anim_asset_snapshot_filename.{ext}'        
 
-    env_asset_workfile:
-        definition: '@env_asset_filename.{ext}'
-    env_asset_snapshot:
-        definition: '@env_asset_snapshot_filename.{ext}'
+    # env_asset_workfile:
+    #     definition: '@env_asset_filename.{ext}'
+    # env_asset_snapshot:
+    #     definition: '@env_asset_snapshot_filename.{ext}'
 
-    pub_asset_workfile:
-        definition: '@pub_asset_filename.{ext}'
-    pub_asset_snapshot:
-        definition: '@pub_asset_snapshot_filename.{ext}'
+    # pub_asset_workfile:
+    #     definition: '@pub_asset_filename.{ext}'
+    # pub_asset_snapshot:
+    #     definition: '@pub_asset_snapshot_filename.{ext}'
 
-    prod_asset_workfile:
-        definition: '@prod_asset_filename.{ext}'
-    prod_asset_snapshot:
-        definition: '@prod_asset_snapshot_filename.{ext}'        
+    # prod_asset_workfile:
+    #     definition: '@prod_asset_filename.{ext}'
+    # prod_asset_snapshot:
+    #     definition: '@prod_asset_snapshot_filename.{ext}'        
 
     #
     # Photoshop

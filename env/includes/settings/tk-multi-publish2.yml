@@ -29,7 +29,7 @@ settings.tk-multi-publish2.standalone:
     hook: "{config}/tk-multi-publish2/publish_file.py"
     settings: {}
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
   help_url: *help_url 
   location: "@apps.tk-multi-publish2.location"
@@ -49,7 +49,7 @@ settings.tk-multi-publish2.3dsmax.asset_step: &settings_publish_plugins_tk-multi
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_session.py"
     settings: {}
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -99,7 +99,7 @@ settings.tk-multi-publish2.houdini.asset_step: &settings_publish_plugins_tk-mult
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-houdini/publish_session.py"
     settings: {}
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -149,7 +149,7 @@ settings.tk-multi-publish2.maya.asset_step: &settings_publish_plugins_tk-multi-p
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
     settings: {}
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -268,7 +268,7 @@ settings.tk-multi-publish2.substancepainter.asset_step: &settings_publish_plugin
   #   settings:
   #     Publish Template: substancepainter_asset_texture_path_publish
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
   # - name: Begin file versioning
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
@@ -301,7 +301,7 @@ settings.tk-multi-publish2.substancepainter.asset_child_step:
   #   settings:
   #     Publish Template: substancepainter_asset_texture_path_publish
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
   # - name: Begin file versioning
   #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
@@ -347,7 +347,7 @@ settings.tk-multi-publish2.substancedesigner.asset_step: &settings_publish_plugi
   #   settings: {}
 
   - name: Upload for review
-    hook: "{self}/upload_version.py"
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
 
   # - name: Begin file versioning

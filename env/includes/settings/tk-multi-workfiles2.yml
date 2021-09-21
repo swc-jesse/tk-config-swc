@@ -156,66 +156,66 @@ settings.tk-multi-workfiles2.launch_at_startup:
 
 # ---- Desktop Generic
 
-# asset_step
-settings.tk-multi-workfiles2.asset_step:
-  template_publish: asset_workfile
-  template_publish_area: asset_root
-  template_work: asset_workfile
-  template_work_area: asset_root
-  <<: *common_workfiles_settings
-  <<: *entity_browser_settings
-  location: "@apps.tk-multi-workfiles2.location"
+# # asset_step
+# settings.tk-multi-workfiles2.asset_step:
+#   template_publish: asset_workfile
+#   template_publish_area: asset_root
+#   template_work: asset_workfile
+#   template_work_area: asset_root
+#   <<: *common_workfiles_settings
+#   <<: *entity_browser_settings
+#   location: "@apps.tk-multi-workfiles2.location"
 
-# asset_child_step
-settings.tk-multi-workfiles2.asset_child_step:
-  template_publish: asset_child_workfile
-  template_publish_area: asset_child_root
-  template_work: asset_child_workfile
-  template_work_area: asset_child_root
-  <<: *common_workfiles_settings
-  <<: *entity_browser_settings
-  location: "@apps.tk-multi-workfiles2.location"
+# # asset_child_step
+# settings.tk-multi-workfiles2.asset_child_step:
+#   template_publish: asset_child_workfile
+#   template_publish_area: asset_child_root
+#   template_work: asset_child_workfile
+#   template_work_area: asset_child_root
+#   <<: *common_workfiles_settings
+#   <<: *entity_browser_settings
+#   location: "@apps.tk-multi-workfiles2.location"
 
-# anim_asset_step
-settings.tk-multi-workfiles2.anim_asset_step:
-  template_publish: anim_asset_workfile
-  template_publish_area: anim_asset_work_area
-  template_work: anim_asset_workfile
-  template_work_area: anim_asset_work_area
-  <<: *common_workfiles_settings
-  <<: *anim_entity_browser_settings
-  location: "@apps.tk-multi-workfiles2.location"  
+# # anim_asset_step
+# settings.tk-multi-workfiles2.anim_asset_step:
+#   template_publish: anim_asset_workfile
+#   template_publish_area: anim_asset_work_area
+#   template_work: anim_asset_workfile
+#   template_work_area: anim_asset_work_area
+#   <<: *common_workfiles_settings
+#   <<: *anim_entity_browser_settings
+#   location: "@apps.tk-multi-workfiles2.location"  
 
-# pub_asset_step
-settings.tk-multi-workfiles2.pub_asset_step:
-  template_publish: pub_asset_workfile
-  template_publish_area: pub_asset_root
-  template_work: pub_asset_workfile
-  template_work_area: pub_asset_root
-  <<: *common_workfiles_settings
-  <<: *pub_entity_browser_settings
-  location: "@apps.tk-multi-workfiles2.location"
+# # pub_asset_step
+# settings.tk-multi-workfiles2.pub_asset_step:
+#   template_publish: pub_asset_workfile
+#   template_publish_area: pub_asset_root
+#   template_work: pub_asset_workfile
+#   template_work_area: pub_asset_root
+#   <<: *common_workfiles_settings
+#   <<: *pub_entity_browser_settings
+#   location: "@apps.tk-multi-workfiles2.location"
 
-# prod_asset_step
-settings.tk-multi-workfiles2.prod_asset_step:
-  template_publish: prod_asset_workfile
-  template_publish_area: prod_asset_root
-  template_work: prod_asset_workfile
-  template_work_area: prod_asset_root
-  <<: *common_workfiles_settings
-  <<: *pub_entity_browser_settings
-  location: "@apps.tk-multi-workfiles2.location"  
+# # prod_asset_step
+# settings.tk-multi-workfiles2.prod_asset_step:
+#   template_publish: prod_asset_workfile
+#   template_publish_area: prod_asset_root
+#   template_work: prod_asset_workfile
+#   template_work_area: prod_asset_root
+#   <<: *common_workfiles_settings
+#   <<: *pub_entity_browser_settings
+#   location: "@apps.tk-multi-workfiles2.location"  
 
-# env_asset_step
-settings.tk-multi-workfiles2.env_asset_step:
-  template_publish: env_asset_workfile
-  template_publish_area: env_asset_root
-  template_work: env_asset_workfile
-  template_work_area: env_asset_root
-  <<: *common_workfiles_settings
-  my_tasks_extra_display_fields: []  
-  <<: *env_entity_browser_settings
-  location: "@apps.tk-multi-workfiles2.location"
+# # env_asset_step
+# settings.tk-multi-workfiles2.env_asset_step:
+#   template_publish: env_asset_workfile
+#   template_publish_area: env_asset_root
+#   template_work: env_asset_workfile
+#   template_work_area: env_asset_root
+#   <<: *common_workfiles_settings
+#   my_tasks_extra_display_fields: []  
+#   <<: *env_entity_browser_settings
+#   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
 

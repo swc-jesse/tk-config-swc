@@ -161,8 +161,31 @@ class PublishPlugin(HookBaseClass):
 
         publisher = self.parent
         path = item.properties.get("path")
+        target_context = self._find_task_context(path)
 
         # ---- determine the information required to validate
+        if not item.context.entity and not target_context.entity:
+            self.logger.error("This file is not under a known Asset folder:")
+            self.logger.error("  %s" % (path,))      
+            return False      
+        elif target_context.entity != item.context.entity:
+            self.logger.error("This file is not under the correct Asset folder:")
+            self.logger.error("  %s" % (path,))
+            self.logger.error("Should be under %s not %s" % (target_context.entity,item.context.entity))
+            return False
+        elif target_context.task != item.context.task:
+            if not item.local_properties.get("ignore_bad_stuff", False):
+                self.logger.warning("This file looks to be under the following Task folder:")
+                self.logger.warning("  %s" % (target_context.task,))
+                self.logger.warning("Consider updating the Task accordingly.", extra={
+                    "action_button":{
+                    "label": "Ignore",
+                    "tooltip": "Ignore this warning",
+                    "callback": self._ignore_warning,
+                    "args": {"item": item}
+                    },
+                })
+                raise Exception("Potential bad path!")
 
         # We allow the information to be pre-populated by the collector or a
         # base class plugin. They may have more information than is available
@@ -175,6 +198,10 @@ class PublishPlugin(HookBaseClass):
         self.logger.info("  %s" % (path,))
 
         return True
+
+    def _ignore_warning(self, item):
+        item.local_properties["ignore_bad_stuff"] = True
+        print("ignoring", item)
 
     def publish(self, settings, item):
         """
@@ -554,6 +581,29 @@ class PublishPlugin(HookBaseClass):
                  :meth:`tank.util.register_publish`.
         """
         return item.get_property("publish_kwargs", default_value={})
+
+    def _find_task_context(self, path):
+        # Try to get the context more specifically from the path on disk
+        tk = sgtk.sgtk_from_path( path )
+        context = tk.context_from_path(path)
+
+        # In case the task folder is not registered for some reason, we can try to find it
+        if not context.task:
+            if context.step:
+                if context.step["name"] == "Animations":
+                    file_name = os.path.splitext(os.path.basename(path))[0]
+                    # SWC JR: This could get slow if there are a lot of tasks, not sure if there is a way to query instead            
+                    tasks = context.sgtk.shotgun.find("Task", [["entity", "is", context.entity],["step", "is", context.step]], ['content'])
+                    for task in tasks:
+                        if task['content'] in file_name:
+                            # We found the task
+                            context = tk.context_from_entity("Task", task['id'])
+                else:
+                    file_folder = os.path.basename(os.path.dirname(path))
+                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
+                    if context_task:
+                        context = tk.context_from_entity("Task", context_task["id"])
+        return context
 
     ############################################################################
     # protected methods
