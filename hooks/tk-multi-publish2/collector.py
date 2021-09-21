@@ -232,26 +232,8 @@ class BasicSceneCollector(HookBaseClass):
         display_name = publisher.util.get_publish_name(path, sequence=is_sequence)
 
         # Try to get the context more specifically from the path on disk
-        tk = sgtk.sgtk_from_path( path )
-        context = tk.context_from_path(path)
-
-        # In case the task folder is not registered for some reason, we can try to find it
-        if not context.task:
-            if context.step:
-                if context.step["name"] == "Animations":
-                    file_name = os.path.splitext(os.path.basename(path))[0]
-                    # SWC JR: This could get slow if there are a lot of tasks, not sure if there is a way to query instead            
-                    tasks = context.sgtk.shotgun.find("Task", [["entity", "is", context.entity],["step", "is", context.step]], ['content'])
-                    for task in tasks:
-                        if task['content'] in file_name:
-                            # We found the task
-                            context = tk.context_from_entity("Task", task['id'])
-                else:
-                    file_folder = os.path.basename(os.path.dirname(path))
-                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
-                    if context_task:
-                        context = tk.context_from_entity("Task", context_task["id"])
-
+        context = self._find_task_context(path)
+       
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
         file_item.set_icon_from_path(item_info["icon_path"])
@@ -454,3 +436,26 @@ class BasicSceneCollector(HookBaseClass):
             self._image_extensions = list(image_extensions)
 
         return self._image_extensions
+    
+    def _find_task_context(self, path):
+        # Try to get the context more specifically from the path on disk
+        tk = sgtk.sgtk_from_path( path )
+        context = tk.context_from_path(path)
+
+        # In case the task folder is not registered for some reason, we can try to find it
+        if not context.task:
+            if context.step:
+                if context.step["name"] == "Animations":
+                    file_name = os.path.splitext(os.path.basename(path))[0]
+                    # SWC JR: This could get slow if there are a lot of tasks, not sure if there is a way to query instead            
+                    tasks = context.sgtk.shotgun.find("Task", [["entity", "is", context.entity],["step", "is", context.step]], ['content'])
+                    for task in tasks:
+                        if task['content'] in file_name:
+                            # We found the task
+                            context = tk.context_from_entity("Task", task['id'])
+                else:
+                    file_folder = os.path.basename(os.path.dirname(path))
+                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
+                    if context_task:
+                        context = tk.context_from_entity("Task", context_task["id"])
+        return context
