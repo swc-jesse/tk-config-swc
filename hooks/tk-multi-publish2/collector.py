@@ -240,9 +240,12 @@ class BasicSceneCollector(HookBaseClass):
             if context.step:
                 if context.step["name"] == "Animations":
                     file_name = os.path.splitext(os.path.basename(path))[0]
-                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_name],["entity", "is", context.entity],["step", "is", context.step]])
-                    if context_task:
-                        context = tk.context_from_entity("Task", context_task["id"])                
+                    # SWC JR: This could get slow if there are a lot of tasks, not sure if there is a way to query instead            
+                    tasks = context.sgtk.shotgun.find("Task", [["entity", "is", context.entity],["step", "is", context.step]], ['content'])
+                    for task in tasks:
+                        if task['content'] in file_name:
+                            # We found the task
+                            context = tk.context_from_entity("Task", task['id'])
                 else:
                     file_folder = os.path.basename(os.path.dirname(path))
                     context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
