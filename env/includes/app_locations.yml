@@ -147,11 +147,10 @@ apps.tk-multi-perforce.location:
   type: git_branch
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: dcf3998
+  version: 3d000e56ce1a9d0b398c4e30eb4c8b41637e847f
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
-
 # launchfolder
 apps.tk-shotgun-launchfolder.location:
   type: app_store
