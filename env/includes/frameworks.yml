@@ -33,9 +33,10 @@ frameworks:
   # desktopserver - provides a server to run local commands.
   tk-framework-desktopserver_v1.x.x:
     location:
-      version: v1.5.1
+      version: v1.5.0
       type: app_store
       name: tk-framework-desktopserver
+
   # qtwidgets - collection of Toolkit related QT Widgets
   tk-framework-qtwidgets_v2.x.x:
     location:
@@ -53,9 +54,10 @@ frameworks:
   # shotgunutils v5 - Shotgun Related Utilities
   tk-framework-shotgunutils_v5.x.x:
     location:
-      version: v5.8.1
+      version: v5.8.0
       type: app_store
       name: tk-framework-shotgunutils
+
   # widget v0 - QT Widget Framework for Tank Apps (qtwidgets fw predecessor)
   tk-framework-widget_v0.2.x:
     location:
@@ -71,9 +73,9 @@ frameworks:
       name: tk-framework-widget
 
   # desktopclient - A client for Shotgun Create
-  tk-framework-desktopclient_v1.x.x:
+  tk-framework-desktopclient_v0.x.x:
     location:
-      version: v1.0.0
+      version: v0.2.0
       type: app_store
       name: tk-framework-desktopclient
 
@@ -106,7 +108,7 @@ frameworks:
       # type: dev
       # path: 'C:/swc-configs/tk-framework-perforce'
       ## Github
-      path: https://github.com/nimbleheroes/tk-framework-perforce.git
-      version: 58d828f3f3a5deb4a357b9f7106a68687e018c97
       type: git_branch
       branch: swc_beta
+      path: https://github.com/nimbleheroes/tk-framework-perforce.git
+      version: f20cd62
