@@ -60,6 +60,7 @@ class SceneOperation(HookBaseClass):
                                 all others     - None
         """
         p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
+        p4_fw.util = p4_fw.import_module("connection")
         p4 = p4_fw.connection.connect()
         p4_fw.util = p4_fw.import_module("util")
         p4_icon = os.path.join(self.disk_location, os.pardir, os.pardir, "icons", "perforce.png")
