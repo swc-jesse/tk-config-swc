@@ -107,7 +107,7 @@ class BasicSceneCollector(HookBaseClass):
                 },
                 "Motion Builder FBX": {
                     "extensions": ["fbx"],
-                    "icon": self._get_icon_path("motionbuilder.png"),
+                    "icon": self._get_icon_path("geometry.png"),
                     "item_type": "file.motionbuilder",
                 },
                 "Nuke Script": {

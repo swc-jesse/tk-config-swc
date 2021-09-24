@@ -19,10 +19,10 @@ from tank_vendor import six
 HookBaseClass = sgtk.get_hook_baseclass()
 p4_app = sgtk.platform.current_engine().apps.get("tk-multi-perforce")
 
-import ptvsd
+# import ptvsd
 
-# Allow other computers to attach to ptvsd at this IP address and port.
-ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
+# # Allow other computers to attach to ptvsd at this IP address and port.
+# ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
 class ShellActions(HookBaseClass):
     """
@@ -175,7 +175,7 @@ class ShellActions(HookBaseClass):
         # path = six.ensure_str(self.get_publish_path(sg_publish_data))
 
         if name == "perforce_sync":            
-            p4_app.sync_files(sg_publish_data['type'], sg_publish_data['id'])
+            p4_app.sync_files(sg_publish_data['type'], [sg_publish_data['id']])
 
         if name == "create_folders":   
             tk = sgtk.sgtk_from_entity(sg_publish_data['type'], sg_publish_data['id'])         
