@@ -22,7 +22,7 @@ entity_browser_settings: &entity_browser_settings
     filters:
     - [task_assignees, is, '{context.user}']
     - [project, is, '{context.project}']
-    hierarchy: [entity, content]      
+    hierarchy: [project, entity, content]      
   - caption: Content
     entity_type: Asset
     hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
@@ -61,17 +61,22 @@ entity_browser_settings: &entity_browser_settings
     - [step.Step.code, is, "Vendor"]      
     hierarchy: [entity, content]      
 
-# Desktopp
+# Desktop
 settings.tk-multi-loader2.desktop:
-  #actions_hook: "{engine}/tk-multi-loader2/basic/scene_actions.py"
+  actions_hook: "{config}/tk-multi-loader2/tk-desktop/tk-desktop_actions.py"
   action_mappings:
-    Alembic Cache: [reference, import]
-    Image: [texture_node, image_plane]
-    Maya Scene: [reference, import]
-    Photoshop Image: [texture_node, image_plane]  
-    3dsmax Scene: [import, reference]
-    Rendered Image: [texture_node]
-    Texture: [texture_node]
+    Alembic Cache: [debug_action_1]
+    Image: [debug_action_1]
+    Maya Scene: [debug_action_1]
+    Photoshop Image: [debug_action_1]  
+    3dsmax Scene: [debug_action_1]
+    Rendered Image: [debug_action_1]
+    Texture: [debug_action_1]
+  entity_mappings:
+    Task: [perforce_sync,create_folders]
+    Asset: [perforce_sync,create_folders]
+    CustomEntity01: [perforce_sync,create_folders]
+    CustomEntity03: [perforce_sync,create_folders]    
   <<: *entity_browser_settings 
   publish_filters: [["sg_status_list", "is_not", null]]  
   location: "@apps.tk-multi-loader2.location"
