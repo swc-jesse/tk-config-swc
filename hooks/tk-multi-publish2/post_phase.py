@@ -55,9 +55,9 @@ class PostPhaseHook(HookBaseClass):
 
             # collect descriptions from Publish Items to supply P4 with change description
             change_descriptions = "\n".join(
-                ["- {}".format(item.description) for item in publish_tree
+                list(set(["- {}".format(item.description) for item in publish_tree
                     if item.description
-                ]
+                ]))
             )
 
             new_change = self.p4_fw.util.create_change(p4, change_descriptions)
