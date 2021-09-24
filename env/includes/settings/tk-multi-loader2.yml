@@ -40,11 +40,12 @@ entity_browser_settings: &entity_browser_settings
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']        
   - caption: Animations
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity.Asset.code, sg_folder_name, sg_subfolder_name, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
       - [project, is, '{context.project}']  
-      - [step.Step.short_name, is, [ "Animations" ]]           
+      - [sg_asset_parent, is_not, [ null ]]
+      - [sg_asset_type, is, ["Animations"]]               
   - caption: Environment
     entity_type: CustomEntity01
     hierarchy: [project, sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_folder_name]
