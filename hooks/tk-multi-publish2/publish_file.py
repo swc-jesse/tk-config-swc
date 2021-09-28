@@ -143,7 +143,10 @@ class PublishPlugin(HookBaseClass):
         )
 
         # return the accepted info
-        return {"accepted": True}
+        type = item.type_spec
+        if(type == "file.playblast"):
+            return {"accepted": False}
+        return {"accepted": True}            
 
     def validate(self, settings, item):
         """

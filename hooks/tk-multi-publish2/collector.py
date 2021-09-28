@@ -282,7 +282,10 @@ class BasicSceneCollector(HookBaseClass):
             for file in files:
                 item_path = os.path.join(dirpath,file)
                 # Process each file we find
-                file_items.append(self._collect_file(parent_item,item_path))
+                if os.path.basename(dirpath) == "playblasts":
+                    file_items.append(self.collect_playblast(parent_item,item_path))
+                else:
+                    file_items.append(self._collect_file(parent_item,item_path))
 
         if not file_items:
             self.logger.warn("No files found in: %s" % (folder,))
@@ -459,3 +462,28 @@ class BasicSceneCollector(HookBaseClass):
                     if context_task:
                         context = tk.context_from_entity("Task", context_task["id"])
         return context
+
+    def collect_playblast(self, parent_item, path):
+        """
+        Creates items for quicktime playblasts.
+
+        Looks for a 'project_root' property on the parent item, and if such
+        exists, look for movie files in a 'movies' subfolder.
+
+        :param parent_item: Parent Item instance
+        :param str project_root: The maya project root to search for playblasts
+        """
+
+        # do some early pre-processing to ensure the file is of the right
+        # type. use the base class item info method to see what the item
+        # type would be.
+        item_info = self._get_item_info(path)
+        if item_info["item_type"] != "file.video":
+            return
+        item = self._collect_file(
+            parent_item, path
+        )
+
+        # the item has been created. update the display name to include
+        # the an indication of what it is and why it was collected
+        item.type_spec = "file.playblast"
