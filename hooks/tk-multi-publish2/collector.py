@@ -15,6 +15,10 @@ from tank_vendor import six
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
+# import ptvsd
+
+# # Allow other computers to attach to ptvsd at this IP address and port.
+# ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
 class BasicSceneCollector(HookBaseClass):
     """
@@ -484,6 +488,10 @@ class BasicSceneCollector(HookBaseClass):
         item_info = self._get_item_info(path)
         if item_info["item_type"] != "file.video":
             return
+        for child in parent_item.children:
+            if child.name == os.path.basename(path):
+                return
+
         item = self._collect_file(
             parent_item, path
         )
@@ -491,3 +499,5 @@ class BasicSceneCollector(HookBaseClass):
         # the item has been created. update the display name to include
         # the an indication of what it is and why it was collected
         item.type_spec = "file.playblast"
+
+        return item
