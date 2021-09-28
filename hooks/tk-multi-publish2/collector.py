@@ -195,7 +195,11 @@ class BasicSceneCollector(HookBaseClass):
             self._collect_folder(parent_item, path)
             return None
         else:
-            return self._collect_file(parent_item, path)
+            collectedFile = self._collect_file(parent_item, path)
+            playblasts = os.path.join(os.path.dirname(path),"playblasts")
+            if(os.path.exists(playblasts)):
+                self._collect_folder(parent_item, playblasts)
+            return collectedFile
 
     def _collect_file(self, parent_item, path, frame_sequence=False):
         """

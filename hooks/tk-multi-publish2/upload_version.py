@@ -63,8 +63,9 @@ class UploadVersionPlugin(HookBaseClass):
     def accept(self, settings, item):
         # get the base settings
         settings = super(UploadVersionPlugin, self).accept(settings, item)
-        # set the default checked state
-        settings["checked"] = False
+        if(item.type_spec != "file.playblast"):
+            # set the default checked state
+            settings["checked"] = False
         return settings
 
     def finalize(self, settings, item):
