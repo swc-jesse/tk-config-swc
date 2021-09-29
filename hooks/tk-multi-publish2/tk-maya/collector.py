@@ -97,6 +97,7 @@ class MayaSessionCollector(HookBaseClass):
 
             self.collect_playblasts(item, project_root)
             self.collect_alembic_caches(item, project_root)
+            self.collect_fbx_animations(item, project_root)
         else:
 
             self.logger.info(
@@ -220,6 +221,31 @@ class MayaSessionCollector(HookBaseClass):
         icon_path = os.path.join(self.disk_location, os.pardir, "icons", "geometry.png")
 
         geo_item.set_icon_from_path(icon_path)
+
+    def collect_fbx_animations(self, parent_item, project_root):     
+        """
+        Looks for exported FBX files that match this file name
+
+        :param parent_item: Parent Item instance
+        :param str project_root: The maya project root to search for FBX files        
+        """           
+        # ensure the alembic cache dir exists
+        fbx_file = os.path.join(project_root, parent_item.name.split(".")[0] + ".fbx")
+        if not os.path.exists(fbx_file):
+            return
+
+        self.logger.info(
+            "Processing found FBX file: %s" % (fbx_file,),
+            extra={"action_show_folder": {"path": os.path.dirname(fbx_file)}},
+        )
+
+        item_info = self._get_item_info(fbx_file)
+        if item_info["item_type"] != "file.motionbuilder":
+            return
+
+        # allow the base class to collect and create the item. it knows how
+        # to handle alembic files
+        super(MayaSessionCollector, self)._collect_file(parent_item, fbx_file)        
 
     def collect_playblasts(self, parent_item, project_root):
         """
