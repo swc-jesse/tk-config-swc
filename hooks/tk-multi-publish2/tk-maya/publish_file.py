@@ -125,28 +125,31 @@ class MayaSessionPublishPlugin(HookBaseClass):
         # is a temporary measure until the publisher handles context switching
         # natively.
 
-        if(item.type == "maya.session"):
-            if settings.get("Publish Template").value:
-                item.context_change_allowed = False
+        if(item.type != "file.playblast"):
+            if(item.type == "maya.session"):
+                if settings.get("Publish Template").value:
+                    item.context_change_allowed = False
 
-            path = _session_path()
+                path = _session_path()
 
-            if not path:
-                # the session has not been saved before (no path determined).
-                # provide a save button. the session will need to be saved before
-                # validation will succeed.
-                self.logger.warn(
-                    "The Maya session has not been saved.", extra=_get_save_as_action()
+                if not path:
+                    # the session has not been saved before (no path determined).
+                    # provide a save button. the session will need to be saved before
+                    # validation will succeed.
+                    self.logger.warn(
+                        "The Maya session has not been saved.", extra=_get_save_as_action()
+                    )
+
+                self.logger.info(
+                    "Maya '%s' plugin accepted the current Maya session." % (self.name,)
                 )
-
-            self.logger.info(
-                "Maya '%s' plugin accepted the current Maya session." % (self.name,)
-            )
+            else:
+                self.logger.info(
+                    "Maya '%s' plugin accepted file." % (self.name,)
+                )            
+            return {"accepted": True, "checked": True}
         else:
-            self.logger.info(
-                "Maya '%s' plugin accepted dropped file." % (self.name,)
-            )            
-        return {"accepted": True, "checked": True}
+            return {"accepted": False}
 
     def validate(self, settings, item):
         """

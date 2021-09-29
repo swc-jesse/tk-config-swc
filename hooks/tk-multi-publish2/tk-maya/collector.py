@@ -232,18 +232,7 @@ class MayaSessionCollector(HookBaseClass):
         :param str project_root: The maya project root to search for playblasts
         """
 
-        movie_dir_name = None
-
-        # try to query the file rule folder name for movies. This will give
-        # us the directory name set for the project where movies will be
-        # written
-        if "movie" in cmds.workspace(fileRuleList=True):
-            # this could return an empty string
-            movie_dir_name = cmds.workspace(fileRuleEntry="movie")
-
-        if not movie_dir_name:
-            # fall back to the default
-            movie_dir_name = "movies"
+        movie_dir_name = "playblasts"
 
         # ensure the movies dir exists
         movies_dir = os.path.join(project_root, movie_dir_name)
@@ -251,7 +240,7 @@ class MayaSessionCollector(HookBaseClass):
             return
 
         self.logger.info(
-            "Processing movies folder: %s" % (movies_dir,),
+            "Processing playblasts folder: %s" % (movies_dir,),
             extra={"action_show_folder": {"path": movies_dir}},
         )
 
@@ -269,13 +258,14 @@ class MayaSessionCollector(HookBaseClass):
 
             # allow the base class to collect and create the item. it knows how
             # to handle movie files
-            item = super(MayaSessionCollector, self)._collect_file(
+            item = super(MayaSessionCollector, self).collect_playblast(
                 parent_item, movie_path
             )
 
             # the item has been created. update the display name to include
             # the an indication of what it is and why it was collected
             item.name = "%s (%s)" % (item.name, "playblast")
+            item.type_spec = "file.playblast"
 
     def collect_rendered_images(self, parent_item):
         """
