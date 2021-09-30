@@ -112,10 +112,18 @@ apps.tk-shotgun-folders.location:
   # type: app_store
   # version: v0.2.0
   ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-shotgun-folders
-  version: v0.2.0-nx.1
+  # type: github_release
+  # organization: nimbleheroes
+  # repository: tk-shotgun-folders
+  # version: v0.2.0-nx.1
+  ### Github
+  type: git_branch
+  branch: master
+  path: https://github.com/studiowildcard/tk-shotgun-folders.git
+  version: 5bab0c6aab13eb88366ab80f0fe3e89ef8a2cdf7  
+  # ### Dev
+  # type: dev
+  # path: S:/Projects/ShotgunConfig/tk-shotgun-folders
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
