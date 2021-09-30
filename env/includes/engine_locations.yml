@@ -19,7 +19,7 @@
 engines.tk-3dsmax.location:
   type: app_store
   name: tk-3dsmax
-  version: v1.1.6
+  version: v1.2.0
 
 # Desktop
 engines.tk-desktop.location:
@@ -72,7 +72,7 @@ engines.tk-substancepainter.location:
   type: git_branch
   branch: master
   path: https://github.com/studiowildcard/tk-substancepainter
-  version: e620d67
+  version: e620d679ac4cf60e0f68b5c3a097818871507221
 
 # Substance Designer
 engines.tk-substancedesigner.location:
