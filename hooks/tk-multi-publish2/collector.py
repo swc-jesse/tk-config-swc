@@ -146,12 +146,12 @@ class BasicSceneCollector(HookBaseClass):
                 },
                 "SpeedTree Modeler": {
                     "extensions": ["spm"],
-                    "icon": self._get_icon_path("file.png"),
+                    "icon": self._get_icon_path("speedtree.png"),
                     "item_type": "file.speedtree",
                 }, 
                 "SpeedTree Export": {
                     "extensions": ["st9", "st"],
-                    "icon": self._get_icon_path("file.png"),
+                    "icon": self._get_icon_path("speedtree.png"),
                     "item_type": "file.speedtree",
                 },                 
             }
@@ -277,6 +277,7 @@ class BasicSceneCollector(HookBaseClass):
             out_path = os.path.join(temp_path,file_item.name.split(".")[0] + ".jpg")
             if spm_utils.SPMWriteThumbnail(path,out_path):
                 file_item.set_thumbnail_from_path(out_path)
+                file_item.set_icon_from_path(out_path)
 
                 # disable thumbnail creation since we get it for free
                 file_item.thumbnail_enabled = False
