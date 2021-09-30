@@ -144,6 +144,16 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("file.png"),
                     "item_type": "file.image",
                 },
+                "SpeedTree Modeler": {
+                    "extensions": ["spm"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.speedtree",
+                }, 
+                "SpeedTree Export": {
+                    "extensions": ["st9", "st"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.speedtree",
+                },                 
             }
 
         return self._common_file_info
