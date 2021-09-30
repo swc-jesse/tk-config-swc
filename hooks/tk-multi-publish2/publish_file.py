@@ -190,6 +190,12 @@ class PublishPlugin(HookBaseClass):
                 })
                 raise Exception("Potential bad path!")
 
+        extension = path.split(".")[-1]
+        if extension.lower() != extension:
+            self.logger.error("This file extension is not lowercase:")
+            self.logger.error("  %s, should be %s" % (path,extension.lower()))      
+            return False                
+
         # We allow the information to be pre-populated by the collector or a
         # base class plugin. They may have more information than is available
         # here such as custom type or template settings.
