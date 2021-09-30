@@ -235,6 +235,7 @@ class BasicSceneCollector(HookBaseClass):
         item_info = self._get_item_info(path)
         item_type = item_info["item_type"]
         type_display = item_info["type_display"]
+        extension = item_info["extension"]
         evaluated_path = path
         is_sequence = False
 
@@ -267,6 +268,18 @@ class BasicSceneCollector(HookBaseClass):
 
             # disable thumbnail creation since we get it for free
             file_item.thumbnail_enabled = False
+        # if the supplied path is a SpeedTree SPM file, extract the thumbnail.
+        elif item_type.startswith("file.speedtree") and extension.startswith("spm"):
+            swc = self.load_framework("tk-framework-swc_v0.x.x")
+            spm_utils = swc.import_module("SPM_Utils")
+            temp_path = os.path.expandvars(r'%APPDATA%\Shotgun\Temp')
+            os.makedirs(temp_path, exist_ok=True)
+            out_path = os.path.join(temp_path,file_item.name.split(".")[0] + ".jpg")
+            if spm_utils.SPMWriteThumbnail(path,out_path):
+                file_item.set_thumbnail_from_path(out_path)
+
+                # disable thumbnail creation since we get it for free
+                file_item.thumbnail_enabled = False
 
         # all we know about the file is its path. set the path in its
         # properties for the plugins to use for processing.
@@ -392,7 +405,7 @@ class BasicSceneCollector(HookBaseClass):
 
         # everything should be populated. return the dictionary
         return dict(
-            item_type=item_type, type_display=type_display, icon_path=icon_path,
+            item_type=item_type, type_display=type_display, icon_path=icon_path, extension=extension
         )
 
     def _get_icon_path(self, icon_name, icons_folders=None):
