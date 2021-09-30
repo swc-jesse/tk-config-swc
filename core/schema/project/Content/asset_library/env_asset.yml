@@ -5,7 +5,7 @@ type: "shotgun_entity"
 entity_type: "CustomEntity01"
 
 # the shotgun field to use for the folder name
-name: "{sg_biome}/{sg_asset_category}/{sg_folder_name}"
+name: "{sg_asset_type}/{sg_biome}/{sg_asset_category}/{sg_folder_name}"
 
 associated_entity_type: CustomEntity01
 
