@@ -73,21 +73,19 @@ class PublishPlugin(HookBaseClass):
             "File Types": {
                 "type": "list",
                 "default": [
-                    ["Alias File", "wire"],
                     ["Alembic Cache", "abc"],
                     ["3dsmax Scene", "max"],
-                    ["NukeStudio Project", "hrox"],
                     ["Houdini Scene", "hip", "hipnc"],
                     ["Maya Scene", "ma", "mb"],
                     ["Motion Builder FBX", "fbx"],
-                    ["Nuke Script", "nk"],
                     ["Photoshop Image", "psd", "psb"],
-                    ["VRED Scene", "vpb", "vpe", "osb"],
                     ["Rendered Image", "dpx", "exr"],
                     ["Texture", "tiff", "tx", "tga", "dds"],
                     ["Image", "jpeg", "jpg", "png"],
                     ["Movie", "mov", "mp4"],
-                    ["PDF", "pdf"],
+                    ["SpeedTree Modeler", "spm"],
+                    ["SpeedTree Export", "st9", "st"],
+                    ["Zbrush Tool", "ztl"],
                 ],
                 "description": (
                     "List of file types to include. Each entry in the list "
