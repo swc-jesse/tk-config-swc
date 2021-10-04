@@ -15,6 +15,7 @@ import maya.mel as mel
 import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 
 class MayaSessionCollector(HookBaseClass):
@@ -139,6 +140,16 @@ class MayaSessionCollector(HookBaseClass):
         session_item = parent_item.create_item(
             "maya.session", "Maya Session", display_name
         )
+        # Try to get the context more specifically from the path on disk
+        try:
+            context = self.swc_fw.find_task_context(path)
+        except(AttributeError):
+            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+            context = self.swc_fw.find_task_context(path)
+
+        # If we found a better context, set it here
+        if context:
+            session_item.context = context        
 
         # get the icon path to display for this item
         icon_path = os.path.join(self.disk_location, os.pardir, "icons", "maya.png")
