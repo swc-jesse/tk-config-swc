@@ -16,7 +16,10 @@ import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
+import ptvsd
 
+# Allow other computers to attach to ptvsd at this IP address and port.
+ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
 class MayaSessionCollector(HookBaseClass):
     """
@@ -209,7 +212,7 @@ class MayaSessionCollector(HookBaseClass):
             # do some early pre-processing to ensure the file is of the right
             # type. use the base class item info method to see what the item
             # type would be.
-            item_info = self._get_item_info(filename)
+            item_info = self._collect_item_info(parent_item, filename)
             if item_info["item_type"] != "file.alembic":
                 continue
 
@@ -250,13 +253,13 @@ class MayaSessionCollector(HookBaseClass):
             extra={"action_show_folder": {"path": os.path.dirname(fbx_file)}},
         )
 
-        item_info = self._get_item_info(fbx_file)
+        item_info = self._collect_item_info(parent_item, fbx_file)
         if item_info["item_type"] != "file.motionbuilder":
             return
 
         # allow the base class to collect and create the item. it knows how
         # to handle alembic files
-        super(MayaSessionCollector, self)._collect_file(parent_item, fbx_file)        
+        super(MayaSessionCollector, self)._collect_file(parent_item, item_info)        
 
     def collect_playblasts(self, parent_item, project_root):
         """
@@ -287,7 +290,7 @@ class MayaSessionCollector(HookBaseClass):
             # do some early pre-processing to ensure the file is of the right
             # type. use the base class item info method to see what the item
             # type would be.
-            item_info = self._get_item_info(filename)
+            item_info = self._collect_item_info(parent_item, filename)
             if item_info["item_type"] != "file.video":
                 continue
 
@@ -295,14 +298,9 @@ class MayaSessionCollector(HookBaseClass):
 
             # allow the base class to collect and create the item. it knows how
             # to handle movie files
-            item = super(MayaSessionCollector, self).collect_playblast(
+            item = self._collect_playblast(
                 parent_item, movie_path
             )
-
-            # the item has been created. update the display name to include
-            # the an indication of what it is and why it was collected
-            item.name = "%s (%s)" % (item.name, "playblast")
-            item.type_spec = "file.playblast"
 
     def collect_rendered_images(self, parent_item):
         """

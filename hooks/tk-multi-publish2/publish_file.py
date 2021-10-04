@@ -132,7 +132,7 @@ class PublishPlugin(HookBaseClass):
 
         :returns: dictionary with boolean keys accepted, required and enabled
         """
-        path = item.properties.path
+        path = item.properties.get("path")
 
         # log the accepted file and display a button to reveal it in the fs
         self.logger.info(
