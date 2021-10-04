@@ -16,10 +16,7 @@ import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
-import ptvsd
 
-# Allow other computers to attach to ptvsd at this IP address and port.
-ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
 class MayaSessionCollector(HookBaseClass):
     """
