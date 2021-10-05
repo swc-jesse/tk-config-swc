@@ -118,6 +118,6 @@ frameworks:
       # path: 'S:/Projects/ShotgunConfig/tk-framework-swc'
       ## Github
       path: https://github.com/studiowildcard/tk-framework-swc
-      version: 8fedf88d9f42039b4819274e411216f212c72420
+      version: 4098e22696dc04ad479f10681715e9f98aad1779
       type: git_branch
       branch: main

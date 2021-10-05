@@ -264,15 +264,6 @@ class BasicSceneCollector(HookBaseClass):
         except(AttributeError):
             self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
             context = self.swc_fw.find_task_context(path)
-       
-        # # Find Parent
-        # for parent in parent_item.descendants:
-        #     if parent.properties["path"].split(".")[0] == path.split(".")[0]:
-        #         if parent.properties["path"] == path:
-        #             continue
-        #         else:
-        #             parent_item = parent
-        #             break
 
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
