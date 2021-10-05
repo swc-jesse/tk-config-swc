@@ -9,18 +9,19 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
-import maya.cmds as cmds
-import maya.mel as mel
+import pprint
 import sgtk
 from sgtk.util.filesystem import ensure_folder_exists
-from tank_vendor import six
+
+
+import pymxs
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
 
-class MayaSessionPublishPlugin(HookBaseClass):
+class MaxSessionPublishPlugin(HookBaseClass):
     """
-    Plugin for publishing an open maya session.
+    Plugin for publishing an open max session.
 
     This hook relies on functionality found in the base file publisher hook in
     the publish2 app and should inherit from it in the configuration. The hook
@@ -39,7 +40,55 @@ class MayaSessionPublishPlugin(HookBaseClass):
         contain simple html for formatting.
         """
 
-        return super(MayaSessionPublishPlugin, self).description
+        loader_url = "https://support.shotgunsoftware.com/hc/en-us/articles/219033078"
+
+        return """
+        Publishes the file to ShotGrid. A <b>Publish</b> entry will be
+        created in ShotGrid which will include a reference to the file's current
+        path on disk. If a publish template is configured, a copy of the
+        current session will be copied to the publish template path which
+        will be the file that is published. Other users will be able to access
+        the published file via the <b><a href='%s'>Loader</a></b> so long as
+        they have access to the file's location on disk.
+
+        If the session has not been saved, validation will fail and a button
+        will be provided in the logging output to save the file.
+
+        <h3>File versioning</h3>
+        If the filename contains a version number, the process will bump the
+        file to the next version after publishing.
+
+        The <code>version</code> field of the resulting <b>Publish</b> in
+        ShotGrid will also reflect the version number identified in the filename.
+        The basic worklfow recognizes the following version formats by default:
+
+        <ul>
+        <li><code>filename.v###.ext</code></li>
+        <li><code>filename_v###.ext</code></li>
+        <li><code>filename-v###.ext</code></li>
+        </ul>
+
+        After publishing, if a version number is detected in the work file, the
+        work file will automatically be saved to the next incremental version
+        number. For example, <code>filename.v001.ext</code> will be published
+        and copied to <code>filename.v002.ext</code>
+
+        If the next incremental version of the file already exists on disk, the
+        validation step will produce a warning, and a button will be provided in
+        the logging output which will allow saving the session to the next
+        available version number prior to publishing.
+
+        <br><br><i>NOTE: any amount of version number padding is supported. for
+        non-template based workflows.</i>
+
+        <h3>Overwriting an existing publish</h3>
+        In non-template workflows, a file can be published multiple times,
+        however only the most recent publish will be available to other users.
+        Warnings will be provided during validation if there are previous
+        publishes.
+        """ % (
+            loader_url,
+        )
 
     @property
     def settings(self):
@@ -62,10 +111,10 @@ class MayaSessionPublishPlugin(HookBaseClass):
         """
 
         # inherit the settings from the base publish plugin
-        base_settings = super(MayaSessionPublishPlugin, self).settings or {}
+        base_settings = super(MaxSessionPublishPlugin, self).settings or {}
 
         # settings specific to this class
-        maya_publish_settings = {
+        max_publish_settings = {
             "Publish Template": {
                 "type": "template",
                 "default": None,
@@ -76,7 +125,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
         }
 
         # update the base settings
-        base_settings.update(maya_publish_settings)
+        base_settings.update(max_publish_settings)
 
         return base_settings
 
@@ -89,7 +138,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
         accept() method. Strings can contain glob patters such as *, for example
         ["maya.*", "file.maya"]
         """
-        return ["maya.session", "file.*"]
+        return ["3dsmax.session", "file.*"]
 
     def accept(self, settings, item):
         """
@@ -121,31 +170,28 @@ class MayaSessionPublishPlugin(HookBaseClass):
         # is a temporary measure until the publisher handles context switching
         # natively.
 
-        if(item.type != "file.playblast"):
-            if(item.type == "maya.session"):
-                if settings.get("Publish Template").value:
-                    item.context_change_allowed = False
+        if(item.type == "3dsmax.session"):
+            if settings.get("Publish Template").value:
+                item.context_change_allowed = False
 
-                path = _session_path()
+            path = _session_path()
 
-                if not path:
-                    # the session has not been saved before (no path determined).
-                    # provide a save button. the session will need to be saved before
-                    # validation will succeed.
-                    self.logger.warn(
-                        "The Maya session has not been saved.", extra=_get_save_as_action()
-                    )
-
-                self.logger.info(
-                    "Maya '%s' plugin accepted the current Maya session." % (self.name,)
+            if not path:
+                # the session has not been saved before (no path determined).
+                # provide a save button. the session will need to be saved before
+                # validation will succeed.
+                self.logger.warn(
+                    "The Max session has not been saved.", extra=_get_save_as_action()
                 )
-            else:
-                self.logger.info(
-                    "Maya '%s' plugin accepted file." % (self.name,)
-                )            
-            return {"accepted": True, "checked": True}
+
+            self.logger.info(
+                "Max '%s' plugin accepted the current Max session." % (self.name,)
+            )
         else:
-            return {"accepted": False}
+            self.logger.info(
+                "3DSMAX '%s' plugin accepted dropped file." % (self.name,)
+            )                  
+        return {"accepted": True, "checked": True}
 
     def validate(self, settings, item):
         """
@@ -163,30 +209,13 @@ class MayaSessionPublishPlugin(HookBaseClass):
         path = _session_path()
 
         # ---- ensure the session has been saved
-        if(item.type == "maya.session"):
+        if(item.type == "3dsmax.session"):
             if not path:
                 # the session still requires saving. provide a save button.
                 # validation fails.
-                error_msg = "The Maya session has not been saved."
+                error_msg = "The Max session has not been saved."
                 self.logger.error(error_msg, extra=_get_save_as_action())
                 raise Exception(error_msg)
-
-            # ensure we have an updated project root
-            project_root = cmds.workspace(q=True, rootDirectory=True)
-            item.properties["project_root"] = project_root
-
-            # log if no project root could be determined.
-            if not project_root:
-                self.logger.info(
-                    "Your session is not part of a maya project.",
-                    extra={
-                        "action_button": {
-                            "label": "Set Project",
-                            "tooltip": "Set the maya project",
-                            "callback": lambda: mel.eval('setProject ""'),
-                        }
-                    },
-                )
 
             # ---- check the session against any attached work template
 
@@ -207,7 +236,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
                         extra={
                             "action_button": {
                                 "label": "Save File",
-                                "tooltip": "Save the current Maya session to a "
+                                "tooltip": "Save the current Max session to a "
                                 "different file name",
                                 # will launch wf2 if configured
                                 "callback": _get_save_as_action(),
@@ -234,7 +263,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
             item.properties["path"] = path
 
         # run the base class validation
-        return super(MayaSessionPublishPlugin, self).validate(settings, item)
+        return super(MaxSessionPublishPlugin, self).validate(settings, item)
 
     def publish(self, settings, item):
         """
@@ -250,20 +279,15 @@ class MayaSessionPublishPlugin(HookBaseClass):
         # are appropriate for current os, no double separators, etc.
         path = sgtk.util.ShotgunPath.normalize(_session_path())
 
-        if(item.type == "maya.session"):
+        if(item.type == "3dsmax.session"):
             # ensure the session is saved
             _save_session(path)
 
             # update the item with the saved session path
             item.properties["path"] = path
 
-            # add dependencies for the base class to register when publishing
-            item.properties[
-                "publish_dependencies"
-            ] = _maya_find_additional_session_dependencies()
-
         # let the base class register the publish
-        super(MayaSessionPublishPlugin, self).publish(settings, item)
+        super(MaxSessionPublishPlugin, self).publish(settings, item)
 
     def finalize(self, settings, item):
         """
@@ -277,47 +301,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
         """
 
         # do the base class finalization
-        super(MayaSessionPublishPlugin, self).finalize(settings, item)
-
-
-def _maya_find_additional_session_dependencies():
-    """
-    Find additional dependencies from the session
-    """
-
-    # default implementation looks for references and
-    # textures (file nodes) and returns any paths that
-    # match a template defined in the configuration
-    ref_paths = set()
-
-    # first let's look at maya references
-    ref_nodes = cmds.ls(references=True)
-    for ref_node in ref_nodes:
-        # get the path:
-        ref_path = cmds.referenceQuery(ref_node, filename=True)
-        # make it platform dependent
-        # (maya uses C:/style/paths)
-        ref_path = ref_path.replace("/", os.path.sep)
-        if ref_path:
-            ref_paths.add(ref_path)
-
-    # now look at file texture nodes
-    for file_node in cmds.ls(l=True, type="file"):
-        # ensure this is actually part of this session and not referenced
-        if cmds.referenceQuery(file_node, isNodeReferenced=True):
-            # this is embedded in another reference, so don't include it in
-            # the breakdown
-            continue
-
-        # get path and make it platform dependent
-        # (maya uses C:/style/paths)
-        texture_path = cmds.getAttr("%s.fileTextureName" % file_node).replace(
-            "/", os.path.sep
-        )
-        if texture_path:
-            ref_paths.add(texture_path)
-
-    return list(ref_paths)
+        super(MaxSessionPublishPlugin, self).finalize(settings, item)
 
 
 def _session_path():
@@ -325,41 +309,22 @@ def _session_path():
     Return the path to the current session
     :return:
     """
-    path = cmds.file(query=True, sn=True)
-
-    if path is not None:
-        path = six.ensure_str(path)
-
-    return path
+    if pymxs.runtime.maxFilePath and pymxs.runtime.maxFileName:
+        return os.path.join(pymxs.runtime.maxFilePath, pymxs.runtime.maxFileName)
+    else:
+        return None
 
 
 def _save_session(path):
     """
     Save the current session to the supplied path.
     """
-
-    # Maya can choose the wrong file type so we should set it here
-    # explicitly based on the extension
-    maya_file_type = None
-    if path.lower().endswith(".ma"):
-        maya_file_type = "mayaAscii"
-    elif path.lower().endswith(".mb"):
-        maya_file_type = "mayaBinary"
-
-    # Maya won't ensure that the folder is created when saving, so we must make sure it exists
+    # max won't ensure that the folder is created when saving, so we must make sure it exists
     folder = os.path.dirname(path)
     ensure_folder_exists(folder)
-
-    cmds.file(rename=path)
-
-    # save the scene:
-    if maya_file_type:
-        cmds.file(save=True, force=True, type=maya_file_type)
-    else:
-        cmds.file(save=True, force=True)
+    pymxs.runtime.saveMaxFile(path)
 
 
-# TODO: method duplicated in all the maya hooks
 def _get_save_as_action():
     """
     Simple helper for returning a log action dict for saving the session
@@ -368,7 +333,7 @@ def _get_save_as_action():
     engine = sgtk.platform.current_engine()
 
     # default save callback
-    callback = cmds.SaveScene
+    callback = lambda: pymxs.runtime.execute("max file saveas")
 
     # if workfiles2 is configured, use that for file save
     if "tk-multi-workfiles2" in engine.apps:

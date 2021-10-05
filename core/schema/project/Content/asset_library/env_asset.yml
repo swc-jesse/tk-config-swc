@@ -5,7 +5,7 @@ type: "shotgun_entity"
 entity_type: "CustomEntity01"
 
 # the shotgun field to use for the folder name
-name: "Content/{sg_asset_library}/{sg_asset_type}/{sg_biome}/{sg_asset_category}/{sg_asset_class}/{sg_folder_name}"
+name: "{sg_asset_type}/{sg_biome}/{sg_asset_category}/{sg_folder_name}"
 
 associated_entity_type: CustomEntity01
 
@@ -15,4 +15,4 @@ associated_entity_type: CustomEntity01
 # (this is std shotgun API syntax)
 # any values starting with $ are resolved into path objects
 filters:
-    - { "path": "project", "relation": "is", "values": [ "$project" ] }
+    - { "path": "sg_asset_library", "relation": "is", "values": [ "$asset_library" ] }

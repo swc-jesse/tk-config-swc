@@ -112,10 +112,18 @@ apps.tk-shotgun-folders.location:
   # type: app_store
   # version: v0.2.0
   ### GitHub Release
-  type: github_release
-  organization: nimbleheroes
-  repository: tk-shotgun-folders
-  version: v0.2.0-nx.1
+  # type: github_release
+  # organization: nimbleheroes
+  # repository: tk-shotgun-folders
+  # version: v0.2.0-nx.1
+  ### Github
+  type: git_branch
+  branch: master
+  path: https://github.com/studiowildcard/tk-shotgun-folders.git
+  version: 5bab0c6aab13eb88366ab80f0fe3e89ef8a2cdf7
+  # ### Dev
+  # type: dev
+  # path: S:/Projects/ShotgunConfig/tk-shotgun-folders
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
@@ -141,18 +149,16 @@ apps.tk-multi-workfiles2.location:
 # Perforce
 apps.tk-multi-perforce.location:
   ### Dev
-  # name: tk-multi-perforce
   # type: dev
-  # path: ~/Projects/swc/tk-multi-perforce
+  # path: C:/swc-configs/tk-multi-perforce
   ### Github
   type: git_branch
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: 8c4581ac7d8e98bbade0f383f8a23365d3d62a6a
+  version: 43006a3520f5c65b5eeada0b74dd2075ed373758
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
-
 # launchfolder
 apps.tk-shotgun-launchfolder.location:
   type: app_store

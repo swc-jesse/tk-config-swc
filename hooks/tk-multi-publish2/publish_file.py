@@ -16,6 +16,7 @@ import sgtk
 # from sgtk.util.filesystem import copy_file, ensure_folder_exists
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 class PublishPlugin(HookBaseClass):
     """
@@ -72,21 +73,19 @@ class PublishPlugin(HookBaseClass):
             "File Types": {
                 "type": "list",
                 "default": [
-                    ["Alias File", "wire"],
                     ["Alembic Cache", "abc"],
                     ["3dsmax Scene", "max"],
-                    ["NukeStudio Project", "hrox"],
                     ["Houdini Scene", "hip", "hipnc"],
                     ["Maya Scene", "ma", "mb"],
                     ["Motion Builder FBX", "fbx"],
-                    ["Nuke Script", "nk"],
                     ["Photoshop Image", "psd", "psb"],
-                    ["VRED Scene", "vpb", "vpe", "osb"],
                     ["Rendered Image", "dpx", "exr"],
                     ["Texture", "tiff", "tx", "tga", "dds"],
                     ["Image", "jpeg", "jpg", "png"],
                     ["Movie", "mov", "mp4"],
-                    ["PDF", "pdf"],
+                    ["SpeedTree Modeler", "spm"],
+                    ["SpeedTree Export", "st9", "st"],
+                    ["Zbrush Tool", "ztl"],
                 ],
                 "description": (
                     "List of file types to include. Each entry in the list "
@@ -133,8 +132,7 @@ class PublishPlugin(HookBaseClass):
 
         :returns: dictionary with boolean keys accepted, required and enabled
         """
-
-        path = item.properties.path
+        path = item.properties.get("path")
 
         # log the accepted file and display a button to reveal it in the fs
         self.logger.info(
@@ -143,7 +141,10 @@ class PublishPlugin(HookBaseClass):
         )
 
         # return the accepted info
-        return {"accepted": True}
+        type = item.type_spec
+        if(type == "file.playblast"):
+            return {"accepted": False}
+        return {"accepted": True}            
 
     def validate(self, settings, item):
         """
@@ -162,7 +163,41 @@ class PublishPlugin(HookBaseClass):
         publisher = self.parent
         path = item.properties.get("path")
 
+        try:
+            target_context = self.swc_fw.find_task_context(path)
+        except(AttributeError):
+            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+            target_context = self.swc_fw.find_task_context(path)     
+        
         # ---- determine the information required to validate
+        if not item.context.entity and not target_context.entity:
+            self.logger.error("This file is not under a known Asset folder:")
+            self.logger.error("  %s" % (path,))      
+            return False      
+        elif target_context.entity != item.context.entity:
+            self.logger.error("This file is not under the correct Asset folder:")
+            self.logger.error("  %s" % (path,))
+            self.logger.error("Should be under %s not %s" % (target_context.entity,item.context.entity))
+            return False
+        elif target_context.task != item.context.task:
+            if not item.local_properties.get("ignore_bad_stuff", False):
+                self.logger.warning("This file looks to be under the following Task folder:")
+                self.logger.warning("  %s" % (target_context.task,))
+                self.logger.warning("Consider updating the Task accordingly.", extra={
+                    "action_button":{
+                    "label": "Ignore",
+                    "tooltip": "Ignore this warning",
+                    "callback": self._ignore_warning,
+                    "args": {"item": item}
+                    },
+                })
+                raise Exception("Potential bad path!")
+
+        extension = path.split(".")[-1]
+        if extension.lower() != extension:
+            self.logger.error("This file extension is not lowercase:")
+            self.logger.error("  %s, should be %s" % (path,extension.lower()))      
+            return False                
 
         # We allow the information to be pre-populated by the collector or a
         # base class plugin. They may have more information than is available
@@ -175,6 +210,10 @@ class PublishPlugin(HookBaseClass):
         self.logger.info("  %s" % (path,))
 
         return True
+
+    def _ignore_warning(self, item):
+        item.local_properties["ignore_bad_stuff"] = True
+        print("ignoring", item)
 
     def publish(self, settings, item):
         """
@@ -554,201 +593,3 @@ class PublishPlugin(HookBaseClass):
                  :meth:`tank.util.register_publish`.
         """
         return item.get_property("publish_kwargs", default_value={})
-
-    ############################################################################
-    # protected methods
-
-    # def _copy_work_to_publish(self, settings, item):
-    #     """
-    #     This method handles copying work file path(s) to a designated publish
-    #     location.
-    #
-    #     This method requires a "work_template" and a "publish_template" be set
-    #     on the supplied item.
-    #
-    #     The method will handle copying the "path" property to the corresponding
-    #     publish location assuming the path corresponds to the "work_template"
-    #     and the fields extracted from the "work_template" are sufficient to
-    #     satisfy the "publish_template".
-    #
-    #     The method will not attempt to copy files if any of the above
-    #     requirements are not met. If the requirements are met, the file will
-    #     ensure the publish path folder exists and then copy the file to that
-    #     location.
-    #
-    #     If the item has "sequence_paths" set, it will attempt to copy all paths
-    #     assuming they meet the required criteria with respect to the templates.
-    #
-    #     """
-    #
-    #     # ---- ensure templates are available
-    #     work_template = item.properties.get("work_template")
-    #     if not work_template:
-    #         self.logger.debug(
-    #             "No work template set on the item. "
-    #             "Skipping copy file to publish location."
-    #         )
-    #         return
-    #
-    #     publish_template = self.get_publish_template(settings, item)
-    #     if not publish_template:
-    #         self.logger.debug(
-    #             "No publish template set on the item. "
-    #             "Skipping copying file to publish location."
-    #         )
-    #         return
-    #
-    #     # ---- get a list of files to be copied
-    #
-    #     # by default, the path that was collected for publishing
-    #     work_files = [item.properties.path]
-    #
-    #     # if this is a sequence, get the attached files
-    #     if "sequence_paths" in item.properties:
-    #         work_files = item.properties.get("sequence_paths", [])
-    #         if not work_files:
-    #             self.logger.warning(
-    #                 "Sequence publish without a list of files. Publishing "
-    #                 "the sequence path in place: %s" % (item.properties.path,)
-    #             )
-    #             return
-    #
-    #     # ---- copy the work files to the publish location
-    #
-    #     for work_file in work_files:
-    #
-    #         if not work_template.validate(work_file):
-    #             self.logger.warning(
-    #                 "Work file '%s' did not match work template '%s'. "
-    #                 "Publishing in place." % (work_file, work_template)
-    #             )
-    #             return
-    #
-    #         work_fields = work_template.get_fields(work_file)
-    #
-    #         missing_keys = publish_template.missing_keys(work_fields)
-    #
-    #         if missing_keys:
-    #             self.logger.warning(
-    #                 "Work file '%s' missing keys required for the publish "
-    #                 "template: %s" % (work_file, missing_keys)
-    #             )
-    #             return
-    #
-    #         publish_file = publish_template.apply_fields(work_fields)
-    #
-    #         # copy the file
-    #         try:
-    #             publish_folder = os.path.dirname(publish_file)
-    #             ensure_folder_exists(publish_folder)
-    #             copy_file(work_file, publish_file)
-    #         except Exception:
-    #             raise Exception(
-    #                 "Failed to copy work file from '%s' to '%s'.\n%s"
-    #                 % (work_file, publish_file, traceback.format_exc())
-    #             )
-    #
-    #         self.logger.debug(
-    #             "Copied work file '%s' to publish file '%s'."
-    #             % (work_file, publish_file)
-    #         )
-
-    # def _get_next_version_info(self, path, item):
-    #     """
-    #     Return the next version of the supplied path.
-    #
-    #     If templates are configured, use template logic. Otherwise, fall back to
-    #     the zero configuration, path_info hook logic.
-    #
-    #     :param str path: A path with a version number.
-    #     :param item: The current item being published
-    #
-    #     :return: A tuple of the form::
-    #
-    #         # the first item is the supplied path with the version bumped by 1
-    #         # the second item is the new version number
-    #         (next_version_path, version)
-    #     """
-    #
-    #     if not path:
-    #         self.logger.debug("Path is None. Can not determine version info.")
-    #         return None, None
-    #
-    #     publisher = self.parent
-    #
-    #     # if the item has a known work file template, see if the path
-    #     # matches. if not, warn the user and provide a way to save the file to
-    #     # a different path
-    #     work_template = item.properties.get("work_template")
-    #     work_fields = None
-    #
-    #     if work_template:
-    #         if work_template.validate(path):
-    #             work_fields = work_template.get_fields(path)
-    #
-    #     # if we have template and fields, use them to determine the version info
-    #     if work_fields and "version" in work_fields:
-    #
-    #         # template matched. bump version number and re-apply to the template
-    #         work_fields["version"] += 1
-    #         next_version_path = work_template.apply_fields(work_fields)
-    #         version = work_fields["version"]
-    #
-    #     # fall back to the "zero config" logic
-    #     else:
-    #         next_version_path = publisher.util.get_next_version_path(path)
-    #         cur_version = publisher.util.get_version_number(path)
-    #         if cur_version is not None:
-    #             version = cur_version + 1
-    #         else:
-    #             version = None
-    #
-    #     return next_version_path, version
-
-    # def _save_to_next_version(self, path, item, save_callback):
-    #     """
-    #     Save the supplied path to the next version on disk.
-    #
-    #     :param path: The current path with a version number
-    #     :param item: The current item being published
-    #     :param save_callback: A callback to use to save the file
-    #
-    #     Relies on the _get_next_version_info() method to retrieve the next
-    #     available version on disk. If a version can not be detected in the path,
-    #     the method does nothing.
-    #
-    #     If the next version path already exists, logs a warning and does
-    #     nothing.
-    #
-    #     This method is typically used by subclasses that bump the current
-    #     working/session file after publishing.
-    #     """
-    #
-    #     (next_version_path, version) = self._get_next_version_info(path, item)
-    #
-    #     if version is None:
-    #         self.logger.debug(
-    #             "No version number detected in the publish path. "
-    #             "Skipping the bump file version step."
-    #         )
-    #         return None
-    #
-    #     self.logger.info("Incrementing file version number...")
-    #
-    #     # nothing to do if the next version path can't be determined or if it
-    #     # already exists.
-    #     if not next_version_path:
-    #         self.logger.warning("Could not determine the next version path.")
-    #         return None
-    #     elif os.path.exists(next_version_path):
-    #         self.logger.warning(
-    #             "The next version of the path already exists",
-    #             extra={"action_show_folder": {"path": next_version_path}},
-    #         )
-    #         return None
-    #
-    #     # save the file to the new path
-    #     save_callback(next_version_path)
-    #     self.logger.info("File saved as: %s" % (next_version_path,))
-    #
-    #     return next_version_path

@@ -32,6 +32,7 @@ settings.tk-maya.asset:
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
     tk-multi-perforce: "@settings.tk-multi-perforce"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"  
   menu_favourites:
   - {app_instance: tk-multi-workfiles2, name: File Open...}
   - {app_instance: tk-multi-perforce, name: Perforce Status...}
@@ -81,7 +82,7 @@ settings.tk-maya.anim_asset_step:
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.anim_asset_step"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.anim_asset_step"
   menu_favourites: *settings_tk-maya_menu
-  template_project: anim_asset_root
+  template_project: anim_asset_work_area
   automatic_context_switch: False
   location: "@engines.tk-maya.location"    
 

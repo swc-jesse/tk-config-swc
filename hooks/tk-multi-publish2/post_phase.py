@@ -52,7 +52,15 @@ class PostPhaseHook(HookBaseClass):
 
             # create a new changelist for all files being published:
             self.logger.info("Creating new Perforce changelist...")
-            new_change = self.p4_fw.util.create_change(p4, "Shotgun publish")
+
+            # collect descriptions from Publish Items to supply P4 with change description
+            change_descriptions = "\n".join(
+                list(set(["- {}".format(item.description) for item in publish_tree
+                    if item.description
+                ]))
+            )
+
+            new_change = self.p4_fw.util.create_change(p4, change_descriptions)
             # NOTE: new_change just returns the id of the change
 
             change_items = []
@@ -64,7 +72,18 @@ class PostPhaseHook(HookBaseClass):
                     path = item.properties.get("path")
 
                     self.logger.info("Ensuring file is checked out...")
-                    self.p4_fw.util.open_file_for_edit(p4, path, add_if_new=True)
+                    try:
+                        self.p4_fw.util.open_file_for_edit(p4, path, add_if_new=True)
+                    except self.p4_fw.util.P4InvalidFileNameException as e:
+                        self.logger.error("Illegal filename for use in Perforce", extra={
+                            "action_show_more_info": {
+                                "label": "Error Details",
+                                "tooltip": pprint.pformat(str(e)),
+                                "text": "<pre>%s</pre>" %pprint.pformat(str(e)),
+                                }
+                            }
+                        )
+                        break
 
                     # depo_paths = self.p4_fw.util.client_to_depot_paths(p4, path)
                     # self.logger.info("Depo paths: {}".format(depo_paths))

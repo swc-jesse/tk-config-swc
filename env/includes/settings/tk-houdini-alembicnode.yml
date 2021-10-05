@@ -17,7 +17,7 @@ includes:
 
 # asset_step
 settings.tk-houdini-alembicnode.asset_step:
-  work_file_template: houdini_asset_work
+  work_file_template: asset_houdini_workfile
   default_node_name: sg_alembic_out
   output_profiles:
   - name: Asset Work Cache
@@ -28,7 +28,7 @@ settings.tk-houdini-alembicnode.asset_step:
 
 # asset_child_step
 settings.tk-houdini-alembicnode.asset_child_step:
-  work_file_template: houdini_asset_child_work
+  work_file_template: asset_child_houdini_workfile
   default_node_name: sg_alembic_out
   output_profiles:
   - name: Asset Work Cache
@@ -39,7 +39,7 @@ settings.tk-houdini-alembicnode.asset_child_step:
 
 # pub_asset_step
 settings.tk-houdini-alembicnode.pub_asset_step:
-  work_file_template: houdini_pub_asset_work
+  work_file_template: pub_asset_houdini_workfile
   default_node_name: sg_alembic_out
   output_profiles:
   - name: Asset Work Cache
@@ -50,7 +50,7 @@ settings.tk-houdini-alembicnode.pub_asset_step:
 
 # prod_asset_step
 settings.tk-houdini-alembicnode.prod_asset_step:
-  work_file_template: houdini_prod_asset_work
+  work_file_template: prod_asset_houdini_workfile
   default_node_name: sg_alembic_out
   output_profiles:
   - name: Asset Work Cache
@@ -61,7 +61,7 @@ settings.tk-houdini-alembicnode.prod_asset_step:
 
 # env_asset_step
 settings.tk-houdini-alembicnode.env_asset_step:
-  work_file_template: houdini_env_asset_work
+  work_file_template: env_asset_houdini_workfile
   default_node_name: sg_alembic_out
   output_profiles:
   - name: Asset Work Cache
