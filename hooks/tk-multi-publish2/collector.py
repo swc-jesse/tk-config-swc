@@ -14,7 +14,12 @@ import sgtk
 from tank_vendor import six
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
+# import ptvsd
+
+# # Allow other computers to attach to ptvsd at this IP address and port.
+# ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
 class BasicSceneCollector(HookBaseClass):
     """
@@ -107,7 +112,7 @@ class BasicSceneCollector(HookBaseClass):
                 },
                 "Motion Builder FBX": {
                     "extensions": ["fbx"],
-                    "icon": self._get_icon_path("motionbuilder.png"),
+                    "icon": self._get_icon_path("geometry.png"),
                     "item_type": "file.motionbuilder",
                 },
                 "Nuke Script": {
@@ -140,6 +145,16 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("file.png"),
                     "item_type": "file.image",
                 },
+                "SpeedTree Modeler": {
+                    "extensions": ["spm"],
+                    "icon": self._get_icon_path("speedtree.png"),
+                    "item_type": "file.speedtree",
+                }, 
+                "SpeedTree Export": {
+                    "extensions": ["st9", "st"],
+                    "icon": self._get_icon_path("speedtree.png"),
+                    "item_type": "file.speedtree",
+                },                 
             }
 
         return self._common_file_info
@@ -188,14 +203,18 @@ class BasicSceneCollector(HookBaseClass):
 
         :returns: The main item that was created, or None if no item was created
             for the supplied path
-        """
+        """      
 
         # handle files and folders differently
         if os.path.isdir(path):
             self._collect_folder(parent_item, path)
             return None
         else:
-            return self._collect_file(parent_item, path)
+            collectedFile = self._collect_file(parent_item, path)
+            playblasts = os.path.join(os.path.dirname(path),"playblasts")
+            if(os.path.exists(playblasts)):
+                self._collect_folder(parent_item, playblasts)
+            return collectedFile
 
     def _collect_file(self, parent_item, path, frame_sequence=False):
         """
@@ -217,6 +236,7 @@ class BasicSceneCollector(HookBaseClass):
         item_info = self._get_item_info(path)
         item_type = item_info["item_type"]
         type_display = item_info["type_display"]
+        extension = item_info["extension"]
         evaluated_path = path
         is_sequence = False
 
@@ -232,7 +252,11 @@ class BasicSceneCollector(HookBaseClass):
         display_name = publisher.util.get_publish_name(path, sequence=is_sequence)
 
         # Try to get the context more specifically from the path on disk
-        context = self._find_task_context(path)
+        try:
+            context = self.swc_fw.find_task_context(path)
+        except(AttributeError):
+            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+            context = self.swc_fw.find_task_context(path)
        
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
@@ -249,6 +273,19 @@ class BasicSceneCollector(HookBaseClass):
 
             # disable thumbnail creation since we get it for free
             file_item.thumbnail_enabled = False
+        # if the supplied path is a SpeedTree SPM file, extract the thumbnail.
+        elif item_type.startswith("file.speedtree") and extension.startswith("spm"):
+            swc = self.load_framework("tk-framework-swc_v0.x.x")
+            spm_utils = swc.import_module("SPM_Utils")
+            temp_path = os.path.expandvars(r'%APPDATA%\Shotgun\Temp')
+            os.makedirs(temp_path, exist_ok=True)
+            out_path = os.path.join(temp_path,file_item.name.split(".")[0] + ".jpg")
+            if spm_utils.SPMWriteThumbnail(path,out_path):
+                file_item.set_thumbnail_from_path(out_path)
+                file_item.set_icon_from_path(out_path)
+
+                # disable thumbnail creation since we get it for free
+                file_item.thumbnail_enabled = False
 
         # all we know about the file is its path. set the path in its
         # properties for the plugins to use for processing.
@@ -282,7 +319,10 @@ class BasicSceneCollector(HookBaseClass):
             for file in files:
                 item_path = os.path.join(dirpath,file)
                 # Process each file we find
-                file_items.append(self._collect_file(parent_item,item_path))
+                if os.path.basename(dirpath) == "playblasts":
+                    file_items.append(self.collect_playblast(parent_item,item_path))
+                else:
+                    file_items.append(self._collect_file(parent_item,item_path))
 
         if not file_items:
             self.logger.warn("No files found in: %s" % (folder,))
@@ -371,7 +411,7 @@ class BasicSceneCollector(HookBaseClass):
 
         # everything should be populated. return the dictionary
         return dict(
-            item_type=item_type, type_display=type_display, icon_path=icon_path,
+            item_type=item_type, type_display=type_display, icon_path=icon_path, extension=extension
         )
 
     def _get_icon_path(self, icon_name, icons_folders=None):
@@ -436,26 +476,34 @@ class BasicSceneCollector(HookBaseClass):
             self._image_extensions = list(image_extensions)
 
         return self._image_extensions
-    
-    def _find_task_context(self, path):
-        # Try to get the context more specifically from the path on disk
-        tk = sgtk.sgtk_from_path( path )
-        context = tk.context_from_path(path)
 
-        # In case the task folder is not registered for some reason, we can try to find it
-        if not context.task:
-            if context.step:
-                if context.step["name"] == "Animations":
-                    file_name = os.path.splitext(os.path.basename(path))[0]
-                    # SWC JR: This could get slow if there are a lot of tasks, not sure if there is a way to query instead            
-                    tasks = context.sgtk.shotgun.find("Task", [["entity", "is", context.entity],["step", "is", context.step]], ['content'])
-                    for task in tasks:
-                        if task['content'] in file_name:
-                            # We found the task
-                            context = tk.context_from_entity("Task", task['id'])
-                else:
-                    file_folder = os.path.basename(os.path.dirname(path))
-                    context_task = context.sgtk.shotgun.find_one("Task", [["content", "is", file_folder],["entity", "is", context.entity],["step", "is", context.step]])
-                    if context_task:
-                        context = tk.context_from_entity("Task", context_task["id"])
-        return context
+    def collect_playblast(self, parent_item, path):
+        """
+        Creates items for quicktime playblasts.
+
+        Looks for a 'project_root' property on the parent item, and if such
+        exists, look for movie files in a 'movies' subfolder.
+
+        :param parent_item: Parent Item instance
+        :param str project_root: The maya project root to search for playblasts
+        """
+
+        # do some early pre-processing to ensure the file is of the right
+        # type. use the base class item info method to see what the item
+        # type would be.
+        item_info = self._get_item_info(path)
+        if item_info["item_type"] != "file.video":
+            return
+        for child in parent_item.children:
+            if child.name == os.path.basename(path):
+                return
+
+        item = self._collect_file(
+            parent_item, path
+        )
+
+        # the item has been created. update the display name to include
+        # the an indication of what it is and why it was collected
+        item.type_spec = "file.playblast"
+
+        return item

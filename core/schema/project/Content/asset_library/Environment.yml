@@ -1,5 +1,0 @@
-# the type of dynamic content
-type: "static"
-
-# do not recurse down automatically
-create_with_parent: false

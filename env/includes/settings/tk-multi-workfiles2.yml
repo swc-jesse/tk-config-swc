@@ -74,14 +74,15 @@ entity_browser_settings: &entity_browser_settings
       hierarchy: []       
   - caption: Animation
     entity_type: Asset
-    hierarchy: [sg_asset_library, sg_asset_type, sg_asset_category, code]
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
-      - [sg_asset_parent, is, [ null ]]
+      - [sg_asset_parent, is_not, [ null ]]
+      - [sg_asset_type, is, [ "Animations" ]]
     sub_hierarchy:
       entity_type: Task
       filters:    
       link_field: entity
-      hierarchy: [step, sg_folder_name]
+      hierarchy: []
 
 
 # env_entity_browser_settings
@@ -101,14 +102,17 @@ entity_browser_settings: &env_entity_browser_settings
 entity_browser_settings: &anim_entity_browser_settings
   entities:
   - caption: Animation
-    entity_type: CustomEntity05
-    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name, code]
+    entity_type: Asset
+    hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
+      - [sg_asset_parent, is_not, [ null ]]
+      - [sg_asset_type, is, [ "Animations" ]]
     sub_hierarchy:
       entity_type: Task
-      filters:
+      filters:    
       link_field: entity
-      hierarchy: []     
+      hierarchy: []
+
 
 # pub_entity_browser_settings
 entity_browser_settings: &pub_entity_browser_settings
