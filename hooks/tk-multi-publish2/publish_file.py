@@ -173,25 +173,28 @@ class PublishPlugin(HookBaseClass):
         if not item.context.entity and not target_context.entity:
             self.logger.error("This file is not under a known Asset folder:")
             self.logger.error("  %s" % (path,))      
-            return False      
+            return False   
         elif target_context.entity != item.context.entity:
             self.logger.error("This file is not under the correct Asset folder:")
             self.logger.error("  %s" % (path,))
             self.logger.error("Should be under %s not %s" % (target_context.entity,item.context.entity))
-            return False
-        elif target_context.task != item.context.task:
-            if not item.local_properties.get("ignore_bad_stuff", False):
-                self.logger.warning("This file looks to be under the following Task folder:")
-                self.logger.warning("  %s" % (target_context.task,))
-                self.logger.warning("Consider updating the Task accordingly.", extra={
-                    "action_button":{
-                    "label": "Ignore",
-                    "tooltip": "Ignore this warning",
-                    "callback": self._ignore_warning,
-                    "args": {"item": item}
-                    },
-                })
-                raise Exception("Potential bad path!")
+            return False        
+        elif target_context.entity == item.context.entity:
+            if item.context == item.parent.context:
+                pass
+            elif target_context.task != item.context.task:
+                if not item.local_properties.get("ignore_bad_stuff", False):
+                    self.logger.warning("This file looks to be under the following Task folder:")
+                    self.logger.warning("  %s" % (target_context.task,))
+                    self.logger.warning("Consider updating the Task accordingly.", extra={
+                        "action_button":{
+                        "label": "Ignore",
+                        "tooltip": "Ignore this warning",
+                        "callback": self._ignore_warning,
+                        "args": {"item": item}
+                        },
+                    })
+                    raise Exception("Potential bad path!")
 
         extension = path.split(".")[-1]
         if extension.lower() != extension:
