@@ -11,7 +11,7 @@
 import os
 import pprint
 import traceback
-
+import tempfile
 import sgtk
 # from sgtk.util.filesystem import copy_file, ensure_folder_exists
 
@@ -327,6 +327,9 @@ class PublishPlugin(HookBaseClass):
                     }
                 },
             )
+        thumbnail = item.get_thumbnail_as_path()
+        if os.path.exists(thumbnail) and os.path.dirname(thumbnail) == tempfile.gettempdir():
+            os.remove(thumbnail)
 
     def get_publish_template(self, settings, item):
         """

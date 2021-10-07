@@ -278,7 +278,24 @@ class PhotoshopCCSceneCollector(HookBaseClass):
             if path:
                 # try to set the thumbnail for display. won't display anything
                 # for psd/psb, but others should work.
-                document_item.set_thumbnail_from_path(path)
+                file_name_out = "%s_thumb.jpg" % doc_name.split(".")[0]
+                # path to a temp png file
+                thumb_path = os.path.join(
+                    tempfile.gettempdir(), file_name_out
+                )                    
+                jpg_file = engine.adobe.File(thumb_path)
+                jpg_options = engine.adobe.JPEGSaveOptions()
+                jpg_options.quality = 10
+                jpg_options.embedColorProfile = True
+                jpg_options.formatOptions = engine.adobe.FormatOptions.STANDARDBASELINE
+                jpg_options.matte = engine.adobe.MatteType.NONE
+
+                # mark the temp upload path for removal
+                # document_item.properties["remove_upload"] = True
+
+                # save a jpg copy of the document
+                document.saveAs(jpg_file, jpg_options, True)                   
+                document_item.set_thumbnail_from_path(thumb_path)
 
             # store the template on the item for use by publish plugins. we
             # can't evaluate the fields here because there's no guarantee the
