@@ -313,8 +313,9 @@ class BasicSceneCollector(HookBaseClass):
             child_item.context = context
             child_item_type = child["item_type"]
             child_item_ext = child["extension"]
-            if child_item_type.startswith("file.speedtree") and child_item_ext.startswith("st"):
-                print(child_item_type) #child_item.set_thumbnail_from_path
+            if child_item_type.startswith("file.speedtree") and child_item_ext.startswith("st") and extension.startswith("spm"):
+                child_item.set_thumbnail_from_path(file_item.get_thumbnail_as_path())
+                child_item.thumbnail_enabled = False
 
         return file_item
 
