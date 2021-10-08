@@ -523,22 +523,29 @@ class BasicSceneCollector(HookBaseClass):
         # type would be.
         path = item_info["item_path"]
         
-        found_parent = parent_item
-        for child in parent_item.children:
-            if child.name == os.path.basename(path):
-                return
-            if child.name.startswith(".".join(os.path.basename(path).split(".")[:-1])):
-                found_parent = child
-                break
+        if parent_item.name == "__root__":
+            found_parent = parent_item
+            for child in parent_item.children:
+                if child.name == os.path.basename(path):
+                    return
+                if child.name.startswith(".".join(os.path.basename(path).split(".")[:-1])):
+                    found_parent = child
 
-        item = self._collect_file(found_parent, item_info)
+                    item = self._collect_file(found_parent, item_info)
 
-        # the item has been created. update the display name to include
-        # the an indication of what it is and why it was collected
-        item.name = "%s (%s)" % (item.name, "playblast")
-        # item.type_spec = "file.playblast"        
+                    # the item has been created. update the display name to include
+                    # the an indication of what it is and why it was collected
+                    item.name = "%s (%s)" % (item.name, "playblast")     
 
-        return item
+                    return item
+        else:
+            item = self._collect_file(parent_item, item_info)
+
+            # the item has been created. update the display name to include
+            # the an indication of what it is and why it was collected
+            item.name = "%s (%s)" % (item.name, "playblast")     
+
+            return item
 
     def _process_hierarchy(self, item_infos, root_item):
         item_infos = sorted(list(item_infos), key = lambda i: i['item_priority'], reverse=True)

@@ -287,7 +287,8 @@ class MayaSessionCollector(HookBaseClass):
             # do some early pre-processing to ensure the file is of the right
             # type. use the base class item info method to see what the item
             # type would be.
-            item_info = self._collect_item_info(parent_item, filename)
+            item_path = os.path.join(movies_dir,filename)
+            item_info = self._collect_item_info(parent_item, item_path)
             if item_info["item_type"] != "file.video":
                 continue
 
