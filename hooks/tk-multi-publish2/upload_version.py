@@ -15,6 +15,49 @@ HookBaseClass = sgtk.get_hook_baseclass()
 
 class UploadVersionPlugin(HookBaseClass):
     @property
+    def icon(self):
+        """
+        Path to an png icon on disk
+        """
+
+        # look for icon one level up from this hook's folder in "icons" folder
+        return os.path.join(self.disk_location, os.curdir, "icons", "review.png")
+
+    @property
+    def name(self):
+        """
+        One line display name describing the plugin
+        """
+        return "Upload for review"
+
+    @property
+    def description(self):
+        """
+        Verbose, multi-line description of what the plugin does. This can
+        contain simple html for formatting.
+        """
+        publisher = self.parent
+
+        shotgun_url = publisher.sgtk.shotgun_url
+
+        media_page_url = "%s/page/media_center" % (shotgun_url,)
+        mobile_url = "https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Supervisor_Artist_sa_mobile_review_html"
+        rv_url = "https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_RV_rv_manuals_rv_easy_setup_html"
+
+        return """
+        Upload the file to ShotGrid for review.<br><br>
+
+        A <b>Version</b> entry will be created in ShotGrid and a transcoded
+        copy of the file will be attached to it. The file can then be reviewed
+        via the project's <a href='%s'>Media</a> page, <a href='%s'>RV</a>, or
+        the <a href='%s'>ShotGrid Review</a> mobile app.
+        """ % (
+            media_page_url,
+            rv_url,
+            mobile_url,
+        )
+
+    @property
     def settings(self):
         """
         Dictionary defining the settings that this plugin expects to recieve
@@ -58,12 +101,12 @@ class UploadVersionPlugin(HookBaseClass):
         """
 
         # we use "video" since that's the mimetype category.
-        return ["file.image", "file.video", "file.playblast"]
+        return ["file.image", "file.video", "playblast.*"]
 
     def accept(self, settings, item):
         # get the base settings
         settings = super(UploadVersionPlugin, self).accept(settings, item)
-        if(item.type_spec != "file.playblast"):
+        if(item.type_spec.split(".")[0] != "playblast"):
             # set the default checked state
             settings["checked"] = False
         return settings
@@ -81,8 +124,8 @@ class UploadVersionPlugin(HookBaseClass):
         path = item.properties["path"]
         version = item.properties["sg_version_data"]
 
-        type = item.type_spec
-        if(type == "file.playblast"):
+        type_class = item.type_spec.split(".")[0]
+        if(type_class == "playblast"):
             os.remove(path)
             self.logger.info(
                 "Playblast deleted after uploading for file: %s" % (path,),

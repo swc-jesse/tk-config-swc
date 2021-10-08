@@ -121,7 +121,7 @@ class MayaSessionPublishPlugin(HookBaseClass):
         # is a temporary measure until the publisher handles context switching
         # natively.
 
-        if(item.type != "file.playblast"):
+        if(item.type.split(".")[0] != "playblast"):
             if(item.type == "maya.session"):
                 if settings.get("Publish Template").value:
                     item.context_change_allowed = False

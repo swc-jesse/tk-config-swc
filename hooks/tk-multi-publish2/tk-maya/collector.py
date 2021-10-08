@@ -291,12 +291,10 @@ class MayaSessionCollector(HookBaseClass):
             if item_info["item_type"] != "file.video":
                 continue
 
-            movie_path = os.path.join(movies_dir, filename)
-
             # allow the base class to collect and create the item. it knows how
             # to handle movie files
             item = self._collect_playblast(
-                parent_item, movie_path
+                parent_item, item_info
             )
 
     def collect_rendered_images(self, parent_item):

@@ -27,15 +27,6 @@ class PhotoshopCCDocumentPublishPlugin(HookBaseClass):
     """
 
     @property
-    def description(self):
-        """
-        Verbose, multi-line description of what the plugin does. This can
-        contain simple html for formatting.
-        """
-
-        return super(PhotoshopCCDocumentPublishPlugin, self).description
-
-    @property
     def settings(self):
         """
         Dictionary defining the settings that this plugin expects to receive
@@ -83,7 +74,7 @@ class PhotoshopCCDocumentPublishPlugin(HookBaseClass):
         accept() method. Strings can contain glob patters such as *, for example
         ["maya.*", "file.maya"]
         """
-        return ["photoshop.document", "file.image"]
+        return super(PhotoshopCCDocumentPublishPlugin, self).item_filters + ["photoshop.document"]
 
     def accept(self, settings, item):
         """
@@ -110,27 +101,29 @@ class PhotoshopCCDocumentPublishPlugin(HookBaseClass):
 
         :returns: dictionary with boolean keys accepted, required and enabled
         """
+        if item.type_spec == "photoshop.document":
+            document = item.properties.get("document")
+            if not document:
+                self.logger.warn("Could not determine the document for item")
+                return {"accepted": False}
 
-        document = item.properties.get("document")
-        if not document:
-            self.logger.warn("Could not determine the document for item")
-            return {"accepted": False}
+            path = _document_path(document)
 
-        path = _document_path(document)
+            if not path:
+                # the document has not been saved before (no path determined).
+                # provide a save button. the document will need to be saved before
+                # validation will succeed.
+                self.logger.warn(
+                    "The Photoshop document '%s' has not been saved." % (document.name,),
+                    extra=_get_save_as_action(document),
+                )
 
-        if not path:
-            # the document has not been saved before (no path determined).
-            # provide a save button. the document will need to be saved before
-            # validation will succeed.
-            self.logger.warn(
-                "The Photoshop document '%s' has not been saved." % (document.name,),
-                extra=_get_save_as_action(document),
+            self.logger.info(
+                "Photoshop '%s' plugin accepted document: %s." % (self.name, document.name)
             )
-
-        self.logger.info(
-            "Photoshop '%s' plugin accepted document: %s." % (self.name, document.name)
-        )
-        return {"accepted": True, "checked": True}
+            return {"accepted": True, "checked": True}
+        else:
+            super(PhotoshopCCDocumentPublishPlugin, self).accept(settings, item)
 
     def validate(self, settings, item):
         """
@@ -146,54 +139,55 @@ class PhotoshopCCDocumentPublishPlugin(HookBaseClass):
         :returns: True if item is valid, False otherwise.
         """
 
-        publisher = self.parent
-        engine = publisher.engine
-        document = item.properties["document"]
-        path = _document_path(document)
+        if item.type_spec == "photoshop.document":
+            publisher = self.parent
+            engine = publisher.engine
+            document = item.properties["document"]
+            path = _document_path(document)
 
-        # ---- ensure the document has been saved
+            # ---- ensure the document has been saved
 
-        if not path:
-            # the document still requires saving. provide a save button.
-            # validation fails.
-            error_msg = "The Photoshop document '%s' has not been saved." % (
-                document.name,
-            )
-            self.logger.error(error_msg, extra=_get_save_as_action(document))
-            raise Exception(error_msg)
-
-        # ---- check the document against any attached work template
-
-        # get the path in a normalized state. no trailing separator,
-        # separators are appropriate for current os, no double separators,
-        # etc.
-        path = sgtk.util.ShotgunPath.normalize(path)
-
-        # if the document item has a known work template, see if the path
-        # matches. if not, warn the user and provide a way to save the file to
-        # a different path
-        work_template = item.properties.get("work_template")
-        if work_template:
-            if not work_template.validate(path):
-                self.logger.warning(
-                    "The current document does not match the configured work "
-                    "template.",
-                    extra={
-                        "action_button": {
-                            "label": "Save File",
-                            "tooltip": "Save the current Photoshop document"
-                            "to a different file name",
-                            # will launch wf2 if configured
-                            "callback": _get_save_as_action(document),
-                        }
-                    },
+            if not path:
+                # the document still requires saving. provide a save button.
+                # validation fails.
+                error_msg = "The Photoshop document '%s' has not been saved." % (
+                    document.name,
                 )
-            else:
-                self.logger.debug("Work template configured and matches document path.")
-        else:
-            self.logger.debug("No work template configured.")
+                self.logger.error(error_msg, extra=_get_save_as_action(document))
+                raise Exception(error_msg)
 
-        item.properties["path"] = path
+            # ---- check the document against any attached work template
+
+            # get the path in a normalized state. no trailing separator,
+            # separators are appropriate for current os, no double separators,
+            # etc.
+            path = sgtk.util.ShotgunPath.normalize(path)
+
+            # if the document item has a known work template, see if the path
+            # matches. if not, warn the user and provide a way to save the file to
+            # a different path
+            work_template = item.properties.get("work_template")
+            if work_template:
+                if not work_template.validate(path):
+                    self.logger.warning(
+                        "The current document does not match the configured work "
+                        "template.",
+                        extra={
+                            "action_button": {
+                                "label": "Save File",
+                                "tooltip": "Save the current Photoshop document"
+                                "to a different file name",
+                                # will launch wf2 if configured
+                                "callback": _get_save_as_action(document),
+                            }
+                        },
+                    )
+                else:
+                    self.logger.debug("Work template configured and matches document path.")
+            else:
+                self.logger.debug("No work template configured.")
+
+            item.properties["path"] = path
 
         # run the base class validation
         return super(PhotoshopCCDocumentPublishPlugin, self).validate(settings, item)
@@ -207,52 +201,24 @@ class PhotoshopCCDocumentPublishPlugin(HookBaseClass):
             instances.
         :param item: Item to process
         """
+        if item.type_spec == "photoshop.document":
+            publisher = self.parent
+            engine = publisher.engine
+            document = item.properties["document"]
+            path = _document_path(document)
 
-        publisher = self.parent
-        engine = publisher.engine
-        document = item.properties["document"]
-        path = _document_path(document)
+            # get the path in a normalized state. no trailing separator, separators
+            # are appropriate for current os, no double separators, etc.
+            path = sgtk.util.ShotgunPath.normalize(path)
 
-        # get the path in a normalized state. no trailing separator, separators
-        # are appropriate for current os, no double separators, etc.
-        path = sgtk.util.ShotgunPath.normalize(path)
+            # ensure the document is saved
+            engine.save(document)
 
-        # ensure the document is saved
-        engine.save(document)
-
-        # update the item with the saved document path
-        item.properties["path"] = path
+            # update the item with the saved document path
+            item.properties["path"] = path
 
         # let the base class register the publish
         super(PhotoshopCCDocumentPublishPlugin, self).publish(settings, item)
-
-    def finalize(self, settings, item):
-        """
-        Execute the finalization pass. This pass executes once all the publish
-        tasks have completed, and can for example be used to version up files.
-
-        :param settings: Dictionary of Settings. The keys are strings, matching
-            the keys returned in the settings property. The values are `Setting`
-            instances.
-        :param item: Item to process
-        """
-
-        publisher = self.parent
-        engine = publisher.engine
-
-        # do the base class finalization
-        super(PhotoshopCCDocumentPublishPlugin, self).finalize(settings, item)
-
-        document = item.properties.get("document")
-        path = item.properties["path"]
-
-        # we need the path to be saved for this document. ensure the document
-        # is provided and allow the base method to supply the new path
-        save_callback = lambda path, d=document: engine.save_to_path(d, path)
-
-        # bump the document path to the next version
-        # self._save_to_next_version(path, item, save_callback)
-
 
 def _get_save_as_action(document):
     """
@@ -277,7 +243,6 @@ def _get_save_as_action(document):
             "callback": callback,
         }
     }
-
 
 def _document_path(document):
     """

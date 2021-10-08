@@ -134,6 +134,10 @@ class PublishPlugin(HookBaseClass):
         """
         path = item.properties.get("path")
 
+        type_class = item.type_spec.split(".")[0]
+        if(type_class == "playblast"):
+            return {"accepted": False}
+
         # log the accepted file and display a button to reveal it in the fs
         self.logger.info(
             "Perforce publish plugin accepted: {}".format(path),
@@ -141,9 +145,6 @@ class PublishPlugin(HookBaseClass):
         )
 
         # return the accepted info
-        type = item.type_spec
-        if(type == "file.playblast"):
-            return {"accepted": False}
         return {"accepted": True}            
 
     def validate(self, settings, item):
@@ -328,8 +329,9 @@ class PublishPlugin(HookBaseClass):
                 },
             )
         thumbnail = item.get_thumbnail_as_path()
-        if os.path.exists(thumbnail) and os.path.dirname(thumbnail) == tempfile.gettempdir():
-            os.remove(thumbnail)
+        if thumbnail:
+            if os.path.exists(thumbnail) and os.path.dirname(thumbnail) == tempfile.gettempdir():
+                os.remove(thumbnail)
 
     def get_publish_template(self, settings, item):
         """

@@ -240,7 +240,10 @@ class BasicSceneCollector(HookBaseClass):
         publisher = self.parent
 
         # get info for the extension
-        item_type = item_info["item_type"]
+        if os.path.basename(os.path.dirname(item_info["item_path"])) == "playblasts" and item_info["item_type"]:
+            item_type = "playblast.%s" % item_info["item_type"].split(".")[1]
+        else:
+            item_type = item_info["item_type"]
         type_display = item_info["type_display"]
         extension = item_info["extension"]
         item_priority = item_info["item_priority"]
@@ -504,7 +507,7 @@ class BasicSceneCollector(HookBaseClass):
 
         return self._image_extensions
 
-    def _collect_playblast(self, parent_item, path):
+    def _collect_playblast(self, parent_item, item_info):
         """
         Creates items for quicktime playblasts.
 
@@ -518,21 +521,22 @@ class BasicSceneCollector(HookBaseClass):
         # do some early pre-processing to ensure the file is of the right
         # type. use the base class item info method to see what the item
         # type would be.
-        item_info = self._get_item_info(path)
-        if item_info["item_type"] != "file.video":
-            return
+        path = item_info["item_path"]
+        
+        found_parent = parent_item
         for child in parent_item.children:
             if child.name == os.path.basename(path):
                 return
+            if child.name.startswith(".".join(os.path.basename(path).split(".")[:-1])):
+                found_parent = child
+                break
 
-        item = self._collect_file(
-            parent_item, self._collect_item_info(parent_item, path)
-        )
+        item = self._collect_file(found_parent, item_info)
 
         # the item has been created. update the display name to include
         # the an indication of what it is and why it was collected
         item.name = "%s (%s)" % (item.name, "playblast")
-        item.type_spec = "file.playblast"        
+        # item.type_spec = "file.playblast"        
 
         return item
 
