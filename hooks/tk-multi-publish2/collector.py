@@ -139,7 +139,13 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("speedtree.png"),
                     "item_type": "file.speedtree",
                     "item_priority": 5,                    
-                },                 
+                },
+                "Settings File": {
+                    "extensions": ["pkl", "json"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.settings",
+                    "item_priority": 3,                    
+                },                   
             }
 
         return self._common_file_info
@@ -548,13 +554,33 @@ class BasicSceneCollector(HookBaseClass):
             return item
 
     def _process_hierarchy(self, item_infos, root_item):
+        # Make sure our items are in descending order of priority
         item_infos = sorted(list(item_infos), key = lambda i: i['item_priority'], reverse=True)
-        for item in list(item_infos):
-            lower_items = [x for x in item_infos if x["item_priority"] < item["item_priority"]]
-             
+
+        # Build the hierarchy
+        for parent_item in list(item_infos):
+            # Get all lower priority items remaining
+            lower_items = [x for x in item_infos if x["item_priority"] < parent_item["item_priority"]]
             for lower_item in lower_items:
-                if os.path.basename(item["item_path"]).split('.')[0] in os.path.basename(lower_item["item_path"]):
-                    item["children"].append(lower_item)
-                    item_infos.remove(lower_item)
-        # item_infos = sorted(list(item_infos), key = lambda i: i['item_priority'], reverse=True)
+                # To capture partial matches, first see if the parent_item's name appears in this lower_item
+                parent_item_name = os.path.basename(parent_item["item_path"]).split('.')[0]
+                if parent_item_name in os.path.basename(lower_item["item_path"]):
+                    # Now we need to see if there is a better (identical) match for this lower_item in the other potential parent items before adding it
+                    other_parent_items = [os.path.basename(x["item_path"]).split('.')[0] for x in list(item_infos) if x["item_priority"] > lower_item["item_priority"]]
+                    # Don't re-evaluate this parent_item
+                    other_parent_items.remove(parent_item_name)
+                    this_lower_item = os.path.basename(lower_item["item_path"]).split('.')[0]
+                    better_item = False
+                    for other_parent_item in other_parent_items:
+                        if other_parent_item in this_lower_item and len(other_parent_item) > len(parent_item_name):
+                            # There is a better parent match for this item, don't add it to this one
+                            better_item = True
+                        if better_item:
+                            break
+
+                    if not better_item:
+                        # We didn't find a better match for lower_item, so append it to item
+                        parent_item["children"].append(lower_item)
+                        item_infos.remove(lower_item)
+
         return item_infos

@@ -86,6 +86,7 @@ class PublishPlugin(HookBaseClass):
                     ["SpeedTree Modeler", "spm"],
                     ["SpeedTree Export", "st9", "st"],
                     ["Zbrush Tool", "ztl"],
+                    ["Settings File", "pkl", "json"],                 
                 ],
                 "description": (
                     "List of file types to include. Each entry in the list "
