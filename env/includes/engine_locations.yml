@@ -23,9 +23,18 @@ engines.tk-3dsmax.location:
 
 # Desktop
 engines.tk-desktop.location:
-  type: app_store
-  name: tk-desktop
-  version: v2.6.0
+  ### Local dev
+  # type: path
+  # windows_path: C:\swc-configs\tk-desktop
+  ### SG App store
+  # type: app_store
+  # name: tk-desktop
+  # version: v2.6.0
+  ### Github
+  type: git_branch
+  branch: swc_beta
+  path: https://github.com/nimbleheroes/tk-desktop
+  version: 4e6170c
 
 # Desktop2
 engines.tk-desktop2.location:
