@@ -163,7 +163,7 @@ apps.tk-multi-perforce.location:
   type: git_branch
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: d8f5313
+  version: fda1b6d
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
