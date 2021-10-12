@@ -135,24 +135,24 @@ apps.tk-shotgun-folders.location:
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
-  ### App Store
-  type: app_store
-  name: tk-multi-workfiles2
-  version: v0.13.0
+  # ### App Store
+  # type: app_store
+  # name: tk-multi-workfiles2
+  # version: v0.13.0
   ### GitHub Release
   # type: github_release
   # organization: nimbleheroes
   # repository: tk-multi-workfiles2
   # version: v0.12.6.1
   ### Git Branch
-  # type: git_branch
-  # branch: swc_main
-  # path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
-  # version: bb01159
-  ### Dev
+  type: git_branch
+  branch: master
+  path: https://github.com/studiowildcard/tk-multi-workfiles2.git
+  version: 3ac69a8
+  # ## Dev
   # name: tk-multi-workfiles2
   # type: dev
-  # path: ~/Projects/swc/tk-multi-workfiles2
+  # path: S:\Projects\ShotgunConfig\tk-multi-workfiles2
 
 # Perforce
 apps.tk-multi-perforce.location:
