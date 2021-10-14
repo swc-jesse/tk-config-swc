@@ -145,7 +145,19 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("file.png"),
                     "item_type": "file.settings",
                     "item_priority": 3,                    
-                },                   
+                },
+                "Mel Scripts": {
+                    "extensions": ["mel"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "script.maya",
+                    "item_priority": 0,
+                },      
+                "Python Scripts": {
+                    "extensions": ["py", "pyc"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "script.python",
+                    "item_priority": 0,
+                },                             
             }
 
         return self._common_file_info
@@ -239,6 +251,8 @@ class BasicSceneCollector(HookBaseClass):
         :returns: The item that was created
         """
 
+        if item_info["item_type"].startswith("script"):
+            return None
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
         path = item_info["item_path"]
@@ -528,13 +542,15 @@ class BasicSceneCollector(HookBaseClass):
         # type. use the base class item info method to see what the item
         # type would be.
         path = item_info["item_path"]
-        
+        item_name = ".".join(os.path.basename(path).split(".")[:-1]) #os.path.basename(path).split('.')[:-1]
+
         if parent_item.name == "__root__":
             found_parent = parent_item
             for child in parent_item.children:
+                
                 if child.name == os.path.basename(path):
                     return
-                if child.name.startswith(".".join(os.path.basename(path).split(".")[:-1])):
+                if child.name.startswith(item_name):
                     found_parent = child
 
                     item = self._collect_file(found_parent, item_info)
