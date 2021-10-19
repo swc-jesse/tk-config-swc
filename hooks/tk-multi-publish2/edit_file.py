@@ -23,7 +23,7 @@ class EditPublishPlugin(HookBaseClass):
         """
 
         # look for icon one level up from this hook's folder in "icons" folder
-        return os.path.join(self.disk_location, os.pardir, os.pardir, "icons", "perforce.png")
+        return os.path.join(self.disk_location, "icons", "p4_file_edit.png")
 
     @property
     def name(self):
