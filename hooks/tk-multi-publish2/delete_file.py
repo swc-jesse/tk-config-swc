@@ -23,14 +23,14 @@ class AddPublishPlugin(HookBaseClass):
         """
 
         # look for icon one level up from this hook's folder in "icons" folder
-        return os.path.join(self.disk_location, "icons", "p4_file_add.png")
+        return os.path.join(self.disk_location, "icons", "p4_file_delete.png")
 
     @property
     def name(self):
         """
         One line display name describing the plugin
         """
-        return "ADD to Perforce & ShotGrid"
+        return "DELETE from Perforce & ShotGrid"
 
     @property
     def description(self):
@@ -71,7 +71,7 @@ class AddPublishPlugin(HookBaseClass):
         """
         p4_data = item.properties.get("p4_data")
         if p4_data: 
-            if p4_data["action"] == "add":
+            if p4_data["action"] == "delete":
                 # log the accepted file and display a button to reveal it in the fs
                 # self.logger.info(
                 #     "Perforce ADD plugin accepted: {}".format(path),

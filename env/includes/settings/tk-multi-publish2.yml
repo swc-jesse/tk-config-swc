@@ -30,6 +30,9 @@ settings.tk-multi-publish2.standalone:
     settings: {}    
   - name: EDIT in Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/edit_file.py"
+    settings: {}
+  - name: DELETE from Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/delete_file.py"
     settings: {}        
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
@@ -148,9 +151,15 @@ settings.tk-multi-publish2.maya.asset_step: &settings_publish_plugins_tk-multi-p
       Work Template: asset_maya_workfile
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py"
+  - name: ADD to Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py:{config}/tk-multi-publish2/add_file.py"
+    settings: {}    
+  - name: EDIT in Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py:{config}/tk-multi-publish2/edit_file.py"
     settings: {}
+  - name: DELETE from Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-maya/publish_file.py:{config}/tk-multi-publish2/delete_file.py"
+    settings: {}           
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}

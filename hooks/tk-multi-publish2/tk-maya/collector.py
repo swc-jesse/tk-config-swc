@@ -15,6 +15,7 @@ import maya.mel as mel
 import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
 TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 
@@ -83,8 +84,7 @@ class MayaSessionCollector(HookBaseClass):
         self.collect_rendered_images(item)
 
         # if we can determine a project root, collect other files to publish
-        if project_root:
-
+        if project_root:     
             self.logger.info(
                 "Current Maya project is: %s." % (project_root,),
                 extra={
@@ -96,9 +96,9 @@ class MayaSessionCollector(HookBaseClass):
                 },
             )
 
-            self.collect_playblasts(item, project_root)
-            self.collect_alembic_caches(item, project_root)
-            self.collect_fbx_animations(item, project_root)
+            self.collect_playblasts(settings, item, project_root)
+            self.collect_alembic_caches(settings, item, project_root)
+            self.collect_fbx_animations(settings, item, project_root)
         else:
 
             self.logger.info(
@@ -128,60 +128,70 @@ class MayaSessionCollector(HookBaseClass):
 
         # get the path to the current file
         path = cmds.file(query=True, sn=True)
-
+        path = sgtk.util.ShotgunPath.normalize(path)
         # determine the display name for the item
         if path:
             file_info = publisher.util.get_file_path_components(path)
             display_name = file_info["filename"]
-        else:
-            display_name = "Current Maya Session"
 
-        # create the session item for the publish hierarchy
-        session_item = parent_item.create_item(
-            "maya.session", "Maya Session", display_name
-        )
-        # Try to get the context more specifically from the path on disk
-        try:
-            context = self.swc_fw.find_task_context(path)
-        except(AttributeError):
-            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
-            context = self.swc_fw.find_task_context(path)
+            # Make the p4 connection
+            self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
+            self.logger.debug("Perforce framework loaded.")    
+            p4_data = None
+            folder = self.p4_fw.util.recursive_reconcile(os.path.dirname(path))
+            for items in folder.add_info, folder.edit_info, folder.delete_info:
+                for item in items:
+                    if item["clientFile"] == path:
+                        p4_data = item          
 
-        # If we found a better context, set it here
-        if context:
-            session_item.context = context        
-
-        # get the icon path to display for this item
-        icon_path = os.path.join(self.disk_location, os.pardir, "icons", "maya.png")
-        session_item.set_icon_from_path(icon_path)
-
-        # discover the project root which helps in discovery of other
-        # publishable items
-        project_root = cmds.workspace(q=True, rootDirectory=True)
-        session_item.properties["project_root"] = project_root
-
-        # if a work template is defined, add it to the item properties so
-        # that it can be used by attached publish plugins
-        work_template_setting = settings.get("Work Template")
-        if work_template_setting:
-
-            work_template = publisher.engine.get_template_by_name(
-                work_template_setting.value
+            # create the session item for the publish hierarchy
+            session_item = parent_item.create_item(
+                "maya.session", "Maya Session", display_name
             )
 
-            # store the template on the item for use by publish plugins. we
-            # can't evaluate the fields here because there's no guarantee the
-            # current session path won't change once the item has been created.
-            # the attached publish plugins will need to resolve the fields at
-            # execution time.
-            session_item.properties["work_template"] = work_template
-            self.logger.debug("Work template defined for Maya collection.")
+            session_item.properties["p4_data"] = p4_data
+            # Try to get the context more specifically from the path on disk
+            try:
+                context = self.swc_fw.find_task_context(path)
+            except(AttributeError):
+                self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+                context = self.swc_fw.find_task_context(path)
 
-        self.logger.info("Collected current Maya scene")
+            # If we found a better context, set it here
+            if context:
+                session_item.context = context        
 
-        return session_item
+            # get the icon path to display for this item
+            icon_path = os.path.join(self.disk_location, os.pardir, "icons", "maya.png")
+            session_item.set_icon_from_path(icon_path)
 
-    def collect_alembic_caches(self, parent_item, project_root):
+            # discover the project root which helps in discovery of other
+            # publishable items
+            project_root = cmds.workspace(q=True, rootDirectory=True)
+            session_item.properties["project_root"] = project_root
+
+            # if a work template is defined, add it to the item properties so
+            # that it can be used by attached publish plugins
+            work_template_setting = settings.get("Work Template")
+            if work_template_setting:
+
+                work_template = publisher.engine.get_template_by_name(
+                    work_template_setting.value
+                )
+
+                # store the template on the item for use by publish plugins. we
+                # can't evaluate the fields here because there's no guarantee the
+                # current session path won't change once the item has been created.
+                # the attached publish plugins will need to resolve the fields at
+                # execution time.
+                session_item.properties["work_template"] = work_template
+                self.logger.debug("Work template defined for Maya collection.")
+
+            self.logger.info("Collected current Maya scene")
+
+            return session_item
+
+    def collect_alembic_caches(self, settings, parent_item, project_root):
         """
         Creates items for alembic caches
 
@@ -233,7 +243,7 @@ class MayaSessionCollector(HookBaseClass):
 
         geo_item.set_icon_from_path(icon_path)
 
-    def collect_fbx_animations(self, parent_item, project_root):     
+    def collect_fbx_animations(self, settings, parent_item, project_root):     
         """
         Looks for exported FBX files that match this file name
 
@@ -256,9 +266,9 @@ class MayaSessionCollector(HookBaseClass):
 
         # allow the base class to collect and create the item. it knows how
         # to handle alembic files
-        super(MayaSessionCollector, self)._collect_file(parent_item, item_info)        
+        super(MayaSessionCollector, self).process_file(settings, parent_item, fbx_file)        
 
-    def collect_playblasts(self, parent_item, project_root):
+    def collect_playblasts(self, settings, parent_item, project_root):
         """
         Creates items for quicktime playblasts.
 
