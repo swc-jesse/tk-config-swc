@@ -104,6 +104,11 @@ class UploadVersionPlugin(HookBaseClass):
         return ["file.image", "file.video", "playblast.*"]
 
     def accept(self, settings, item):
+        p4_data = item.properties.get("p4_data")
+        if p4_data: 
+            if p4_data["action"] == "delete":
+                return {"accepted": False}
+                        
         # get the base settings
         settings = super(UploadVersionPlugin, self).accept(settings, item)
         if(item.type_spec.split(".")[0] != "playblast"):

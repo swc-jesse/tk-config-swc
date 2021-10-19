@@ -25,9 +25,12 @@ settings.tk-multi-publish2.standalone:
   collector: "{config}/tk-multi-publish2/collector.py"
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py"
-    settings: {}
+  - name: ADD to Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/add_file.py"
+    settings: {}    
+  - name: EDIT in Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/edit_file.py"
+    settings: {}        
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}

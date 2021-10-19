@@ -139,14 +139,19 @@ class PublishPlugin(HookBaseClass):
         if(type_class == "playblast"):
             return {"accepted": False}
 
-        # log the accepted file and display a button to reveal it in the fs
-        self.logger.info(
-            "Perforce publish plugin accepted: {}".format(path),
-            extra={"action_show_folder": {"path": path}},
-        )
+        p4_data = item.properties.get("p4_data")
+        if p4_data: 
+            if p4_data["action"] == "delete":
+                return {"accepted": False}
+            else:
+                # log the accepted file and display a button to reveal it in the fs
+                self.logger.info(
+                    "Perforce publish plugin accepted: {}".format(path),
+                    extra={"action_show_folder": {"path": path}},
+                )
 
-        # return the accepted info
-        return {"accepted": True}            
+                # return the accepted info
+                return {"accepted": True}            
 
     def validate(self, settings, item):
         """

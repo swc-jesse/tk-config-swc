@@ -14,6 +14,7 @@ import sgtk
 from tank_vendor import six
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
 TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 # import ptvsd
@@ -206,40 +207,34 @@ class BasicSceneCollector(HookBaseClass):
 
         :returns: The main item that was created, or None if no item was created
             for the supplied path
-        """      
-
-        # handle files and folders differently
-        if os.path.isdir(path):
-            self._collect_folder(parent_item, path)
-            #self._postprocess_hierarchy(items, parent_item)
-            return None
-        else:
-            collectedFile = self._collect_file(parent_item, self._collect_item_info(parent_item,path))
-            playblasts = os.path.join(os.path.dirname(path),"playblasts")
-            if(os.path.exists(playblasts)):
-                self._collect_folder(parent_item, playblasts)
-            return collectedFile
-
-    def _collect_item_info(self, parent_item, path, frame_sequence=False):
-        """
-        Process the supplied file path.
-
-        :param parent_item: parent item instance
-        :param path: Path to analyze
-        :param frame_sequence: Treat the path as a part of a sequence
-        :returns: The item that was created
-        """
+        """    
 
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
         path = sgtk.util.ShotgunPath.normalize(path)
 
-        # get info for the extension
-        item_info = self._get_item_info(path)
-        item_info["item_path"] = path
-        item_info["parent"] = parent_item
+        # Make the p4 connection
+        self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
+        self.logger.debug("Perforce framework loaded.")    
 
-        return item_info
+        # handle files and folders differently
+        if os.path.isdir(path):
+            folder = self.p4_fw.util.recursive_reconcile(path)                
+            self._collect_folder(parent_item, folder)
+            return None
+        else:
+            folder = self.p4_fw.util.recursive_reconcile(os.path.dirname(path))
+            for items in folder.add_info, folder.edit_info, folder.delete_info:
+                for item in items:
+                    if item["clientFile"] == path:
+                        collectedFile = self._collect_file(parent_item, self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item}))
+                        playblasts = os.path.join(os.path.dirname(path),"playblasts")
+                        if(os.path.exists(playblasts)):
+                            folder.recursive_scan(playblasts)
+                            self._collect_folder(parent_item, folder)
+                        return collectedFile
+            self.logger.warn("File not added or changed in Perforce: %s" % (path,))
+            return None
 
     def _collect_file(self, parent_item, item_info, frame_sequence=False):
         """
@@ -267,6 +262,7 @@ class BasicSceneCollector(HookBaseClass):
         type_display = item_info["type_display"]
         extension = item_info["extension"]
         item_priority = item_info["item_priority"]
+        p4_data = item_info["p4_data"]
         evaluated_path = path
         is_sequence = False
 
@@ -300,9 +296,11 @@ class BasicSceneCollector(HookBaseClass):
         # if the supplied path is an image, use the path as the thumbnail.
         if item_type.startswith("file.image") or item_type.startswith("file.texture"):
             file_item.set_thumbnail_from_path(path)
+            file_item.set_icon_from_path(path)
 
             # disable thumbnail creation since we get it for free
             file_item.thumbnail_enabled = False
+            file_item.thumbnail_explicit = True
         # if the supplied path is a SpeedTree SPM file, extract the thumbnail.
         elif item_type.startswith("file.speedtree") and extension.startswith("spm"):
             swc = self.load_framework("tk-framework-swc_v0.x.x")
@@ -316,11 +314,13 @@ class BasicSceneCollector(HookBaseClass):
 
                 # disable thumbnail creation since we get it for free
                 file_item.thumbnail_enabled = False
+                file_item.thumbnail_explicit = True
 
         # all we know about the file is its path. set the path in its
         # properties for the plugins to use for processing.
         file_item.properties["path"] = evaluated_path
         file_item.properties["item_priority"] = item_priority
+        file_item.properties["p4_data"] = p4_data
 
         if is_sequence:
             # include an indicator that this is an image sequence and the known
@@ -330,7 +330,10 @@ class BasicSceneCollector(HookBaseClass):
         self.logger.info("Collected file: %s" % (evaluated_path,))
 
         for child in item_info['children']:
-            child_item = self._collect_file(file_item, child)
+            if os.path.basename(os.path.dirname(child["item_path"])) == "playblasts":
+                child_item = self._collect_playblast(file_item, child)
+            else:
+                child_item = self._collect_file(file_item, child)
             # If items are children they should be forced under the parent task
             child_item.context_change_allowed = True
             child_item.context = context
@@ -339,6 +342,7 @@ class BasicSceneCollector(HookBaseClass):
             if child_item_type.startswith("file.speedtree") and child_item_ext.startswith("st") and extension.startswith("spm"):
                 child_item.set_thumbnail_from_path(file_item.get_thumbnail_as_path())
                 child_item.thumbnail_enabled = False
+                child_item.thumbnail_explicit = True
 
         return file_item
 
@@ -347,21 +351,21 @@ class BasicSceneCollector(HookBaseClass):
         Process the supplied folder path.
 
         :param parent_item: parent item instance
-        :param folder: Path to analyze
+        :param folder: Reconciled Perforce data to analyze
         :returns: The items that were created
         """
 
-        # make sure the path is normalized. no trailing separator, separators
-        # are appropriate for the current os, no double separators, etc.
-        folder = sgtk.util.ShotgunPath.normalize(folder)
+        if not folder:
+            return None
 
         item_infos = []
         file_items = []
 
-        for dirpath, dirs, files in os.walk(folder):
-            for file in files:
-                item_path = os.path.join(dirpath,file)
-                item_infos.append(self._collect_item_info(parent_item,item_path))
+        # Only process items that are added, edited or deleted in Perforce
+        for items in folder.add_info, folder.edit_info, folder.delete_info:
+            for item in items:
+                item_path = item["clientFile"]
+                item_infos.append(self._collect_item_info(parent_item,item_path,extra={"p4_data":item}))
         
         item_infos = self._process_hierarchy(list(item_infos),parent_item)
 
@@ -373,9 +377,33 @@ class BasicSceneCollector(HookBaseClass):
                 file_items.append(self._collect_file(parent_item,item_info))
 
         if not file_items:
-            self.logger.warn("No files found in: %s" % (folder,))
+            self.logger.warn("No files added, changed or deleted in Perforce for %s" % (folder.root_path,))
 
         return file_items
+
+    def _collect_item_info(self, parent_item, path, frame_sequence=False, extra=None):
+        """
+        Process the supplied file path.
+
+        :param parent_item: parent item instance
+        :param path: Path to analyze
+        :param frame_sequence: Treat the path as a part of a sequence
+        :returns: The item that was created
+        """
+
+        # make sure the path is normalized. no trailing separator, separators
+        # are appropriate for the current os, no double separators, etc.
+        path = sgtk.util.ShotgunPath.normalize(path)
+
+        # get info for the extension
+        item_info = self._get_item_info(path)
+        item_info["item_path"] = path
+        item_info["parent"] = parent_item
+        if extra:
+            for key, value in extra.items():
+                item_info[key] = value
+
+        return item_info
 
     def _get_item_info(self, path):
         """
@@ -557,7 +585,7 @@ class BasicSceneCollector(HookBaseClass):
 
                     # the item has been created. update the display name to include
                     # the an indication of what it is and why it was collected
-                    item.name = "%s (%s)" % (item.name, "playblast")     
+                    item.name = "(%s) %s" % ("playblast", item.name)     
 
                     return item
         else:
@@ -565,7 +593,7 @@ class BasicSceneCollector(HookBaseClass):
 
             # the item has been created. update the display name to include
             # the an indication of what it is and why it was collected
-            item.name = "%s (%s)" % (item.name, "playblast")     
+            item.name = "(%s) %s" % ("playblast", item.name)    
 
             return item
 
