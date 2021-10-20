@@ -36,6 +36,7 @@ entity_browser_settings: &entity_browser_settings
     hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name]
     filters:
       - [sg_asset_parent, is_not, [ null ]]    
+      - [sg_asset_type, is_not, ["Animations"]]         
       - [project, is, '{context.project}']    
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']        
