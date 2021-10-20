@@ -9,12 +9,43 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import pprint
-
+import os
 import sgtk
+from sgtk.platform.qt import QtCore, QtGui
+from datetime import datetime, timedelta
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
 
+def qwaiter(t):
+    end = datetime.now() + timedelta(milliseconds=t)
+    while datetime.now() < end:
+        QtGui.QApplication.processEvents()
+
+class ChangeSubmitSignaller(QtCore.QObject):
+    """
+    Create signaller class for Sync Worker, required for using signals due to QObject inheritance
+    """
+    submission_response = QtCore.Signal(list)
+
+class ChangeSubmitWorker(QtCore.QRunnable):
+
+    p4 = None
+    fw = None
+
+    def __init__(self, fw, p4, change):
+        super(ChangeSubmitWorker, self).__init__()
+        self.signaller = ChangeSubmitSignaller()
+        self.submission_response = self.signaller.submission_response
+        self.fw = fw
+        self.p4 = p4
+        self.change = change
+
+
+    @QtCore.Slot()
+    def run(self):
+        submission = self.fw.util.submit_change(self.p4, self.change)
+        self.submission_response.emit(submission)
 
 class PostPhaseHook(HookBaseClass):
     """
@@ -25,9 +56,32 @@ class PostPhaseHook(HookBaseClass):
     to them. See the :class:`PublishTree` documentation for additional details
     on how to traverse the tree and manipulate it.
     """
+    eta = ""
+    description = ""
+    percent_complete = 0.0
+    submission = []
+
+    thread = QtCore.QThreadPool.globalInstance()
+    thread.setMaxThreadCount(1)
+
+    def update_progress_description(self, description):
+        self.description = os.path.basename(description)
+
+    def update_percent_complete(self, percent):
+        self.percent_complete = percent
+
+    def update_progress_eta(self, eta):
+        self.eta = eta
+        self.logger.info("Submitting {}<br>[ <b>{}</b>%, {} to go ]".format(self.description, 
+                                                                       int(self.percent_complete), 
+                                                                       eta.split('.')[0]
+                                                                       ))
+
+    def update_submission_response(self, submission):
+        self.submission = submission
+    
 
     def post_publish(self, publish_tree):
-
 
         # See if anything was Published to Perforce
         do_post_publish = False
@@ -47,7 +101,7 @@ class PostPhaseHook(HookBaseClass):
             self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
             self.logger.debug("Perforce framework loaded.")
 
-            p4 = self.p4_fw.connection.connect()
+            p4 = self.p4_fw.connection.connect(progress=True)
             self.logger.debug("Perforce connection made.")
 
             # create a new changelist for all files being published:
@@ -114,7 +168,26 @@ class PostPhaseHook(HookBaseClass):
 
             # submit the change:
             self.logger.info("Submitting the change...")
-            submission = self.p4_fw.util.submit_change(p4, new_change)
+
+
+            # submit the change using a thread
+            submit_worker = ChangeSubmitWorker(self.p4_fw, p4, new_change)
+
+            # connect progress-specific signals
+            submit_worker.p4.progress.description.connect(self.update_progress_description)
+            submit_worker.p4.progress.percent_done.connect(self.update_percent_complete)
+            submit_worker.p4.progress.time_remaining.connect(self.update_progress_eta)
+
+            # connect worker-specific signal
+            submit_worker.submission_response.connect(self.update_submission_response)
+
+            # send worker to thread and start
+            self.thread.start(submit_worker)
+
+            # await the submission being returned from the worker, but dont block the UI.
+            while not self.submission:
+                qwaiter(1000)
+
 
             self.logger.debug(
                 "Perforce Submission data...",
@@ -122,12 +195,12 @@ class PostPhaseHook(HookBaseClass):
                     "action_show_more_info": {
                         "label": "P4 Submission",
                         "tooltip": "Show the complete Perforce Submission data",
-                        "text": "<pre>{}</pre>".format(pprint.pformat(submission)),
+                        "text": "<pre>{}</pre>".format(pprint.pformat(self.submission)),
                     }
                 },
             )
 
-            changed_files = [i for i in [s for s in submission if isinstance(s, dict)] if i.get('depotFile')]
+            changed_files = [i for i in [s for s in self.submission if isinstance(s, dict)] if i.get('depotFile')]
             """
             [{'action': 'edit',
             'depotFile': '//deva/Tool/ScorchedEarth/ToolCategory/ToolTestAsset/deva_ScorchedEarth_ToolTestAsset_concept.psd',
@@ -137,7 +210,7 @@ class PostPhaseHook(HookBaseClass):
             'rev': '6'}]
             """
 
-            submitted_change = next((int(i['submittedChange']) for i in [s for s in submission if isinstance(s, dict)] if i.get('submittedChange')), None)
+            submitted_change = next((int(i['submittedChange']) for i in [s for s in self.submission if isinstance(s, dict)] if i.get('submittedChange')), None)
             """
             {'submittedChange': '92'}
             """
@@ -177,3 +250,5 @@ class PostPhaseHook(HookBaseClass):
                             }
                         },
                     )
+
+                
