@@ -49,7 +49,7 @@ apps.tk-multi-loader2.location:
   type: git_branch
   branch: master
   path: https://github.com/studiowildcard/tk-multi-loader2.git
-  version: b7453d2  
+  version: 77a6f04  
 
 # publish2
 apps.tk-multi-publish2.location:
