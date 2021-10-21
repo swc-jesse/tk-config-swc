@@ -309,7 +309,7 @@ class BasicSceneCollector(HookBaseClass):
             file_item.context = context
 
         # if the supplied path is an image, use the path as the thumbnail.
-        if item_type.startswith("file.image") or item_type.startswith("file.texture"):
+        if item_type.endswith(".image") or item_type.endswith("file.texture"):
             file_item.set_thumbnail_from_path(path)
             file_item.set_icon_from_path(path)
 
@@ -602,7 +602,7 @@ class BasicSceneCollector(HookBaseClass):
 
                     # the item has been created. update the display name to include
                     # the an indication of what it is and why it was collected
-                    item.name = "(%s) %s" % ("playblast", item.name)     
+                    item.name = "(%s) %s" % ("Review", item.name)     
 
                     return item
         else:
@@ -613,7 +613,7 @@ class BasicSceneCollector(HookBaseClass):
 
             # the item has been created. update the display name to include
             # the an indication of what it is and why it was collected
-            item.name = "(%s) %s" % ("playblast", item.name)    
+            item.name = "(%s) %s" % ("Review", item.name)    
 
             return item
 
