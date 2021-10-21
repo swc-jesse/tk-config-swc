@@ -252,7 +252,6 @@ class PublishPlugin(HookBaseClass):
         publish_fields = self.get_publish_fields(settings, item)
         # catch-all for any extra kwargs that should be passed to register_publish.
         publish_kwargs = self.get_publish_kwargs(settings, item)
-        p4_data = self.get_p4_data(settings, item)
 
         # if the parent item has publish data, get it id to include it in the list of
         # dependencies
@@ -280,7 +279,6 @@ class PublishPlugin(HookBaseClass):
             "dependency_paths": publish_dependencies_paths,
             "dependency_ids": publish_dependencies_ids,
             "sg_fields": publish_fields,
-            "p4_data": p4_data,
         }
 
         # add extra kwargs
@@ -589,7 +587,11 @@ class PublishPlugin(HookBaseClass):
 
         :return: A dictionary of field names and values for those fields.
         """
-        return item.get_property("publish_fields", default_value={})
+        publish_fields = item.get_property("publish_fields", default_value={})
+        p4_data = item.get_property("p4_data", default_value=None)
+        if("action" in p4_data.keys()):
+            publish_fields["sg_p4_op"] = f'p4{p4_data["action"]}'
+        return publish_fields
 
     def get_publish_kwargs(self, settings, item):
         """
@@ -610,17 +612,3 @@ class PublishPlugin(HookBaseClass):
         """
         return item.get_property("publish_kwargs", default_value={})
 
-    def get_p4_data(self, settings, item):
-        """
-        Get Perforce data that should be used for the publish. 
-
-        If p4_data is not defined as a ``property`` or
-        ``local_property``, this method will return an empty dictionary.
-
-        :param settings: This plugin instance's configured settings
-        :param item: The item to determine the publish template for
-
-        :return: A dictionary of field names and values for those fields.
-        """
-
-        return item.get_property("p4_data", default_value=None)
