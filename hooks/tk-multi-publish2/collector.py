@@ -196,7 +196,7 @@ class BasicSceneCollector(HookBaseClass):
         # default implementation does not do anything
         pass
 
-    def process_file(self, settings, parent_item, path):
+    def process_file(self, settings, parent_item, path, custom_info=None):
         """
         Analyzes the given file and creates one or more items
         to represent it.
@@ -227,7 +227,13 @@ class BasicSceneCollector(HookBaseClass):
             for items in folder.add_info, folder.edit_info, folder.delete_info:
                 for item in items:
                     if item["clientFile"] == path:
-                        collectedFile = self._collect_file(parent_item, self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item}))
+                        item_info = self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item})
+                        if custom_info:
+                            item_info.update(custom_info)
+                        collectedFile = self._collect_file(parent_item, item_info)
+                        if not collectedFile:
+                            return None
+
                         playblasts = os.path.join(os.path.dirname(path),"playblasts")
                         if(os.path.exists(playblasts)):
                             folder.recursive_scan(playblasts)
@@ -251,6 +257,9 @@ class BasicSceneCollector(HookBaseClass):
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
         path = item_info["item_path"]
+
+        if not self._ensure_unique(path, parent_item):
+            return None
 
         publisher = self.parent
 
@@ -582,6 +591,8 @@ class BasicSceneCollector(HookBaseClass):
                     found_parent = child
 
                     item = self._collect_file(found_parent, item_info)
+                    if not item:
+                        return None
 
                     # the item has been created. update the display name to include
                     # the an indication of what it is and why it was collected
@@ -590,6 +601,9 @@ class BasicSceneCollector(HookBaseClass):
                     return item
         else:
             item = self._collect_file(parent_item, item_info)
+            
+            if not item:
+                return None            
 
             # the item has been created. update the display name to include
             # the an indication of what it is and why it was collected
@@ -628,3 +642,10 @@ class BasicSceneCollector(HookBaseClass):
                         item_infos.remove(lower_item)
 
         return item_infos
+
+    def _ensure_unique(self, path, parent_item):
+        for existing_item in parent_item.descendants:
+            if existing_item.properties["path"] == path:
+                return False
+
+        return True
