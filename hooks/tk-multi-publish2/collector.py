@@ -129,6 +129,12 @@ class BasicSceneCollector(HookBaseClass):
                     "item_type": "file.image",
                     "item_priority": 0,                    
                 },
+                "Image": {
+                    "extensions": ["png", "jpg", "gif"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.image",
+                    "item_priority": 0,                    
+                },                
                 "SpeedTree Modeler": {
                     "extensions": ["spm"],
                     "icon": self._get_icon_path("speedtree.png"),
@@ -601,7 +607,7 @@ class BasicSceneCollector(HookBaseClass):
                     return item
         else:
             item = self._collect_file(parent_item, item_info)
-            
+
             if not item:
                 return None            
 
