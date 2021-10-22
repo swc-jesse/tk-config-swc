@@ -60,6 +60,8 @@ class PostPhaseHook(HookBaseClass):
     description = ""
     percent_complete = 0.0
     submission = []
+    total_size = ""
+    transfer_rate = ""
 
     thread = QtCore.QThreadPool.globalInstance()
     thread.setMaxThreadCount(1)
@@ -70,11 +72,19 @@ class PostPhaseHook(HookBaseClass):
     def update_percent_complete(self, percent):
         self.percent_complete = percent
 
+    def update_total_size(self, size):
+        self.total_size = size
+
+    def update_transfer_rate(self, rate):
+        self.transfer_rate = rate
+
     def update_progress_eta(self, eta):
         self.eta = eta
-        self.logger.info("Submitting {}<br>[ <b>{}</b>%, {} to go ]".format(self.description, 
+        self.logger.info("Submitting {}<br>[ <b>{}</b>% of {}, {}] {}".format(self.description, 
                                                                        int(self.percent_complete), 
-                                                                       eta.split('.')[0]
+                                                                       self.total_size,
+                                                                       eta.split('.')[0],
+                                                                       self.transfer_rate
                                                                        ))
 
     def update_submission_response(self, submission):
@@ -177,6 +187,8 @@ class PostPhaseHook(HookBaseClass):
             submit_worker.p4.progress.description.connect(self.update_progress_description)
             submit_worker.p4.progress.percent_done.connect(self.update_percent_complete)
             submit_worker.p4.progress.time_remaining.connect(self.update_progress_eta)
+            submit_worker.p4.progress.transfer_rate.connect(self.update_transfer_rate)
+            submit_worker.p4.progress.total_size.connect(self.update_total_size)
 
             # connect worker-specific signal
             submit_worker.submission_response.connect(self.update_submission_response)
