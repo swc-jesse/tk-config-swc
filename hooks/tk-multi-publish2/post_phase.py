@@ -229,15 +229,28 @@ class PostPhaseHook(HookBaseClass):
 
             for item in publish_tree:
 
-                # TODO: iterate thru the submission and update each items publish_data with
+                # Iterate thru the submission and update each items publish_data with
                 # the perforce data (version_number, sg_p4_change_number, sg_p4_depo_path)
                 if item in change_items:
-                    self._update_publish_data(p4, item, changed_files, submitted_change)
+                    item = self._update_publish_data(p4, item, changed_files, submitted_change)
 
-    def _update_publish_data(self, p4, item, changed_files, submitted_change, parent_id = None):
+                # Find and link submitted versions to published files
+            self._update_version_data(publish_tree)
+
+    def _update_publish_data(self, p4, item, changed_files, submitted_change):
+        """
+        Updates Perforce data and Upstream / Downstream files based on Parent / Child
+        relationships in the item.
+
+        :param p4: A Perforce instance
+        :param item: The PublishItem we're interested in
+        :param changed_files: A list of changed file dictionaries
+        :param submitted_change: The Perforce changelist that was submitted
+        """            
         depot_path = self.p4_fw.util.client_to_depot_paths(p4, item.properties.get("path"))[0]
         self.logger.debug("depot_path = {}".format(depot_path))
-        change_data = next(i for i in changed_files if i['depotFile'] == depot_path)
+        
+        change_data = [i for i in changed_files if i['depotFile'] == depot_path][0]
 
         if change_data:
 
@@ -247,9 +260,10 @@ class PostPhaseHook(HookBaseClass):
             # attach the p4 data to the "sg_fields" dict which updates the published file entry in SG
             item.properties.publish_data["sg_fields"]["sg_p4_depo_path"] = change_data["depotFile"]
             item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
-            if parent_id:
-                item.properties.publish_data["sg_fields"]["upstream_published_files"] = parent_id
+            if hasattr(item.parent.properties, "sg_publish_data"):
+                item.properties.publish_data["sg_fields"]["upstream_published_files"] = [item.parent.properties.sg_publish_data]
 
+            # Register the Publish
             item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
 
             # update the published file 'code' field to match Perforce rev formating (filename.ext#rev) so we can tell them apart in SG
@@ -266,11 +280,44 @@ class PostPhaseHook(HookBaseClass):
                         "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
                     }
                 },
-            )     
-            for child in item.children:
-                child = self._update_publish_data(child, changed_files, submitted_change, item.properties.sg_publish_data['id'])
-                if child:
-                    downstream_data = {'downstream_published_files': child.properties.sg_publish_data['id']}
-                    self.publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], downstream_data)
-            return item
-        return None
+            )  
+
+        return item   
+
+    def _update_version_data(self, publish_tree):
+        """
+        Walks down the Publish Tree and updates version data.
+
+        :param publish_tree: PublishTree instance
+        """        
+        for item in publish_tree:
+            # If this is a published file
+            if "sg_publish_data" in item.properties:
+                # And if there is no version linked
+                if not "version" in item.properties.sg_publish_data:
+                    # See if we have our own published version data from earlier
+                    if "sg_version_data" in item.properties:
+                        version = item.properties["sg_version_data"]
+                        update_data = {'version':version}
+
+                        self.publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], update_data)
+                        item.properties.sg_publish_data.update(update_data)   
+                    # Otherwise see if our parent has any version data we can use
+                    elif "sg_publish_data" in item.parent.properties:
+                        if "version" in item.parent.properties.sg_publish_data:
+                            update_data = {'version':item.parent.properties.sg_publish_data['version']}
+                            self.publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], update_data)
+                            item.properties.sg_publish_data.update(update_data)
+            # Or if this is only a version with no published file
+            elif "sg_version_data" in item.properties:
+                # And our parent is a published file
+                 if "sg_publish_data" in item.parent.properties:
+                    # And our parent has no version linked, link ourselves now
+                    if not "version" in item.parent.properties.sg_publish_data:
+                        version = item.properties["sg_version_data"]
+                        update_data = {'version':version}
+
+                        self.publisher.shotgun.update("PublishedFile", item.parent.properties.sg_publish_data['id'], update_data)
+                        item.parent.properties.sg_publish_data.update(update_data)
+
+            

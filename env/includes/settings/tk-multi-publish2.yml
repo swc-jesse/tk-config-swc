@@ -24,7 +24,7 @@ publish_help_url: &help_url "https://support.shotgunsoftware.com/hc/en-us/articl
 settings.tk-multi-publish2.standalone:
   path_info: "{self}/path_info.py:{config}/tk-multi-publish2/path_info.py"
   collector: "{config}/tk-multi-publish2/collector.py"
-  post_phase: "{config}/tk-multi-publish2/post_phase.py"
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"  
   publish_plugins:
   - name: ADD to Perforce & ShotGrid
     hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/add_file.py"
@@ -53,9 +53,15 @@ settings.tk-multi-publish2.3dsmax.asset_step: &settings_publish_plugins_tk-multi
       Work Template: asset_max_workfile
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_session.py"
+  - name: ADD to Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_session.py:{config}/tk-multi-publish2/add_file.py"
+    settings: {}    
+  - name: EDIT in Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_session.py:{config}/tk-multi-publish2/edit_file.py"
     settings: {}
+  - name: DELETE from Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-3dsmax/publish_session.py:{config}/tk-multi-publish2/delete_file.py"
+    settings: {}      
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
@@ -104,9 +110,15 @@ settings.tk-multi-publish2.houdini.asset_step: &settings_publish_plugins_tk-mult
       Work Template: asset_houdini_workfile
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-houdini/publish_session.py"
+  - name: ADD to Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-houdini/publish_session.py:{config}/tk-multi-publish2/add_file.py"
+    settings: {}    
+  - name: EDIT in Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-houdini/publish_session.py:{config}/tk-multi-publish2/edit_file.py"
     settings: {}
+  - name: DELETE from Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-houdini/publish_session.py:{config}/tk-multi-publish2/delete_file.py"
+    settings: {}      
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
     settings: {}
@@ -213,9 +225,15 @@ settings.tk-multi-publish2.photoshop.asset_step: &settings_publish_plugins_tk-mu
       Work Area: asset_root
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
   publish_plugins:
-  - name: Publish to Perforce & ShotGrid
-    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py"
+  - name: ADD to Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py:{config}/tk-multi-publish2/add_file.py"
+    settings: {}    
+  - name: EDIT in Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py:{config}/tk-multi-publish2/edit_file.py"
     settings: {}
+  - name: DELETE from Perforce & ShotGrid
+    hook: "{config}/tk-multi-publish2/publish_file.py:{config}/tk-multi-publish2/tk-photoshopcc/publish_file.py:{config}/tk-multi-publish2/delete_file.py"
+    settings: {}    
   - name: Upload for review
     hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py:{config}/tk-multi-publish2/tk-photoshopcc/upload_version.py"
     settings: {}

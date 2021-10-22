@@ -590,7 +590,7 @@ class PublishPlugin(HookBaseClass):
         publish_fields = item.get_property("publish_fields", default_value={})
         p4_data = item.get_property("p4_data", default_value=None)
         if("action" in p4_data.keys()):
-            publish_fields["sg_p4_op"] = f'p4{p4_data["action"]}'
+            publish_fields["sg_status_list"] = f'p4{p4_data["action"]}'
         return publish_fields
 
     def get_publish_kwargs(self, settings, item):

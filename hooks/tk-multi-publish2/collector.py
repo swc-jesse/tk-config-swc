@@ -164,7 +164,13 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("file.png"),
                     "item_type": "script.python",
                     "item_priority": 0,
-                },                             
+                },         
+                "Movie": {
+                    "extensions": ["mov", "avi", "mp4", "mpeg", "h264"],
+                    "icon": self._get_icon_path("video.png"),
+                    "item_type": "file.video",
+                    "item_priority": 0,
+                },                                        
             }
 
         return self._common_file_info
@@ -648,7 +654,7 @@ class BasicSceneCollector(HookBaseClass):
                         item_infos.remove(lower_item)
 
         return item_infos
-
+    
     def _ensure_unique(self, path, parent_item):
         for existing_item in parent_item.descendants:
             if existing_item.properties["path"] == path:
