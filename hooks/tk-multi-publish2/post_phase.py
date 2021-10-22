@@ -95,7 +95,7 @@ class PostPhaseHook(HookBaseClass):
 
         if do_post_publish:
             self.logger.debug("Starting Post-publish phase.")
-            publisher = self.parent
+            self.publisher = self.parent
 
             # Make the p4 connection
             self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
@@ -215,40 +215,50 @@ class PostPhaseHook(HookBaseClass):
             {'submittedChange': '92'}
             """
 
-            for item in change_items:
+            for item in publish_tree:
 
                 # TODO: iterate thru the submission and update each items publish_data with
                 # the perforce data (version_number, sg_p4_change_number, sg_p4_depo_path)
+                if item in change_items:
+                    self._update_publish_data(p4, item, changed_files, submitted_change)
 
-                depot_path = self.p4_fw.util.client_to_depot_paths(p4, item.properties.get("path"))[0]
-                self.logger.debug("depot_path = {}".format(depot_path))
-                change_data = next(i for i in changed_files if i['depotFile'] == depot_path)
+    def _update_publish_data(self, p4, item, changed_files, submitted_change, parent_id = None):
+        depot_path = self.p4_fw.util.client_to_depot_paths(p4, item.properties.get("path"))[0]
+        self.logger.debug("depot_path = {}".format(depot_path))
+        change_data = next(i for i in changed_files if i['depotFile'] == depot_path)
 
-                if change_data:
+        if change_data:
 
-                    # use the p4 revision number as the version number
-                    item.properties.publish_data["version_number"] = int(change_data["rev"])
+            # use the p4 revision number as the version number
+            item.properties.publish_data["version_number"] = int(change_data["rev"])
 
-                    # attach the p4 data to the "sg_fields" dict which updates the published file entry in SG
-                    item.properties.publish_data["sg_fields"]["sg_p4_depo_path"] = change_data["depotFile"]
-                    item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
+            # attach the p4 data to the "sg_fields" dict which updates the published file entry in SG
+            item.properties.publish_data["sg_fields"]["sg_p4_depo_path"] = change_data["depotFile"]
+            item.properties.publish_data["sg_fields"]["sg_p4_change_number"] = submitted_change
+            if parent_id:
+                item.properties.publish_data["sg_fields"]["upstream_published_files"] = parent_id
 
-                    item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
+            item.properties.sg_publish_data = sgtk.util.register_publish(**item.properties.publish_data)
 
-                    # update the published file 'code' field to match Perforce rev formating (filename.ext#rev) so we can tell them apart in SG
-                    update_data = {'code': "{}#{}".format(item.properties.sg_publish_data['code'], change_data["rev"])}
-                    publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], update_data)   
+            # update the published file 'code' field to match Perforce rev formating (filename.ext#rev) so we can tell them apart in SG
+            update_data = {'code': "{}#{}".format(item.properties.sg_publish_data['code'], change_data["rev"])}
+            self.publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], update_data)   
 
-                    self.logger.info("Publish registered!")
-                    self.logger.debug(
-                        "ShotGrid Publish data...",
-                        extra={
-                            "action_show_more_info": {
-                                "label": "ShotGrid Publish Data",
-                                "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
-                                "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
-                            }
-                        },
-                    )
-
-                
+            self.logger.info("Publish registered!")
+            self.logger.debug(
+                "ShotGrid Publish data...",
+                extra={
+                    "action_show_more_info": {
+                        "label": "ShotGrid Publish Data",
+                        "tooltip": "Show the complete ShotGrid Publish Entity dictionary",
+                        "text": "<pre>{}</pre>".format(pprint.pformat(item.properties.sg_publish_data)),
+                    }
+                },
+            )     
+            for child in item.children:
+                child = self._update_publish_data(child, changed_files, submitted_change, item.properties.sg_publish_data['id'])
+                if child:
+                    downstream_data = {'downstream_published_files': child.properties.sg_publish_data['id']}
+                    self.publisher.shotgun.update("PublishedFile", item.properties.sg_publish_data['id'], downstream_data)
+            return item
+        return None
