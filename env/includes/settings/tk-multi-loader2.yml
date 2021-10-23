@@ -22,22 +22,24 @@ entity_browser_settings: &entity_browser_settings
     filters:
     - [task_assignees, is, '{context.user}']
     - [project, is, '{context.project}']
-    hierarchy: [project, entity, content]      
+    hierarchy: [project, entity, step, content]       
   - caption: Content
-    entity_type: Asset
-    hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
     filters:
-      - [sg_asset_parent, is, [ null ]]
+      - [entity.Asset.sg_asset_parent, is, [ null ]]
       - [project, is, '{context.project}']        
+      - [entity, type_is, 'Asset']
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']
   - caption: Children
-    entity_type: Asset
-    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, sg_folder_name]
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_parent.Asset.sg_asset_library, entity.Asset.sg_asset_parent.Asset.sg_asset_type, entity.Asset.sg_asset_parent.Asset.sg_asset_category, entity.Asset.sg_asset_parent.Asset.code, entity.Asset.sg_asset_category, entity, step, content]
     filters:
-      - [sg_asset_parent, is_not, [ null ]]    
-      - [sg_asset_type, is_not, ["Animations"]]         
+      - [entity.Asset.sg_asset_parent, is_not, [ null ]]    
+      - [entity.Asset.sg_asset_type, is_not, ["Animations"]]         
       - [project, is, '{context.project}']    
+      - [entity, type_is, 'Asset']      
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']        
   - caption: Animations
@@ -48,10 +50,11 @@ entity_browser_settings: &entity_browser_settings
       - [sg_asset_parent, is_not, [ null ]]
       - [sg_asset_type, is, ["Animations"]]               
   - caption: Environment
-    entity_type: CustomEntity01
-    hierarchy: [project, sg_asset_library, sg_asset_type, sg_biome, sg_asset_category, sg_folder_name]
+    entity_type: Task
+    hierarchy: [project, entity.CustomEntity01.sg_asset_library, entity.CustomEntity01.sg_asset_type, entity.CustomEntity01.sg_biome, entity.CustomEntity01.sg_asset_category, entity, step, content]
     filters:
-      - [project, is, '{context.project}']      
+      - [project, is, '{context.project}']    
+      - [entity, type_is, 'CustomEntity01']        
   - caption: Publishing
     entity_type: CustomEntity03
     hierarchy: [project, sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
@@ -77,7 +80,7 @@ settings.tk-multi-loader2.desktop:
     Texture: [perforce_sync]
     Spp File: [perforce_sync]
     Motion Builder FBX: [perforce_sync]
-    Zbrush File: [perforce_sync]
+    Zbrush Tool: [perforce_sync]
     Avi File: [perforce_sync]
     Blend File: [perforce_sync]
     SpeedTree Modeler: [perforce_sync]
@@ -91,13 +94,11 @@ settings.tk-multi-loader2.desktop:
     Mtl File: [perforce_sync]
     Swatches File: [perforce_sync]
     Sbsar File: [perforce_sync]
-    Sbs File: [perforce_sync]
+    Substance Designer: [perforce_sync]
     Zpr File: [perforce_sync]
     Mtz File: [perforce_sync]
     Stmat File: [perforce_sync]
-    SpeedTree Model File: [perforce_sync]
-    St9 File: [perforce_sync]
-    Spm File: [perforce_sync]
+    Substance Painter: [perforce_sync]
     Sbk File: [perforce_sync]
   entity_mappings:
     Task: [perforce_sync,create_folders]
