@@ -42,14 +42,14 @@ apps.tk-multi-loader2.location:
   # type: app_store
   # name: tk-multi-loader2
   # version: v1.21.0
-  ## Dev
+  # # Dev
   # type: dev
   # path: S:\Projects\ShotgunConfig\tk-multi-loader2
   ### Github
   type: git_branch
   branch: master
   path: https://github.com/studiowildcard/tk-multi-loader2.git
-  version: 77a6f04  
+  version: b756028b3181badd1ccddf15c06bd54292d08ac9  
 
 # publish2
 apps.tk-multi-publish2.location:
