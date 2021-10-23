@@ -13,6 +13,7 @@ import os
 import sgtk
 from sgtk.platform.qt import QtCore, QtGui
 from datetime import datetime, timedelta
+from time import sleep
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -237,6 +238,8 @@ class PostPhaseHook(HookBaseClass):
                 # Find and link submitted versions to published files
             self._update_version_data(publish_tree)
 
+            self._update_thumbnails(publish_tree)
+
     def _update_publish_data(self, p4, item, changed_files, submitted_change):
         """
         Updates Perforce data and Upstream / Downstream files based on Parent / Child
@@ -320,4 +323,32 @@ class PostPhaseHook(HookBaseClass):
                         self.publisher.shotgun.update("PublishedFile", item.parent.properties.sg_publish_data['id'], update_data)
                         item.parent.properties.sg_publish_data.update(update_data)
 
-            
+    def _update_thumbnails(self, publish_tree):
+        for item in publish_tree:
+            # Only update the thumbnail if one hasn't been set explicitly
+            if "sg_publish_data" in item.properties and not item.thumbnail:
+                if "version" in item.properties.sg_publish_data:
+                    version = item.properties.sg_publish_data["version"]
+
+                    # Share thumbnail from the linked version, but it needs time to upload.
+                    # If it's not ready yet, sleep and wait for the upload to finish 
+                    sleep_time = 2
+                    num_retries = 4
+
+                    for x in range(0, num_retries):  
+                        str_error = None
+                        try:
+                            thumb1 = self.publisher.shotgun.share_thumbnail(entities=[item.properties.sg_publish_data],source_entity=version)
+                            thumb2 = self.publisher.shotgun.share_thumbnail(entities=[item.properties.sg_publish_data],source_entity=version,filmstrip_thumbnail=True)
+                        except Exception as e:
+                            str_error = str(e)
+                            self.logger.info("Waiting for Thumbnail...")
+                            pass
+
+                        if str_error:
+                            sleep(sleep_time)  # wait before trying to fetch the data again
+                            sleep_time *= 2  
+                        else:
+                            self.logger.info("Thumbnail shared successfully!")
+                            break
+                    
