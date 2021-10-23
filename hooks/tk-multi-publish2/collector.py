@@ -170,7 +170,25 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("video.png"),
                     "item_type": "file.video",
                     "item_priority": 0,
-                },                                        
+                },      
+                "Substance Designer": {
+                    "extensions": ["sbs"],
+                    "icon": self._get_icon_path("substance_designer.png"),
+                    "item_type": "file.substance",
+                    "item_priority": 7,
+                },         
+                "Substance Painter": {
+                    "extensions": ["spp"],
+                    "icon": self._get_icon_path("substance_painter.png"),
+                    "item_type": "file.substance",
+                    "item_priority": 9,
+                },      
+                "Zbrush Tool": {
+                    "extensions": ["ztl"],
+                    "icon": self._get_icon_path("zbrush.png"),
+                    "item_type": "file.zbrush",
+                    "item_priority": 5,
+                },                                                                             
             }
 
         return self._common_file_info
