@@ -254,7 +254,7 @@ class BasicSceneCollector(HookBaseClass):
             return None
         else:
             folder = self.p4_fw.util.recursive_reconcile(os.path.dirname(path))
-            for items in folder.add_info, folder.edit_info, folder.delete_info:
+            for items in folder.add_info, folder.edit_info, folder.delete_info, folder.open_info:
                 for item in items:
                     if item["clientFile"] == path:
                         item_info = self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item})
@@ -401,7 +401,7 @@ class BasicSceneCollector(HookBaseClass):
         file_items = []
 
         # Only process items that are added, edited or deleted in Perforce
-        for items in folder.add_info, folder.edit_info, folder.delete_info:
+        for items in folder.add_info, folder.edit_info, folder.delete_info, folder.open_info:
             for item in items:
                 item_path = item["clientFile"]
                 item_infos.append(self._collect_item_info(parent_item,item_path,extra={"p4_data":item}))
