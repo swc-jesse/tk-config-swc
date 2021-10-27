@@ -194,6 +194,59 @@ class BasicSceneCollector(HookBaseClass):
         return self._common_file_info
 
     @property
+    def common_folder_info(self):
+        """
+        A dictionary of file type info that allows the basic collector to
+        identify common production file types and associate them with a display
+        name, item type, and config icon.
+
+        The dictionary returned is of the form::
+
+            {
+                <Publish Type>: {
+                    "extensions": [<ext>, <ext>, ...],
+                    "icon": <icon path>,
+                    "item_type": <item type>
+                },
+                <Publish Type>: {
+                    "extensions": [<ext>, <ext>, ...],
+                    "icon": <icon path>,
+                    "item_type": <item type>
+                },
+                ...
+            }
+
+        See the collector source to see the default values returned.
+
+        Subclasses can override this property, get the default values via
+        ``super``, then update the dictionary as necessary by
+        adding/removing/modifying values.
+        """
+
+        if not hasattr(self, "_common_folder_info"):
+
+            # do this once to avoid unnecessary processing
+            self._common_folder_info = {
+                "Snapshots": {
+                    "name": "snapshots",
+                    "item_type": "folder.snapshots",
+                    "ignored": True,
+                },      
+                "Playblasts": {
+                    "name": "playblasts",
+                    "item_type": "folder.playblasts",
+                    "ignored": False,
+                },                               
+                "Houdini Backups": {
+                    "name": "backups",
+                    "item_type": "folder.houdini.backups",
+                    "ignored": True,
+                },                                                                        
+            }
+
+        return self._common_folder_info
+
+    @property
     def settings(self):
         """
         Dictionary defining the settings that this collector expects to receive
@@ -404,7 +457,14 @@ class BasicSceneCollector(HookBaseClass):
         for items in folder.add_info, folder.edit_info, folder.delete_info, folder.open_info:
             for item in items:
                 item_path = item["clientFile"]
-                item_infos.append(self._collect_item_info(parent_item,item_path,extra={"p4_data":item}))
+                skip = False
+
+                for key, value in self.common_folder_info.items():
+                    if value["ignored"] and (value["name"] in os.path.dirname(item_path)):
+                        skip = True
+
+                if not skip:        
+                    item_infos.append(self._collect_item_info(parent_item,item_path,extra={"p4_data":item}))
         
         item_infos = self._process_hierarchy(list(item_infos),parent_item)
 
