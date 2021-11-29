@@ -79,14 +79,16 @@ class PublishPlugin(HookBaseClass):
                     ["Maya Scene", "ma", "mb"],
                     ["Motion Builder FBX", "fbx"],
                     ["Photoshop Image", "psd", "psb"],
-                    ["Rendered Image", "dpx", "exr"],
-                    ["Texture", "tiff", "tx", "tga", "dds"],
+                    ["Rendered Image", "dpx"],
+                    ["Texture", "tiff", "tx", "tga", "dds", "exr"],
                     ["Image", "jpeg", "jpg", "png"],
                     ["Movie", "mov", "mp4"],
                     ["SpeedTree Modeler", "spm"],
                     ["SpeedTree Export", "st9", "st"],
                     ["Zbrush Tool", "ztl"],
-                    ["Settings File", "pkl", "json"],                 
+                    ["Settings File", "pkl", "json"],                
+                    ["Substance Designer", "sbs"],
+                    ["Substance Painter", "spp"],
                 ],
                 "description": (
                     "List of file types to include. Each entry in the list "
@@ -139,14 +141,19 @@ class PublishPlugin(HookBaseClass):
         if(type_class == "playblast"):
             return {"accepted": False}
 
-        # log the accepted file and display a button to reveal it in the fs
-        self.logger.info(
-            "Perforce publish plugin accepted: {}".format(path),
-            extra={"action_show_folder": {"path": path}},
-        )
+        p4_data = item.properties.get("p4_data")
+        if p4_data: 
+            if p4_data["action"] == "delete":
+                return {"accepted": False}
+            else:
+                # log the accepted file and display a button to reveal it in the fs
+                self.logger.info(
+                    "Perforce publish plugin accepted: {}".format(path),
+                    extra={"action_show_folder": {"path": path}},
+                )
 
-        # return the accepted info
-        return {"accepted": True}            
+                # return the accepted info
+                return {"accepted": True}            
 
     def validate(self, settings, item):
         """
@@ -582,7 +589,11 @@ class PublishPlugin(HookBaseClass):
 
         :return: A dictionary of field names and values for those fields.
         """
-        return item.get_property("publish_fields", default_value={})
+        publish_fields = item.get_property("publish_fields", default_value={})
+        p4_data = item.get_property("p4_data", default_value=None)
+        if("action" in p4_data.keys()):
+            publish_fields["sg_status_list"] = f'p4{p4_data["action"]}'
+        return publish_fields
 
     def get_publish_kwargs(self, settings, item):
         """
@@ -602,3 +613,4 @@ class PublishPlugin(HookBaseClass):
                  :meth:`tank.util.register_publish`.
         """
         return item.get_property("publish_kwargs", default_value={})
+

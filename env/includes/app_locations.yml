@@ -42,14 +42,14 @@ apps.tk-multi-loader2.location:
   # type: app_store
   # name: tk-multi-loader2
   # version: v1.21.0
-  ## Dev
+  # # Dev
   # type: dev
   # path: S:\Projects\ShotgunConfig\tk-multi-loader2
   ### Github
   type: git_branch
   branch: master
   path: https://github.com/studiowildcard/tk-multi-loader2.git
-  version: 472a46374461c0dd73a2f4e901ff217f7be83aa0  
+  version: b756028b3181badd1ccddf15c06bd54292d08ac9  
 
 # publish2
 apps.tk-multi-publish2.location:
@@ -148,7 +148,7 @@ apps.tk-multi-workfiles2.location:
   type: git_branch
   branch: master
   path: https://github.com/studiowildcard/tk-multi-workfiles2.git
-  version: 3ac69a8
+  version: 6079952270e5fab7ff36ccf6558c888d75a7f355
   # ## Dev
   # name: tk-multi-workfiles2
   # type: dev
@@ -156,14 +156,14 @@ apps.tk-multi-workfiles2.location:
 
 # Perforce
 apps.tk-multi-perforce.location:
-  # ## Dev
+  ### Dev
   # type: dev
   # path: S:\Projects\ShotgunConfig\tk-multi-perforce
   ### Github
   type: git_branch
   branch: swc_beta
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: 5c2a4ba
+  version: "37f9dfd"
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'

@@ -15,8 +15,6 @@ import maya.mel as mel
 import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
-TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
-
 
 class MayaSessionCollector(HookBaseClass):
     """
@@ -79,12 +77,8 @@ class MayaSessionCollector(HookBaseClass):
         item = self.collect_current_maya_session(settings, parent_item)
         project_root = item.properties["project_root"]
 
-        # look at the render layers to find rendered images on disk
-        self.collect_rendered_images(item)
-
         # if we can determine a project root, collect other files to publish
-        if project_root:
-
+        if project_root:     
             self.logger.info(
                 "Current Maya project is: %s." % (project_root,),
                 extra={
@@ -95,12 +89,8 @@ class MayaSessionCollector(HookBaseClass):
                     }
                 },
             )
-
-            self.collect_playblasts(item, project_root)
-            self.collect_alembic_caches(item, project_root)
-            self.collect_fbx_animations(item, project_root)
+            self.collect_fbx_animations(settings, item, project_root)
         else:
-
             self.logger.info(
                 "Could not determine the current Maya project.",
                 extra={
@@ -111,9 +101,6 @@ class MayaSessionCollector(HookBaseClass):
                     }
                 },
             )
-
-        if cmds.ls(geometry=True, noIntermediate=True):
-            self._collect_session_geometry(item)
 
     def collect_current_maya_session(self, settings, parent_item):
         """
@@ -128,112 +115,45 @@ class MayaSessionCollector(HookBaseClass):
 
         # get the path to the current file
         path = cmds.file(query=True, sn=True)
-
+        path = sgtk.util.ShotgunPath.normalize(path)
         # determine the display name for the item
         if path:
             file_info = publisher.util.get_file_path_components(path)
             display_name = file_info["filename"]
-        else:
-            display_name = "Current Maya Session"
+            session_info = {
+                "item_type":"maya.session",
+                "type_display":"Maya Session",
+                "display_name":file_info["filename"]
+                }         
+            session_item = super(MayaSessionCollector, self).process_file(settings, parent_item, path, custom_info=session_info)
 
-        # create the session item for the publish hierarchy
-        session_item = parent_item.create_item(
-            "maya.session", "Maya Session", display_name
-        )
-        # Try to get the context more specifically from the path on disk
-        try:
-            context = self.swc_fw.find_task_context(path)
-        except(AttributeError):
-            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
-            context = self.swc_fw.find_task_context(path)
+            # discover the project root which helps in discovery of other
+            # publishable items
+            project_root = cmds.workspace(q=True, rootDirectory=True)
+            session_item.properties["project_root"] = project_root
 
-        # If we found a better context, set it here
-        if context:
-            session_item.context = context        
+            # if a work template is defined, add it to the item properties so
+            # that it can be used by attached publish plugins
+            work_template_setting = settings.get("Work Template")
+            if work_template_setting:
 
-        # get the icon path to display for this item
-        icon_path = os.path.join(self.disk_location, os.pardir, "icons", "maya.png")
-        session_item.set_icon_from_path(icon_path)
+                work_template = publisher.engine.get_template_by_name(
+                    work_template_setting.value
+                )
 
-        # discover the project root which helps in discovery of other
-        # publishable items
-        project_root = cmds.workspace(q=True, rootDirectory=True)
-        session_item.properties["project_root"] = project_root
+                # store the template on the item for use by publish plugins. we
+                # can't evaluate the fields here because there's no guarantee the
+                # current session path won't change once the item has been created.
+                # the attached publish plugins will need to resolve the fields at
+                # execution time.
+                session_item.properties["work_template"] = work_template
+                self.logger.debug("Work template defined for Maya collection.")
 
-        # if a work template is defined, add it to the item properties so
-        # that it can be used by attached publish plugins
-        work_template_setting = settings.get("Work Template")
-        if work_template_setting:
+            self.logger.info("Collected current Maya scene")
 
-            work_template = publisher.engine.get_template_by_name(
-                work_template_setting.value
-            )
+            return session_item
 
-            # store the template on the item for use by publish plugins. we
-            # can't evaluate the fields here because there's no guarantee the
-            # current session path won't change once the item has been created.
-            # the attached publish plugins will need to resolve the fields at
-            # execution time.
-            session_item.properties["work_template"] = work_template
-            self.logger.debug("Work template defined for Maya collection.")
-
-        self.logger.info("Collected current Maya scene")
-
-        return session_item
-
-    def collect_alembic_caches(self, parent_item, project_root):
-        """
-        Creates items for alembic caches
-
-        Looks for a 'project_root' property on the parent item, and if such
-        exists, look for alembic caches in a 'cache/alembic' subfolder.
-
-        :param parent_item: Parent Item instance
-        :param str project_root: The maya project root to search for alembics
-        """
-
-        # ensure the alembic cache dir exists
-        cache_dir = os.path.join(project_root, "cache", "alembic")
-        if not os.path.exists(cache_dir):
-            return
-
-        self.logger.info(
-            "Processing alembic cache folder: %s" % (cache_dir,),
-            extra={"action_show_folder": {"path": cache_dir}},
-        )
-
-        # look for alembic files in the cache folder
-        for filename in os.listdir(cache_dir):
-            cache_path = os.path.join(cache_dir, filename)
-
-            # do some early pre-processing to ensure the file is of the right
-            # type. use the base class item info method to see what the item
-            # type would be.
-            item_info = self._collect_item_info(parent_item, filename)
-            if item_info["item_type"] != "file.alembic":
-                continue
-
-            # allow the base class to collect and create the item. it knows how
-            # to handle alembic files
-            super(MayaSessionCollector, self)._collect_file(parent_item, cache_path)
-
-    def _collect_session_geometry(self, parent_item):
-        """
-        Creates items for session geometry to be exported.
-
-        :param parent_item: Parent Item instance
-        """
-
-        geo_item = parent_item.create_item(
-            "maya.session.geometry", "Geometry", "All Session Geometry"
-        )
-
-        # get the icon path to display for this item
-        icon_path = os.path.join(self.disk_location, os.pardir, "icons", "geometry.png")
-
-        geo_item.set_icon_from_path(icon_path)
-
-    def collect_fbx_animations(self, parent_item, project_root):     
+    def collect_fbx_animations(self, settings, parent_item, project_root):     
         """
         Looks for exported FBX files that match this file name
 
@@ -256,79 +176,4 @@ class MayaSessionCollector(HookBaseClass):
 
         # allow the base class to collect and create the item. it knows how
         # to handle alembic files
-        super(MayaSessionCollector, self)._collect_file(parent_item, item_info)        
-
-    def collect_playblasts(self, parent_item, project_root):
-        """
-        Creates items for quicktime playblasts.
-
-        Looks for a 'project_root' property on the parent item, and if such
-        exists, look for movie files in a 'movies' subfolder.
-
-        :param parent_item: Parent Item instance
-        :param str project_root: The maya project root to search for playblasts
-        """
-
-        movie_dir_name = "playblasts"
-
-        # ensure the movies dir exists
-        movies_dir = os.path.join(project_root, movie_dir_name)
-        if not os.path.exists(movies_dir):
-            return
-
-        self.logger.info(
-            "Processing playblasts folder: %s" % (movies_dir,),
-            extra={"action_show_folder": {"path": movies_dir}},
-        )
-
-        # look for movie files in the movies folder
-        for filename in os.listdir(movies_dir):
-
-            # do some early pre-processing to ensure the file is of the right
-            # type. use the base class item info method to see what the item
-            # type would be.
-            item_path = os.path.join(movies_dir,filename)
-            item_info = self._collect_item_info(parent_item, item_path)
-            if item_info["item_type"] != "file.video":
-                continue
-
-            # allow the base class to collect and create the item. it knows how
-            # to handle movie files
-            item = self._collect_playblast(
-                parent_item, item_info
-            )
-
-    def collect_rendered_images(self, parent_item):
-        """
-        Creates items for any rendered images that can be identified by
-        render layers in the file.
-
-        :param parent_item: Parent Item instance
-        :return:
-        """
-
-        # iterate over defined render layers and query the render settings for
-        # information about a potential render
-        for layer in cmds.ls(type="renderLayer"):
-
-            self.logger.info("Processing render layer: %s" % (layer,))
-
-            # use the render settings api to get a path where the frame number
-            # spec is replaced with a '*' which we can use to glob
-            (frame_glob,) = cmds.renderSettings(
-                genericFrameImageName="*", fullPath=True, layer=layer
-            )
-
-            # see if there are any files on disk that match this pattern
-            rendered_paths = glob.glob(frame_glob)
-
-            if rendered_paths:
-                # we only need one path to publish, so take the first one and
-                # let the base class collector handle it
-                item = super(MayaSessionCollector, self)._collect_file(
-                    parent_item, rendered_paths[0], frame_sequence=True
-                )
-
-                # the item has been created. update the display name to include
-                # the an indication of what it is and why it was collected
-                item.name = "%s (Render Layer: %s)" % (item.name, layer)
+        super(MayaSessionCollector, self).process_file(settings, parent_item, fbx_file)                  

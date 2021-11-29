@@ -117,9 +117,15 @@ class PhotoshopCCSceneCollector(HookBaseClass):
             # If we found a context, process
             if context:
                 # create a publish item for the document
-                document_item = parent_item.create_item(
-                    "photoshop.document", "Photoshop Image", document.name
-                )
+                
+                # determine the display name for the item
+                session_info = {
+                    "item_type":"photoshop.document",
+                    "type_display":"Photoshop Image",
+                    "display_name":document.name
+                    }         
+                document_item = super(PhotoshopCCSceneCollector, self).process_file(settings, parent_item, path, custom_info=session_info)                
+
                 document_item.context = context  
 
                 document_item.set_icon_from_path(icon_path)
@@ -146,28 +152,27 @@ class PhotoshopCCSceneCollector(HookBaseClass):
                     # disable this item
                     document_item.expanded = False
                     document_item.checked = False
+              
+                # try to set the thumbnail for display. won't display anything
+                # for psd/psb, but others should work.
+                file_name_out = "%s_thumb.jpg" % doc_name.split(".")[0]
+                # path to a temp png file
+                thumb_path = os.path.join(
+                    tempfile.gettempdir(), file_name_out
+                )                    
+                jpg_file = engine.adobe.File(thumb_path)
+                jpg_options = engine.adobe.JPEGSaveOptions()
+                jpg_options.quality = 10
+                jpg_options.embedColorProfile = True
+                jpg_options.formatOptions = engine.adobe.FormatOptions.STANDARDBASELINE
+                jpg_options.matte = engine.adobe.MatteType.NONE
 
-                if path:                  
-                    # try to set the thumbnail for display. won't display anything
-                    # for psd/psb, but others should work.
-                    file_name_out = "%s_thumb.jpg" % doc_name.split(".")[0]
-                    # path to a temp png file
-                    thumb_path = os.path.join(
-                        tempfile.gettempdir(), file_name_out
-                    )                    
-                    jpg_file = engine.adobe.File(thumb_path)
-                    jpg_options = engine.adobe.JPEGSaveOptions()
-                    jpg_options.quality = 10
-                    jpg_options.embedColorProfile = True
-                    jpg_options.formatOptions = engine.adobe.FormatOptions.STANDARDBASELINE
-                    jpg_options.matte = engine.adobe.MatteType.NONE
+                # mark the temp upload path for removal
+                # document_item.properties["remove_upload"] = True
 
-                    # mark the temp upload path for removal
-                    # document_item.properties["remove_upload"] = True
-
-                    # save a jpg copy of the document
-                    document.saveAs(jpg_file, jpg_options, True)                   
-                    document_item.set_thumbnail_from_path(thumb_path)
+                # save a jpg copy of the document
+                document.saveAs(jpg_file, jpg_options, True)                   
+                document_item.set_thumbnail_from_path(thumb_path)
 
             # store the template on the item for use by publish plugins. we
             # can't evaluate the fields here because there's no guarantee the
