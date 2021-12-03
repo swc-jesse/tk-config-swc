@@ -175,7 +175,6 @@ class UploadVersionPlugin(HookBaseClass):
     def get_next_version_name(self, item, path):
         # Increment version number based on how many versions
         self.publisher = self.parent
-        path = item.properties["path"]
 
         # use the path's filename as the base publish name
         path_components = self.publisher.util.get_file_path_components(path)

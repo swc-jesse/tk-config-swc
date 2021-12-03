@@ -243,7 +243,7 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
             item.properties["sg_version_data"] = version
 
             # Make sure the string is utf8 encoded to avoid issues with the SG API.
-            upload_path = six.ensure_str(upload_path)
+            upload_path = six.ensure_str(version_path)
 
             # Upload the file to SG
             self.logger.info("Uploading content...")
