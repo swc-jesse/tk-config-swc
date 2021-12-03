@@ -10,6 +10,8 @@
 
 import sgtk
 import os
+import datetime
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
@@ -116,6 +118,28 @@ class UploadVersionPlugin(HookBaseClass):
             settings["checked"] = False
         return settings
 
+    def validate(self, settings, item):
+        """
+        Validates the given item to check that it is ok to publish.
+        Returns a boolean to indicate validity.
+        :param settings: Dictionary of Settings. The keys are strings, matching
+            the keys returned in the settings property. The values are `Setting`
+            instances.
+        :param item: Item to process
+        :returns: True if item is valid, False otherwise.
+        """
+        publish_name = item.properties.get("publish_name")
+        if not publish_name:
+            version_path = self.get_next_version_name(item,item.properties["path"])
+            version_path_components = self.publisher.util.get_file_path_components(version_path)
+            publish_name = version_path_components["filename"]  
+            
+            self.logger.debug("Using prior version info to determine publish version.")
+
+            self.logger.debug("Publish name: %s" % (publish_name,))  
+            item.properties["publish_name"] = publish_name          
+        super(UploadVersionPlugin, self).validate(settings, item)
+
     def finalize(self, settings, item):
         """
         Execute the finalization pass. This pass executes once all the publish
@@ -126,10 +150,13 @@ class UploadVersionPlugin(HookBaseClass):
         :param item: Item to process
         """
 
+        # Increment version number based on how many versions
+        self.publisher = self.parent
         path = item.properties["path"]
         version = item.properties["sg_version_data"]
 
-        type_class = item.type_spec.split(".")[0]
+        type_class = item.type_spec.split(".")[0] 
+
         if(type_class == "playblast"):
             os.remove(path)
             self.logger.info(
@@ -144,3 +171,29 @@ class UploadVersionPlugin(HookBaseClass):
             )        
         else:
             super(UploadVersionPlugin, self).finalize(settings, item)
+
+    def get_next_version_name(self, item, path):
+        # Increment version number based on how many versions
+        self.publisher = self.parent
+        path = item.properties["path"]
+
+        # use the path's filename as the base publish name
+        path_components = self.publisher.util.get_file_path_components(path)
+        publish_name = path_components["filename"]
+
+        # See how many prior versions there are
+        filters = [
+            ['entity', 'is', self._get_version_entity(item)]
+        ]
+
+        prior_versions = self.publisher.shotgun.find("Version",filters,['code'])      
+
+        regex = r"(" + re.escape(publish_name.split('.')[0]) + r"){1}(\.v\d)?\.\w*$"
+
+        x = [i for i in prior_versions if re.match(regex,i['code'])]   
+
+        # Set the publish name of this item as the next version
+        version_number = len(x)+1     
+        version_path = self.publisher.util.get_version_path(path,version_number)
+
+        return version_path      
