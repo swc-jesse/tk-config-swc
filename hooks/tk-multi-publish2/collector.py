@@ -12,6 +12,7 @@ import mimetypes
 import os
 import sgtk
 from tank_vendor import six
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -686,7 +687,10 @@ class BasicSceneCollector(HookBaseClass):
 
                     # the item has been created. update the display name to include
                     # the an indication of what it is and why it was collected
-                    item.name = "(%s) %s" % ("Review", item.name)     
+
+                    publish_name = self.get_next_version_name(item,item.properties["path"])
+                    item.properties["publish_name"] = publish_name       
+                    item.name = f"(Review) {publish_name}"  
 
                     return item
         else:
@@ -695,9 +699,9 @@ class BasicSceneCollector(HookBaseClass):
             if not item:
                 return None            
 
-            # the item has been created. update the display name to include
-            # the an indication of what it is and why it was collected
-            item.name = "(%s) %s" % ("Review", item.name)    
+            publish_name = self.get_next_version_name(item,item.properties["path"])
+            item.properties["publish_name"] = publish_name       
+            item.name = f"(Review) {publish_name}"  
 
             return item
 
@@ -739,3 +743,34 @@ class BasicSceneCollector(HookBaseClass):
                 return False
 
         return True
+
+    def get_next_version_name(self, item, path):
+        # Increment version number based on how many versions
+        self.publisher = self.parent
+
+        # use the path's filename as the base publish name
+        path_components = self.publisher.util.get_file_path_components(path)
+        publish_name = path_components["filename"]
+
+        # See how many prior versions there are
+        filters = [
+            ['entity', 'is', item.context.entity]
+        ]
+
+        prior_versions = self.publisher.shotgun.find("Version",filters,['code'])      
+
+        regex = r"(" + re.escape(publish_name.split('.')[0]) + r"){1}(\.v\d)?\.\w*$"
+
+        x = [i for i in prior_versions if re.match(regex,i['code'])]   
+
+        # Set the publish name of this item as the next version
+        version_number = len(x)+1     
+        version_path = self.publisher.util.get_version_path(path,version_number)
+        version_path_components = self.publisher.util.get_file_path_components(version_path)
+        publish_name = version_path_components["filename"]  
+        
+        self.logger.info("Using prior version info to determine publish version.")
+        self.logger.info("Publish name: %s" % (publish_name,))  
+
+        return publish_name      
+

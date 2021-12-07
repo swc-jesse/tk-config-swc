@@ -179,9 +179,9 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
                     version_path_components = self.publisher.util.get_file_path_components(version_path)
                     publish_name = version_path_components["filename"]  
 
-                    self.logger.debug("Using prior version info to determine publish version.")
+                    self.logger.info("Using prior version info to determine publish version.")
 
-                    self.logger.debug("Publish name: %s" % (publish_name,))  
+                    self.logger.info("Publish name: %s" % (publish_name,))  
                     item.properties["publish_name"] = publish_name   
 
                     # mark the temp upload path for removal
