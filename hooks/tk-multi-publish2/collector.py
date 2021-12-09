@@ -303,13 +303,13 @@ class BasicSceneCollector(HookBaseClass):
 
         # handle files and folders differently
         if os.path.isdir(path):
-            folder = self.p4_fw.util.recursive_reconcile(path)                
+            folder = self.p4_fw.util.reconcile_files(path)                
             self._collect_folder(parent_item, folder)
             return None
         else:
             try:
-                folder = self.p4_fw.util.recursive_reconcile(os.path.dirname(path))
-                for items in folder.add_info, folder.edit_info, folder.delete_info, folder.open_info:
+                file = self.p4_fw.util.reconcile_files(path)
+                for items in file.add_info, file.edit_info, file.delete_info, file.open_info:
                     for item in items:
                         if item["clientFile"] == path:
                             item_info = self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item})
@@ -321,12 +321,13 @@ class BasicSceneCollector(HookBaseClass):
 
                             playblasts = os.path.join(os.path.dirname(path),"playblasts")
                             if(os.path.exists(playblasts)):
-                                folder.recursive_scan(playblasts)
-                                self._collect_folder(parent_item, folder)
+                                file.scan(playblasts)
+                                self._collect_folder(parent_item, file)
                             return collectedFile
                 self.logger.warn("File not added or changed in Perforce: %s" % (path,))
                 return None
-            except:
+            except Exception as e:
+                self.logger.debug(f"Error: {e}")    
                 item_info = self._collect_item_info(parent_item,path)
                 self._collect_single_version(parent_item,item_info)
 
