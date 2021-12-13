@@ -113,15 +113,15 @@ frameworks:
   # SWC - Custom utilities
   tk-framework-swc_v0.x.x:
     location:
-      # ### Dev
+      ### Dev
       # type: dev
       # path: 'S:/Projects/ShotgunConfig/tk-framework-swc'
-      ## Github
-      # path: https://github.com/studiowildcard/tk-framework-swc
-      # version: 54ddc52
-      # type: git_branch
-      # branch: main
-
-      type: git
+      # Github
       path: https://github.com/studiowildcard/tk-framework-swc
-      version: v1.0.0
+      version: 1a5e999
+      type: git_branch
+      branch: main
+
+      # type: git
+      # path: https://github.com/studiowildcard/tk-framework-swc
+      # version: v1.0.0
