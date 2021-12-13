@@ -197,22 +197,23 @@ class BasicSceneCollector(HookBaseClass):
     @property
     def common_folder_info(self):
         """
-        A dictionary of file type info that allows the basic collector to
-        identify common production file types and associate them with a display
-        name, item type, and config icon.
+        A dictionary of folder type info that allows the basic collector to
+        identify common production folder types and choose how to act on them, 
+        for example, ignoring certain folders entirely or changing how files
+        inside a folder are processed.
 
         The dictionary returned is of the form::
 
             {
-                <Publish Type>: {
-                    "extensions": [<ext>, <ext>, ...],
-                    "icon": <icon path>,
-                    "item_type": <item type>
+                <Folder Type>: {
+                    "name": <folder name>,
+                    "item_type": <item type>,
+                    "ignored": <bool>
                 },
-                <Publish Type>: {
-                    "extensions": [<ext>, <ext>, ...],
-                    "icon": <icon path>,
-                    "item_type": <item type>
+                <Folder Type>: {
+                    "name": <folder name>,
+                    "item_type": <item type>,
+                    "ignored": <bool>
                 },
                 ...
             }
@@ -242,7 +243,12 @@ class BasicSceneCollector(HookBaseClass):
                     "name": "backups",
                     "item_type": "folder.houdini.backups",
                     "ignored": True,
-                },                                                                        
+                },
+                "Local WIP Files": {
+                    "name": "wip",
+                    "item_type": "folder.wip",
+                    "ignored": True,
+                },                                                                          
             }
 
         return self._common_folder_info

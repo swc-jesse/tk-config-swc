@@ -111,11 +111,12 @@ class UploadVersionPlugin(HookBaseClass):
             if p4_data["action"] == "delete":
                 return {"accepted": False}
                         
-        # get the base settings
-        settings = super(UploadVersionPlugin, self).accept(settings, item)
         if(item.type_spec.split(".")[0] != "playblast"):
             # set the default checked state
-            settings["checked"] = False
+            return {"accepted": False}
+        
+        # get the base settings
+        settings = super(UploadVersionPlugin, self).accept(settings, item)
         return settings
 
     def validate(self, settings, item):
