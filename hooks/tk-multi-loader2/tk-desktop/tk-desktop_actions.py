@@ -178,6 +178,7 @@ class ShellActions(HookBaseClass):
             p4_app.sync_files(sg_publish_data['type'], [sg_publish_data['id']])
 
         if name == "create_folders":   
-            tk = sgtk.sgtk_from_entity(sg_publish_data['type'], sg_publish_data['id'])         
+            tk = sgtk.sgtk_from_entity(sg_publish_data['type'], sg_publish_data['id'])    
+            tk.synchronize_filesystem_structure()     
             tk.create_filesystem_structure(sg_publish_data['type'], sg_publish_data['id'])            
             
