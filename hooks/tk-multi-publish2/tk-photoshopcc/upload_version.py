@@ -12,6 +12,7 @@ import os
 import pprint
 import tempfile
 import sgtk
+import re
 
 from tank_vendor import six
 
@@ -156,42 +157,49 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
 
                 with engine.context_changes_disabled():
 
+                    # ToDo: Replace with ShotGrid field query
+                    task_filetype = "png"
+
                     # remember the active document so that we can restore it.
                     previous_active_document = engine.adobe.get_active_document()
 
                     # make the document being processed the active document
                     engine.adobe.app.activeDocument = document
 
-                    if False:
-                        file_name_out = "%s.jpg" % file_name_out
-                        # path to a temp jpg file
-                        upload_path = os.path.join(
-                            tempfile.gettempdir(), "%s.jpg" % file_name_out
-                        )
+                    if task_filetype == "jpg":
+                        file_name_out = f"{file_name_out}.jpg"
+                    elif task_filetype == "png":
+                        file_name_out = f"{file_name_out}.png"
 
+                    upload_path = os.path.join(
+                        tempfile.gettempdir(), file_name_out
+                    )           
+
+                    version_path = self.get_next_version_name(item,upload_path)
+                    version_path_components = self.publisher.util.get_file_path_components(version_path)
+                    publish_name = version_path_components["filename"]  
+
+                    self.logger.info("Using prior version info to determine publish version.")
+
+                    self.logger.info("Publish name: %s" % (publish_name,))  
+                    item.properties["publish_name"] = publish_name   
+
+                    # mark the temp upload path for removal
+                    item.properties["remove_upload"] = True                      
+
+                    if task_filetype == "jpg":
                         # jpg file/options
-                        jpg_file = engine.adobe.File(upload_path)
+                        jpg_file = engine.adobe.File(version_path)
                         jpg_options = engine.adobe.JPEGSaveOptions()
                         jpg_options.quality = 12
 
-                        # mark the temp upload path for removal
-                        item.properties["remove_upload"] = True
-
                         # save a jpg copy of the document
                         document.saveAs(jpg_file, jpg_options, True)
-                    elif True:
-                        file_name_out = "%s.png" % file_name_out
-                        # path to a temp png file
-                        upload_path = os.path.join(
-                            tempfile.gettempdir(), file_name_out
-                        )                    
-                        png_file = engine.adobe.File(upload_path)
+                    elif task_filetype == "png":               
+                        png_file = engine.adobe.File(version_path)
                         png_options = engine.adobe.PNGSaveOptions()
                         png_options.compression = 2
                         png_options.interlaced = False
-
-                        # mark the temp upload path for removal
-                        item.properties["remove_upload"] = True
 
                         # save a jpg copy of the document
                         document.saveAs(png_file, png_options, True)                    
@@ -199,15 +207,11 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
                     # restore the active document
                     engine.adobe.app.activeDocument = previous_active_document
 
-            # use the path's filename as the publish name
-            path_components = publisher.util.get_file_path_components(path)
-            publish_name = path_components["filename"]
-
             # populate the version data to send to SG
             self.logger.info("Creating Version...")
             version_data = {
                 "project": item.context.project,
-                "code": file_name_out,
+                "code": publish_name,
                 "description": item.description,
                 "entity": self._get_version_entity(item),
                 "sg_task": item.context.task,
@@ -239,7 +243,7 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
             item.properties["sg_version_data"] = version
 
             # Make sure the string is utf8 encoded to avoid issues with the SG API.
-            upload_path = six.ensure_str(upload_path)
+            upload_path = six.ensure_str(version_path)
 
             # Upload the file to SG
             self.logger.info("Uploading content...")
