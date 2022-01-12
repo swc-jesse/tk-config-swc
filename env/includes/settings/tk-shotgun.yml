@@ -118,4 +118,5 @@ settings.tk-shotgun.version:
 settings.tk-shotgun.publishedfile:
   apps:
     tk-shotgun-launchfolder: "@settings.tk-shotgun-launchfolder"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
   location: "@engines.tk-shotgun.location"
