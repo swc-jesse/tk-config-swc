@@ -146,11 +146,28 @@ class ShellActions(HookBaseClass):
         app.log_info("Executing action '%s' on the selection")
         # Helps to visually scope selections
         # Execute each action.
+        perforce_entities = []
+        perforce_type = None
         for single_action in actions:
             name = single_action["name"]
             sg_publish_data = single_action["sg_publish_data"]
+
+            # If we're doing perforce sync, find all the selected entities instead of calling individually
+            if name == "perforce_sync":
+                if perforce_type == None:
+                    perforce_type = sg_publish_data['type']
+                elif perforce_type != sg_publish_data['type']:
+                    # We can't run multiple types of entities together
+                    raise Exception("Attempting to Perforce sync multiple entity types at once.")
+                perforce_entities.append(sg_publish_data['id'])
+                continue
+
             params = single_action["params"]
             self.execute_action(name, params, sg_publish_data)
+
+        # Call perforce sync
+        if perforce_type and len(perforce_entities):
+            p4_app.sync_files(perforce_type, perforce_entities)
 
     def execute_action(self, name, params, sg_publish_data):
         """
