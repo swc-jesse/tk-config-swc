@@ -11,7 +11,7 @@
 import os
 import pprint
 import traceback
-
+import tempfile
 import sgtk
 # from sgtk.util.filesystem import copy_file, ensure_folder_exists
 
@@ -73,21 +73,22 @@ class PublishPlugin(HookBaseClass):
             "File Types": {
                 "type": "list",
                 "default": [
-                    ["Alias File", "wire"],
                     ["Alembic Cache", "abc"],
                     ["3dsmax Scene", "max"],
-                    ["NukeStudio Project", "hrox"],
                     ["Houdini Scene", "hip", "hipnc"],
                     ["Maya Scene", "ma", "mb"],
                     ["Motion Builder FBX", "fbx"],
-                    ["Nuke Script", "nk"],
                     ["Photoshop Image", "psd", "psb"],
-                    ["VRED Scene", "vpb", "vpe", "osb"],
-                    ["Rendered Image", "dpx", "exr"],
-                    ["Texture", "tiff", "tx", "tga", "dds"],
+                    ["Rendered Image", "dpx"],
+                    ["Texture", "tiff", "tx", "tga", "dds", "exr"],
                     ["Image", "jpeg", "jpg", "png"],
                     ["Movie", "mov", "mp4"],
-                    ["PDF", "pdf"],
+                    ["SpeedTree Modeler", "spm"],
+                    ["SpeedTree Export", "st9", "st"],
+                    ["Zbrush Tool", "ztl"],
+                    ["Settings File", "pkl", "json"],                
+                    ["Substance Designer", "sbs"],
+                    ["Substance Painter", "spp"],
                 ],
                 "description": (
                     "List of file types to include. Each entry in the list "
@@ -134,19 +135,25 @@ class PublishPlugin(HookBaseClass):
 
         :returns: dictionary with boolean keys accepted, required and enabled
         """
-        path = item.properties.path
+        path = item.properties.get("path")
 
-        # log the accepted file and display a button to reveal it in the fs
-        self.logger.info(
-            "Perforce publish plugin accepted: {}".format(path),
-            extra={"action_show_folder": {"path": path}},
-        )
-
-        # return the accepted info
-        type = item.type_spec
-        if(type == "file.playblast"):
+        type_class = item.type_spec.split(".")[0]
+        if(type_class == "playblast"):
             return {"accepted": False}
-        return {"accepted": True}            
+
+        p4_data = item.properties.get("p4_data")
+        if p4_data: 
+            if p4_data["action"] == "delete":
+                return {"accepted": False}
+            else:
+                # log the accepted file and display a button to reveal it in the fs
+                self.logger.info(
+                    "Perforce publish plugin accepted: {}".format(path),
+                    extra={"action_show_folder": {"path": path}},
+                )
+
+                # return the accepted info
+                return {"accepted": True}            
 
     def validate(self, settings, item):
         """
@@ -175,25 +182,28 @@ class PublishPlugin(HookBaseClass):
         if not item.context.entity and not target_context.entity:
             self.logger.error("This file is not under a known Asset folder:")
             self.logger.error("  %s" % (path,))      
-            return False      
+            return False   
         elif target_context.entity != item.context.entity:
             self.logger.error("This file is not under the correct Asset folder:")
             self.logger.error("  %s" % (path,))
             self.logger.error("Should be under %s not %s" % (target_context.entity,item.context.entity))
-            return False
-        elif target_context.task != item.context.task:
-            if not item.local_properties.get("ignore_bad_stuff", False):
-                self.logger.warning("This file looks to be under the following Task folder:")
-                self.logger.warning("  %s" % (target_context.task,))
-                self.logger.warning("Consider updating the Task accordingly.", extra={
-                    "action_button":{
-                    "label": "Ignore",
-                    "tooltip": "Ignore this warning",
-                    "callback": self._ignore_warning,
-                    "args": {"item": item}
-                    },
-                })
-                raise Exception("Potential bad path!")
+            return False        
+        elif target_context.entity == item.context.entity:
+            if item.context == item.parent.context:
+                pass
+            elif target_context.task != item.context.task:
+                if not item.local_properties.get("ignore_bad_stuff", False):
+                    self.logger.warning("This file looks to be under the following Task folder:")
+                    self.logger.warning("  %s" % (target_context.task,))
+                    self.logger.warning("Consider updating the Task accordingly.", extra={
+                        "action_button":{
+                        "label": "Ignore",
+                        "tooltip": "Ignore this warning",
+                        "callback": self._ignore_warning,
+                        "args": {"item": item}
+                        },
+                    })
+                    raise Exception("Potential bad path!")
 
         extension = path.split(".")[-1]
         if extension.lower() != extension:
@@ -326,6 +336,10 @@ class PublishPlugin(HookBaseClass):
                     }
                 },
             )
+        thumbnail = item.get_thumbnail_as_path()
+        if thumbnail:
+            if os.path.exists(thumbnail) and os.path.dirname(thumbnail) == tempfile.gettempdir():
+                os.remove(thumbnail)
 
     def get_publish_template(self, settings, item):
         """
@@ -575,7 +589,11 @@ class PublishPlugin(HookBaseClass):
 
         :return: A dictionary of field names and values for those fields.
         """
-        return item.get_property("publish_fields", default_value={})
+        publish_fields = item.get_property("publish_fields", default_value={})
+        p4_data = item.get_property("p4_data", default_value=None)
+        if("action" in p4_data.keys()):
+            publish_fields["sg_status_list"] = f'p4{p4_data["action"]}'
+        return publish_fields
 
     def get_publish_kwargs(self, settings, item):
         """
@@ -595,3 +613,4 @@ class PublishPlugin(HookBaseClass):
                  :meth:`tank.util.register_publish`.
         """
         return item.get_property("publish_kwargs", default_value={})
+

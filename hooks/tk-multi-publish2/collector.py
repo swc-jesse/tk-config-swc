@@ -12,8 +12,10 @@ import mimetypes
 import os
 import sgtk
 from tank_vendor import six
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
 TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 # import ptvsd
@@ -80,84 +82,176 @@ class BasicSceneCollector(HookBaseClass):
 
             # do this once to avoid unnecessary processing
             self._common_file_info = {
-                "Alias File": {
-                    "extensions": ["wire"],
-                    "icon": self._get_icon_path("alias.png"),
-                    "item_type": "file.alias",
-                },
                 "Alembic Cache": {
                     "extensions": ["abc"],
                     "icon": self._get_icon_path("alembic.png"),
                     "item_type": "file.alembic",
+                    "item_priority": 0,
                 },
                 "3dsmax Scene": {
                     "extensions": ["max"],
                     "icon": self._get_icon_path("3dsmax.png"),
                     "item_type": "file.3dsmax",
-                },
-                "Hiero Project": {
-                    "extensions": ["hrox"],
-                    "icon": self._get_icon_path("hiero.png"),
-                    "item_type": "file.hiero",
+                    "item_priority": 10,
                 },
                 "Houdini Scene": {
                     "extensions": ["hip", "hipnc"],
                     "icon": self._get_icon_path("houdini.png"),
                     "item_type": "file.houdini",
+                    "item_priority": 10,
                 },
                 "Maya Scene": {
                     "extensions": ["ma", "mb"],
                     "icon": self._get_icon_path("maya.png"),
                     "item_type": "file.maya",
+                    "item_priority": 10,
                 },
                 "Motion Builder FBX": {
                     "extensions": ["fbx"],
                     "icon": self._get_icon_path("geometry.png"),
                     "item_type": "file.motionbuilder",
-                },
-                "Nuke Script": {
-                    "extensions": ["nk"],
-                    "icon": self._get_icon_path("nuke.png"),
-                    "item_type": "file.nuke",
+                    "item_priority": 3,
                 },
                 "Photoshop Image": {
                     "extensions": ["psd", "psb"],
                     "icon": self._get_icon_path("photoshop.png"),
                     "item_type": "file.photoshop",
-                },
-                "VRED Scene": {
-                    "extensions": ["vpb", "vpe", "osb"],
-                    "icon": self._get_icon_path("vred.png"),
-                    "item_type": "file.vred",
-                },
-                "Rendered Image": {
-                    "extensions": ["dpx", "exr"],
-                    "icon": self._get_icon_path("image_sequence.png"),
-                    "item_type": "file.image",
+                    "item_priority": 5,
                 },
                 "Texture Image": {
-                    "extensions": ["tif", "tiff", "tx", "tga", "dds", "rat"],
+                    "extensions": ["tif", "tiff", "tx", "tga", "dds", "rat", "exr", "hdr"],
                     "icon": self._get_icon_path("texture.png"),
                     "item_type": "file.texture",
+                    "item_priority": 0,
                 },
                 "PDF": {
                     "extensions": ["pdf"],
                     "icon": self._get_icon_path("file.png"),
                     "item_type": "file.image",
+                    "item_priority": 0,                    
                 },
+                "Image": {
+                    "extensions": ["png", "jpg", "gif"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.image",
+                    "item_priority": 0,                    
+                },                
                 "SpeedTree Modeler": {
                     "extensions": ["spm"],
                     "icon": self._get_icon_path("speedtree.png"),
                     "item_type": "file.speedtree",
+                    "item_priority": 10,                    
                 }, 
                 "SpeedTree Export": {
                     "extensions": ["st9", "st"],
                     "icon": self._get_icon_path("speedtree.png"),
                     "item_type": "file.speedtree",
-                },                 
+                    "item_priority": 5,                    
+                },
+                "Settings File": {
+                    "extensions": ["pkl", "json"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "file.settings",
+                    "item_priority": 3,                    
+                },
+                "Mel Scripts": {
+                    "extensions": ["mel"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "script.maya",
+                    "item_priority": 0,
+                },      
+                "Python Scripts": {
+                    "extensions": ["py", "pyc"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "script.python",
+                    "item_priority": 0,
+                },         
+                "Movie": {
+                    "extensions": ["mov", "avi", "mp4", "mpeg", "h264"],
+                    "icon": self._get_icon_path("video.png"),
+                    "item_type": "file.video",
+                    "item_priority": 0,
+                },      
+                "Substance Designer": {
+                    "extensions": ["sbs"],
+                    "icon": self._get_icon_path("substance_designer.png"),
+                    "item_type": "file.substance",
+                    "item_priority": 7,
+                },         
+                "Substance Painter": {
+                    "extensions": ["spp"],
+                    "icon": self._get_icon_path("substance_painter.png"),
+                    "item_type": "file.substance",
+                    "item_priority": 9,
+                },      
+                "Zbrush Tool": {
+                    "extensions": ["ztl"],
+                    "icon": self._get_icon_path("zbrush.png"),
+                    "item_type": "file.zbrush",
+                    "item_priority": 5,
+                },                                                                             
             }
 
         return self._common_file_info
+
+    @property
+    def common_folder_info(self):
+        """
+        A dictionary of folder type info that allows the basic collector to
+        identify common production folder types and choose how to act on them, 
+        for example, ignoring certain folders entirely or changing how files
+        inside a folder are processed.
+
+        The dictionary returned is of the form::
+
+            {
+                <Folder Type>: {
+                    "name": <folder name>,
+                    "item_type": <item type>,
+                    "ignored": <bool>
+                },
+                <Folder Type>: {
+                    "name": <folder name>,
+                    "item_type": <item type>,
+                    "ignored": <bool>
+                },
+                ...
+            }
+
+        See the collector source to see the default values returned.
+
+        Subclasses can override this property, get the default values via
+        ``super``, then update the dictionary as necessary by
+        adding/removing/modifying values.
+        """
+
+        if not hasattr(self, "_common_folder_info"):
+
+            # do this once to avoid unnecessary processing
+            self._common_folder_info = {
+                "Snapshots": {
+                    "name": "snapshots",
+                    "item_type": "folder.snapshots",
+                    "ignored": True,
+                },      
+                "Playblasts": {
+                    "name": "playblasts",
+                    "item_type": "folder.playblasts",
+                    "ignored": False,
+                },                               
+                "Houdini Backups": {
+                    "name": "backups",
+                    "item_type": "folder.houdini.backups",
+                    "ignored": True,
+                },
+                "Local WIP Files": {
+                    "name": "wip",
+                    "item_type": "folder.wip",
+                    "ignored": True,
+                },                                                                          
+            }
+
+        return self._common_folder_info
 
     @property
     def settings(self):
@@ -192,7 +286,7 @@ class BasicSceneCollector(HookBaseClass):
         # default implementation does not do anything
         pass
 
-    def process_file(self, settings, parent_item, path):
+    def process_file(self, settings, parent_item, path, custom_info=None):
         """
         Analyzes the given file and creates one or more items
         to represent it.
@@ -203,20 +297,47 @@ class BasicSceneCollector(HookBaseClass):
 
         :returns: The main item that was created, or None if no item was created
             for the supplied path
-        """      
+        """    
+
+        # make sure the path is normalized. no trailing separator, separators
+        # are appropriate for the current os, no double separators, etc.
+        path = sgtk.util.ShotgunPath.normalize(path)
+
+        # Make the p4 connection
+        self.p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
+        self.logger.debug("Perforce framework loaded.")    
 
         # handle files and folders differently
         if os.path.isdir(path):
-            self._collect_folder(parent_item, path)
+            folder = self.p4_fw.util.reconcile_files(path)                
+            self._collect_folder(parent_item, folder)
             return None
         else:
-            collectedFile = self._collect_file(parent_item, path)
-            playblasts = os.path.join(os.path.dirname(path),"playblasts")
-            if(os.path.exists(playblasts)):
-                self._collect_folder(parent_item, playblasts)
-            return collectedFile
+            try:
+                file = self.p4_fw.util.reconcile_files(path)
+                for items in file.add_info, file.edit_info, file.delete_info, file.open_info:
+                    for item in items:
+                        if item["clientFile"] == path:
+                            item_info = self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item})
+                            if custom_info:
+                                item_info.update(custom_info)
+                            collectedFile = self._collect_file(parent_item, item_info)
+                            if not collectedFile:
+                                return None
 
-    def _collect_file(self, parent_item, path, frame_sequence=False):
+                            playblasts = os.path.join(os.path.dirname(path),"playblasts")
+                            if(os.path.exists(playblasts)):
+                                file.scan(playblasts)
+                                self._collect_folder(parent_item, file)
+                            return collectedFile
+                self.logger.warn("File not added or changed in Perforce: %s" % (path,))
+                return None
+            except Exception as e:
+                self.logger.debug(f"Error: {e}")    
+                item_info = self._collect_item_info(parent_item,path)
+                self._collect_single_version(parent_item,item_info)
+
+    def _collect_file(self, parent_item, item_info, frame_sequence=False):
         """
         Process the supplied file path.
 
@@ -226,17 +347,25 @@ class BasicSceneCollector(HookBaseClass):
         :returns: The item that was created
         """
 
+        if item_info["item_type"].startswith("script"):
+            return None
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
-        path = sgtk.util.ShotgunPath.normalize(path)
+        path = item_info["item_path"]
+
+        if not self._ensure_unique(path, parent_item):
+            return None
 
         publisher = self.parent
 
         # get info for the extension
-        item_info = self._get_item_info(path)
-        item_type = item_info["item_type"]
+        if os.path.basename(os.path.dirname(item_info["item_path"])) == "playblasts" and item_info["item_type"]:
+            item_type = "playblast.%s" % item_info["item_type"].split(".")[1]
+        else:
+            item_type = item_info["item_type"]
         type_display = item_info["type_display"]
         extension = item_info["extension"]
+        item_priority = item_info["item_priority"]
         evaluated_path = path
         is_sequence = False
 
@@ -252,12 +381,19 @@ class BasicSceneCollector(HookBaseClass):
         display_name = publisher.util.get_publish_name(path, sequence=is_sequence)
 
         # Try to get the context more specifically from the path on disk
+        context = None
         try:
             context = self.swc_fw.find_task_context(path)
         except(AttributeError):
-            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
-            context = self.swc_fw.find_task_context(path)
-       
+            try:
+                self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+                context = self.swc_fw.find_task_context(path)
+            except:
+                # This probably isn't a valid folder
+                pass
+        except:
+            pass
+
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
         file_item.set_icon_from_path(item_info["icon_path"])
@@ -268,11 +404,13 @@ class BasicSceneCollector(HookBaseClass):
             file_item.context = context
 
         # if the supplied path is an image, use the path as the thumbnail.
-        if item_type.startswith("file.image") or item_type.startswith("file.texture"):
+        if item_type.endswith(".image") or item_type.endswith("file.texture"):
             file_item.set_thumbnail_from_path(path)
+            file_item.set_icon_from_path(path)
 
             # disable thumbnail creation since we get it for free
             file_item.thumbnail_enabled = False
+            file_item.thumbnail_explicit = True
         # if the supplied path is a SpeedTree SPM file, extract the thumbnail.
         elif item_type.startswith("file.speedtree") and extension.startswith("spm"):
             swc = self.load_framework("tk-framework-swc_v0.x.x")
@@ -286,10 +424,15 @@ class BasicSceneCollector(HookBaseClass):
 
                 # disable thumbnail creation since we get it for free
                 file_item.thumbnail_enabled = False
+                file_item.thumbnail_explicit = True
 
         # all we know about the file is its path. set the path in its
         # properties for the plugins to use for processing.
         file_item.properties["path"] = evaluated_path
+        file_item.properties["item_priority"] = item_priority
+        if "p4_data" in item_info.keys():
+            p4_data = item_info["p4_data"]
+            file_item.properties["p4_data"] = p4_data
 
         if is_sequence:
             # include an indicator that this is an image sequence and the known
@@ -298,6 +441,21 @@ class BasicSceneCollector(HookBaseClass):
 
         self.logger.info("Collected file: %s" % (evaluated_path,))
 
+        for child in item_info['children']:
+            if os.path.basename(os.path.dirname(child["item_path"])) == "playblasts":
+                child_item = self._collect_playblast(file_item, child)
+            else:
+                child_item = self._collect_file(file_item, child)
+            # If items are children they should be forced under the parent task
+            child_item.context_change_allowed = True
+            child_item.context = context
+            child_item_type = child["item_type"]
+            child_item_ext = child["extension"]
+            if child_item_type.startswith("file.speedtree") and child_item_ext.startswith("st") and extension.startswith("spm"):
+                child_item.set_thumbnail_from_path(file_item.get_thumbnail_as_path())
+                child_item.thumbnail_enabled = False
+                child_item.thumbnail_explicit = True
+
         return file_item
 
     def _collect_folder(self, parent_item, folder):
@@ -305,29 +463,66 @@ class BasicSceneCollector(HookBaseClass):
         Process the supplied folder path.
 
         :param parent_item: parent item instance
-        :param folder: Path to analyze
+        :param folder: Reconciled Perforce data to analyze
         :returns: The items that were created
+        """
+
+        if not folder:
+            return None
+
+        item_infos = []
+        file_items = []
+
+        # Only process items that are added, edited or deleted in Perforce
+        for items in folder.add_info, folder.edit_info, folder.delete_info, folder.open_info:
+            for item in items:
+                item_path = item["clientFile"]
+                skip = False
+
+                for key, value in self.common_folder_info.items():
+                    if value["ignored"] and (value["name"] in os.path.dirname(item_path)):
+                        skip = True
+
+                if not skip:        
+                    item_infos.append(self._collect_item_info(parent_item,item_path,extra={"p4_data":item}))
+        
+        item_infos = self._process_hierarchy(list(item_infos),parent_item)
+
+        for item_info in item_infos:
+            # Process each file we find
+            if os.path.basename(os.path.dirname(item_info["item_path"])) == "playblasts":
+                file_items.append(self._collect_playblast(parent_item,item_info))
+            else:
+                file_items.append(self._collect_file(parent_item,item_info))
+
+        if not file_items:
+            self.logger.warn("No files added, changed or deleted in Perforce for %s" % (folder.root_path,))
+
+        return file_items
+
+    def _collect_item_info(self, parent_item, path, frame_sequence=False, extra=None):
+        """
+        Process the supplied file path.
+
+        :param parent_item: parent item instance
+        :param path: Path to analyze
+        :param frame_sequence: Treat the path as a part of a sequence
+        :returns: The item that was created
         """
 
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
-        folder = sgtk.util.ShotgunPath.normalize(folder)
+        path = sgtk.util.ShotgunPath.normalize(path)
 
-        file_items = []
+        # get info for the extension
+        item_info = self._get_item_info(path)
+        item_info["item_path"] = path
+        item_info["parent"] = parent_item
+        if extra:
+            for key, value in extra.items():
+                item_info[key] = value
 
-        for dirpath, dirs, files in os.walk(folder):
-            for file in files:
-                item_path = os.path.join(dirpath,file)
-                # Process each file we find
-                if os.path.basename(dirpath) == "playblasts":
-                    file_items.append(self.collect_playblast(parent_item,item_path))
-                else:
-                    file_items.append(self._collect_file(parent_item,item_path))
-
-        if not file_items:
-            self.logger.warn("No files found in: %s" % (folder,))
-
-        return file_items
+        return item_info
 
     def _get_item_info(self, path):
         """
@@ -361,6 +556,7 @@ class BasicSceneCollector(HookBaseClass):
         file_info = publisher.util.get_file_path_components(path)
         extension = file_info["extension"]
         filename = file_info["filename"]
+        priority = 0
 
         # default values used if no specific type can be determined
         type_display = "File"
@@ -381,6 +577,7 @@ class BasicSceneCollector(HookBaseClass):
                 type_display = display
                 item_type = type_info["item_type"]
                 icon_path = type_info["icon"]
+                priority = type_info["item_priority"]
                 common_type_found = True
                 break
 
@@ -411,7 +608,7 @@ class BasicSceneCollector(HookBaseClass):
 
         # everything should be populated. return the dictionary
         return dict(
-            item_type=item_type, type_display=type_display, icon_path=icon_path, extension=extension
+            item_type=item_type, type_display=type_display, icon_path=icon_path, extension=extension, item_priority=priority, children=[]
         )
 
     def _get_icon_path(self, icon_name, icons_folders=None):
@@ -477,7 +674,7 @@ class BasicSceneCollector(HookBaseClass):
 
         return self._image_extensions
 
-    def collect_playblast(self, parent_item, path):
+    def _collect_single_version(self, parent_item, item_info):
         """
         Creates items for quicktime playblasts.
 
@@ -491,19 +688,137 @@ class BasicSceneCollector(HookBaseClass):
         # do some early pre-processing to ensure the file is of the right
         # type. use the base class item info method to see what the item
         # type would be.
-        item_info = self._get_item_info(path)
-        if item_info["item_type"] != "file.video":
-            return
-        for child in parent_item.children:
-            if child.name == os.path.basename(path):
-                return
+        item_info["item_type"] = f"playblast.{item_info['item_type'].split('.')[1]}"
+    
+        item = self._collect_file(parent_item, item_info)
+        if not item:
+            return None
 
-        item = self._collect_file(
-            parent_item, path
-        )
+        # # the item has been created. update the display name to include
+        # # the an indication of what it is and why it was collected
 
-        # the item has been created. update the display name to include
-        # the an indication of what it is and why it was collected
-        item.type_spec = "file.playblast"
+        # publish_name = self.get_next_version_name(item,item.properties["path"])
+        # item.properties["publish_name"] = publish_name       
+        # item.name = f"(Review) {publish_name}"  
 
         return item
+
+    def _collect_playblast(self, parent_item, item_info):
+        """
+        Creates items for quicktime playblasts.
+
+        Looks for a 'project_root' property on the parent item, and if such
+        exists, look for movie files in a 'movies' subfolder.
+
+        :param parent_item: Parent Item instance
+        :param str project_root: The maya project root to search for playblasts
+        """
+
+        # do some early pre-processing to ensure the file is of the right
+        # type. use the base class item info method to see what the item
+        # type would be.
+        path = item_info["item_path"]
+        item_name = ".".join(os.path.basename(path).split(".")[:-1]) #os.path.basename(path).split('.')[:-1]
+
+        if parent_item.name == "__root__":
+            found_parent = parent_item
+            for child in parent_item.children:
+                
+                if child.name == os.path.basename(path):
+                    return
+                if child.name.startswith(item_name):
+                    found_parent = child
+
+                    item = self._collect_file(found_parent, item_info)
+                    if not item:
+                        return None
+
+                    # the item has been created. update the display name to include
+                    # the an indication of what it is and why it was collected
+
+                    publish_name = self.get_next_version_name(item,item.properties["path"])
+                    item.properties["publish_name"] = publish_name       
+                    item.name = f"(Review) {publish_name}"  
+
+                    return item
+        else:
+            item = self._collect_file(parent_item, item_info)
+
+            if not item:
+                return None            
+
+            publish_name = self.get_next_version_name(item,item.properties["path"])
+            item.properties["publish_name"] = publish_name       
+            item.name = f"(Review) {publish_name}"  
+
+            return item
+
+    def _process_hierarchy(self, item_infos, root_item):
+        # Make sure our items are in descending order of priority
+        item_infos = sorted(list(item_infos), key = lambda i: i['item_priority'], reverse=True)
+
+        # Build the hierarchy
+        for parent_item in list(item_infos):
+            # Get all lower priority items remaining
+            lower_items = [x for x in item_infos if x["item_priority"] < parent_item["item_priority"]]
+            for lower_item in lower_items:
+                # To capture partial matches, first see if the parent_item's name appears in this lower_item
+                parent_item_name = os.path.basename(parent_item["item_path"]).split('.')[0]
+                if parent_item_name in os.path.basename(lower_item["item_path"]):
+                    # Now we need to see if there is a better (identical) match for this lower_item in the other potential parent items before adding it
+                    other_parent_items = [os.path.basename(x["item_path"]).split('.')[0] for x in list(item_infos) if x["item_priority"] > lower_item["item_priority"]]
+                    # Don't re-evaluate this parent_item
+                    other_parent_items.remove(parent_item_name)
+                    this_lower_item = os.path.basename(lower_item["item_path"]).split('.')[0]
+                    better_item = False
+                    for other_parent_item in other_parent_items:
+                        if other_parent_item in this_lower_item and len(other_parent_item) > len(parent_item_name):
+                            # There is a better parent match for this item, don't add it to this one
+                            better_item = True
+                        if better_item:
+                            break
+
+                    if not better_item:
+                        # We didn't find a better match for lower_item, so append it to item
+                        parent_item["children"].append(lower_item)
+                        item_infos.remove(lower_item)
+
+        return item_infos
+    
+    def _ensure_unique(self, path, parent_item):
+        for existing_item in parent_item.descendants:
+            if existing_item.properties["path"] == path:
+                return False
+
+        return True
+
+    def get_next_version_name(self, item, path):
+        # Increment version number based on how many versions
+        self.publisher = self.parent
+
+        # use the path's filename as the base publish name
+        path_components = self.publisher.util.get_file_path_components(path)
+        publish_name = path_components["filename"]
+
+        # See how many prior versions there are
+        filters = [
+            ['entity', 'is', item.context.entity]
+        ]
+
+        prior_versions = self.publisher.shotgun.find("Version",filters,['code'])      
+
+        regex = r"(" + re.escape(publish_name.split('.')[0]) + r"){1}(\.v\d)?\.\w*$"
+
+        x = [i for i in prior_versions if re.match(regex,i['code'])]   
+
+        # Set the publish name of this item as the next version
+        version_number = len(x)+1     
+        version_path = self.publisher.util.get_version_path(path,version_number)
+        version_path_components = self.publisher.util.get_file_path_components(version_path)
+        publish_name = version_path_components["filename"]  
+        
+        self.logger.info("Using prior version info to determine publish version.")
+        self.logger.info("Publish name: %s" % (publish_name,))  
+
+        return publish_name      
+
