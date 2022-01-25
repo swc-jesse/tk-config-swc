@@ -27,6 +27,7 @@ class ChangeSubmitSignaller(QtCore.QObject):
     Create signaller class for Sync Worker, required for using signals due to QObject inheritance
     """
     submission_response = QtCore.Signal(list)
+    submission_error = QtCore.Signal(str)
 
 class ChangeSubmitWorker(QtCore.QRunnable):
 
@@ -37,6 +38,7 @@ class ChangeSubmitWorker(QtCore.QRunnable):
         super(ChangeSubmitWorker, self).__init__()
         self.signaller = ChangeSubmitSignaller()
         self.submission_response = self.signaller.submission_response
+        self.submission_error = self.signaller.submission_error
         self.fw = fw
         self.p4 = p4
         self.change = change
@@ -44,8 +46,12 @@ class ChangeSubmitWorker(QtCore.QRunnable):
 
     @QtCore.Slot()
     def run(self):
-        submission = self.fw.util.submit_change(self.p4, self.change)
-        self.submission_response.emit(submission)
+        try:
+            raise Exception('doing test to kill this')
+            submission = self.fw.util.submit_change(self.p4, self.change)
+            self.submission_response.emit(submission)
+        except Exception as e:
+            self.submission_error.emit(str(e))
 
 class PostPhaseHook(HookBaseClass):
     """
@@ -90,6 +96,17 @@ class PostPhaseHook(HookBaseClass):
     def update_submission_response(self, submission):
         self.submission = submission
     
+    def handle_error_response(self, error_str):
+        self.logger.error(error_str, extra={
+                            "action_show_more_info": {
+                                "label": "Error Details",
+                                "tooltip": pprint.pformat(str(error_str)),
+                                "text": "<pre>%s</pre>" %pprint.pformat(str(error_str)),
+                                }
+                            }
+                        )
+        raise Exception(error_str )
+
 
     def post_publish(self, publish_tree):
 
@@ -192,6 +209,7 @@ class PostPhaseHook(HookBaseClass):
 
             # connect worker-specific signal
             submit_worker.submission_response.connect(self.update_submission_response)
+            submit_worker.submission_error.connect(self.handle_error_response)
 
             # send worker to thread and start
             self.thread.start(submit_worker)
