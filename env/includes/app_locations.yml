@@ -23,7 +23,7 @@ includes:
 apps.tk-multi-about.location:
   type: app_store
   name: tk-multi-about
-  version: v0.4.0
+  version: v0.4.1
 
 # demo
 apps.tk-multi-demo.location:
@@ -35,25 +35,33 @@ apps.tk-multi-demo.location:
 apps.tk-multi-launchapp.location:
   type: app_store
   name: tk-multi-launchapp
-  version: v0.12.0
+  version: v0.12.1
 
 # loader2
 apps.tk-multi-loader2.location:
-  type: app_store
-  name: tk-multi-loader2
-  version: v1.21.0
+  # type: app_store
+  # name: tk-multi-loader2
+  # version: v1.21.0
+  # # Dev
+  # type: dev
+  # path: S:\Projects\ShotgunConfig\tk-multi-loader2
+  ### Github
+  type: git_branch
+  branch: master
+  path: https://github.com/studiowildcard/tk-multi-loader2.git
+  version: b756028b3181badd1ccddf15c06bd54292d08ac9
 
 # publish2
 apps.tk-multi-publish2.location:
   type: app_store
   name: tk-multi-publish2
-  version: v2.6.0
+  version: v2.6.1
 
 # pythonconsole
 apps.tk-multi-pythonconsole.location:
   type: app_store
   name: tk-multi-pythonconsole
-  version: v1.3.0
+  version: v1.3.1
 
 # reviewsubmission
 apps.tk-multi-reviewsubmission.location:
@@ -65,7 +73,7 @@ apps.tk-multi-reviewsubmission.location:
 apps.tk-multi-shotgunpanel.location:
   type: app_store
   name: tk-multi-shotgunpanel
-  version: v1.8.0
+  version: v1.8.1
 
 # dev utils
 apps.tk-multi-devutils.location:
@@ -127,35 +135,35 @@ apps.tk-shotgun-folders.location:
 
 # workfiles2
 apps.tk-multi-workfiles2.location:
-  ### App Store
-  type: app_store
-  name: tk-multi-workfiles2
-  version: v0.13.0
+  # ### App Store
+  # type: app_store
+  # name: tk-multi-workfiles2
+  # version: v0.13.0
   ### GitHub Release
   # type: github_release
   # organization: nimbleheroes
   # repository: tk-multi-workfiles2
   # version: v0.12.6.1
   ### Git Branch
-  # type: git_branch
-  # branch: swc_main
-  # path: https://github.com/nimbleheroes/tk-multi-workfiles2.git
-  # version: bb01159
-  ### Dev
+  type: git_branch
+  branch: master
+  path: https://github.com/studiowildcard/tk-multi-workfiles2.git
+  version: 6079952270e5fab7ff36ccf6558c888d75a7f355
+  # ## Dev
   # name: tk-multi-workfiles2
   # type: dev
-  # path: ~/Projects/swc/tk-multi-workfiles2
+  # path: S:\Projects\ShotgunConfig\tk-multi-workfiles2
 
 # Perforce
 apps.tk-multi-perforce.location:
   ### Dev
   # type: dev
-  # path: C:/swc-configs/tk-multi-perforce
+  # path: S:\Projects\ShotgunConfig\tk-multi-perforce
   ### Github
   type: git_branch
   branch: swc_beta
-  path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: "2e8e6c8"
+  path: https://github.com/studiowildcard/tk-multi-perforce.git
+  version: ffbbd0c
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
@@ -163,4 +171,4 @@ frameworks: '@frameworks'
 apps.tk-shotgun-launchfolder.location:
   type: app_store
   name: tk-shotgun-launchfolder
-  version: v0.3.0
+  version: v0.3.1
