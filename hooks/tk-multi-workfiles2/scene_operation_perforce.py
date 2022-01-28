@@ -59,6 +59,7 @@ class SceneOperation(HookBaseClass):
                                                  state, otherwise False
                                 all others     - None
         """
+        return True
         p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
         p4_fw.util = p4_fw.import_module("connection")
         p4 = p4_fw.connection.connect()

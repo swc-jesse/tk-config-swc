@@ -10,10 +10,55 @@
 
 import sgtk
 import os
+import datetime
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
 class UploadVersionPlugin(HookBaseClass):
+    @property
+    def icon(self):
+        """
+        Path to an png icon on disk
+        """
+
+        # look for icon one level up from this hook's folder in "icons" folder
+        return os.path.join(self.disk_location, os.curdir, "icons", "review.png")
+
+    @property
+    def name(self):
+        """
+        One line display name describing the plugin
+        """
+        return "Upload for review"
+
+    @property
+    def description(self):
+        """
+        Verbose, multi-line description of what the plugin does. This can
+        contain simple html for formatting.
+        """
+        publisher = self.parent
+
+        shotgun_url = publisher.sgtk.shotgun_url
+
+        media_page_url = "%s/page/media_center" % (shotgun_url,)
+        mobile_url = "https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Supervisor_Artist_sa_mobile_review_html"
+        rv_url = "https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_RV_rv_manuals_rv_easy_setup_html"
+
+        return """
+        Upload the file to ShotGrid for review.<br><br>
+
+        A <b>Version</b> entry will be created in ShotGrid and a transcoded
+        copy of the file will be attached to it. The file can then be reviewed
+        via the project's <a href='%s'>Media</a> page, <a href='%s'>RV</a>, or
+        the <a href='%s'>ShotGrid Review</a> mobile app.
+        """ % (
+            media_page_url,
+            rv_url,
+            mobile_url,
+        )
+
     @property
     def settings(self):
         """
@@ -58,15 +103,65 @@ class UploadVersionPlugin(HookBaseClass):
         """
 
         # we use "video" since that's the mimetype category.
-        return ["file.image", "file.video", "file.playblast"]
+        return ["file.image", "file.video", "playblast.*"]
 
     def accept(self, settings, item):
+        p4_data = item.properties.get("p4_data")
+        if p4_data: 
+            if p4_data["action"] == "delete":
+                return {"accepted": False}
+                        
+        if(item.type_spec.split(".")[0] != "playblast"):
+            # set the default checked state
+            return {"accepted": False}
+        
         # get the base settings
         settings = super(UploadVersionPlugin, self).accept(settings, item)
-        if(item.type_spec != "file.playblast"):
-            # set the default checked state
-            settings["checked"] = False
         return settings
+
+    def validate(self, settings, item):
+        """
+        Validates the given item to check that it is ok to publish.
+        Returns a boolean to indicate validity.
+        :param settings: Dictionary of Settings. The keys are strings, matching
+            the keys returned in the settings property. The values are `Setting`
+            instances.
+        :param item: Item to process
+        :returns: True if item is valid, False otherwise.
+        """
+        publish_name = item.properties.get("publish_name")
+        if not publish_name:
+            version_path = self.get_next_version_name(item,item.properties["path"])
+            version_path_components = self.publisher.util.get_file_path_components(version_path)
+            publish_name = version_path_components["filename"]  
+            
+            self.logger.info("Using prior version info to determine publish version.")
+
+            self.logger.info("Publish name: %s" % (publish_name,))  
+            item.properties["publish_name"] = publish_name       
+            item.name = f"(Review) {publish_name}"  
+        return super(UploadVersionPlugin, self).validate(settings, item)
+
+    def publish(self, settings, item):
+        """
+        Executes the publish logic for the given item and settings.
+        :param settings: Dictionary of Settings. The keys are strings, matching
+            the keys returned in the settings property. The values are `Setting`
+            instances.
+        :param item: Item to process
+        """
+
+        publisher = self.parent
+        path = item.properties["path"]
+
+        path_components = publisher.util.get_file_path_components(path)
+
+        if path_components["filename"] != item.properties["publish_name"]:
+            new_path = os.path.join(path_components["folder"],item.properties["publish_name"])
+            os.rename(path, new_path)
+            item.properties["path"] = new_path
+        
+        super(UploadVersionPlugin, self).publish(settings, item)
 
     def finalize(self, settings, item):
         """
@@ -78,11 +173,14 @@ class UploadVersionPlugin(HookBaseClass):
         :param item: Item to process
         """
 
+        # Increment version number based on how many versions
+        self.publisher = self.parent
         path = item.properties["path"]
         version = item.properties["sg_version_data"]
 
-        type = item.type_spec
-        if(type == "file.playblast"):
+        type_class = item.type_spec.split(".")[0] 
+
+        if(type_class == "playblast"):
             os.remove(path)
             self.logger.info(
                 "Playblast deleted after uploading for file: %s" % (path,),
@@ -96,3 +194,28 @@ class UploadVersionPlugin(HookBaseClass):
             )        
         else:
             super(UploadVersionPlugin, self).finalize(settings, item)
+
+    def get_next_version_name(self, item, path):
+        # Increment version number based on how many versions
+        self.publisher = self.parent
+
+        # use the path's filename as the base publish name
+        path_components = self.publisher.util.get_file_path_components(path)
+        publish_name = path_components["filename"]
+
+        # See how many prior versions there are
+        filters = [
+            ['entity', 'is', self._get_version_entity(item)]
+        ]
+
+        prior_versions = self.publisher.shotgun.find("Version",filters,['code'])      
+
+        regex = r"(" + re.escape(publish_name.split('.')[0]) + r"){1}(\.v\d)?\.\w*$"
+
+        x = [i for i in prior_versions if re.match(regex,i['code'])]   
+
+        # Set the publish name of this item as the next version
+        version_number = len(x)+1     
+        version_path = self.publisher.util.get_version_path(path,version_number)
+
+        return version_path      

@@ -11,9 +11,8 @@
 import os
 import pprint
 import tempfile
-import uuid
-import sys
 import sgtk
+import re
 
 from tank_vendor import six
 
@@ -24,49 +23,6 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
     """
     Plugin for sending photoshop documents to shotgun for review.
     """
-
-    @property
-    def icon(self):
-        """
-        Path to an png icon on disk
-        """
-
-        # look for icon one level up from this hook's folder in "icons" folder
-        return os.path.join(self.disk_location, os.pardir, "icons", "review.png")
-
-    @property
-    def name(self):
-        """
-        One line display name describing the plugin
-        """
-        return "Upload for review"
-
-    @property
-    def description(self):
-        """
-        Verbose, multi-line description of what the plugin does. This can
-        contain simple html for formatting.
-        """
-        publisher = self.parent
-
-        shotgun_url = publisher.sgtk.shotgun_url
-
-        media_page_url = "%s/page/media_center" % (shotgun_url,)
-        mobile_url = "https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_Supervisor_Artist_sa_mobile_review_html"
-        rv_url = "https://help.autodesk.com/view/SGSUB/ENU/?guid=SG_RV_rv_manuals_rv_easy_setup_html"
-
-        return """
-        Upload the file to ShotGrid for review.<br><br>
-
-        A <b>Version</b> entry will be created in ShotGrid and a transcoded
-        copy of the file will be attached to it. The file can then be reviewed
-        via the project's <a href='%s'>Media</a> page, <a href='%s'>RV</a>, or
-        the <a href='%s'>ShotGrid Review</a> mobile app.
-        """ % (
-            media_page_url,
-            rv_url,
-            mobile_url,
-        )
 
     @property
     def settings(self):
@@ -99,8 +55,7 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
         ["maya.*", "file.maya"]
         """
 
-        # we use "video" since that's the mimetype category.
-        return ["photoshop.document"]
+        return super(PhotoshopUploadVersionPlugin, self).item_filters + ["photoshop.document"]
 
     def accept(self, settings, item):
         """
@@ -127,27 +82,29 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
 
         :returns: dictionary with boolean keys accepted, required and enabled
         """
+        if item.type_spec == "photoshop.document":
+            document = item.properties.get("document")
+            if not document:
+                self.logger.warn("Could not determine the document for item")
+                return {"accepted": False}
 
-        document = item.properties.get("document")
-        if not document:
-            self.logger.warn("Could not determine the document for item")
-            return {"accepted": False}
+            path = _document_path(document)
 
-        path = _document_path(document)
+            if not path:
+                # the document has not been saved before (no path determined).
+                # provide a save button. the document will need to be saved before
+                # validation will succeed.
+                self.logger.warn(
+                    "The Photoshop document '%s' has not been saved." % (document.name,),
+                    extra=_get_save_as_action(document),
+                )
 
-        if not path:
-            # the document has not been saved before (no path determined).
-            # provide a save button. the document will need to be saved before
-            # validation will succeed.
-            self.logger.warn(
-                "The Photoshop document '%s' has not been saved." % (document.name,),
-                extra=_get_save_as_action(document),
+            self.logger.info(
+                "Photoshop '%s' plugin accepted document: %s" % (self.name, document.name)
             )
-
-        self.logger.info(
-            "Photoshop '%s' plugin accepted document: %s" % (self.name, document.name)
-        )
-        return {"accepted": True, "checked": True}
+            return {"accepted": True, "checked": True}
+        else:
+            super(PhotoshopUploadVersionPlugin, self).accept(settings, item)
 
     def validate(self, settings, item):
         """
@@ -162,18 +119,18 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
 
         :returns: True if item is valid, False otherwise.
         """
+        if item.type_spec == "photoshop.document":
+            document = item.properties["document"]
+            path = _document_path(document)
 
-        document = item.properties["document"]
-        path = _document_path(document)
-
-        if not path:
-            # the document still requires saving. provide a save button.
-            # validation fails.
-            error_msg = "The Photoshop document '%s' has not been saved." % (
-                document.name,
-            )
-            self.logger.error(error_msg, extra=_get_save_as_action(document))
-            raise Exception(error_msg)
+            if not path:
+                # the document still requires saving. provide a save button.
+                # validation fails.
+                error_msg = "The Photoshop document '%s' has not been saved." % (
+                    document.name,
+                )
+                self.logger.error(error_msg, extra=_get_save_as_action(document))
+                raise Exception(error_msg)
 
         return True
 
@@ -186,127 +143,132 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
             instances.
         :param item: Item to process
         """
+        if item.type_spec == "photoshop.document":
+            publisher = self.parent
+            engine = publisher.engine
+            document = item.properties["document"]
 
-        publisher = self.parent
-        engine = publisher.engine
-        document = item.properties["document"]
+            path = _document_path(document)
+            upload_path = path
 
-        path = _document_path(document)
-        upload_path = path
+            file_info = publisher.util.get_file_path_components(path)
+            file_name_out = file_info["filename"].split(".")[0]
+            if file_info["extension"] in ["psd", "psb"]:
 
-        file_info = publisher.util.get_file_path_components(path)
-        file_name_out = file_info["filename"].split(".")[0]
-        if file_info["extension"] in ["psd", "psb"]:
+                with engine.context_changes_disabled():
 
-            with engine.context_changes_disabled():
+                    # ToDo: Replace with ShotGrid field query
+                    task_filetype = "png"
 
-                # remember the active document so that we can restore it.
-                previous_active_document = engine.adobe.get_active_document()
+                    # remember the active document so that we can restore it.
+                    previous_active_document = engine.adobe.get_active_document()
 
-                # make the document being processed the active document
-                engine.adobe.app.activeDocument = document
+                    # make the document being processed the active document
+                    engine.adobe.app.activeDocument = document
 
-                if False:
-                    file_name_out = "%s.jpg" % file_name_out
-                    # path to a temp jpg file
-                    upload_path = os.path.join(
-                        tempfile.gettempdir(), "%s.jpg" % file_name_out
-                    )
+                    if task_filetype == "jpg":
+                        file_name_out = f"{file_name_out}.jpg"
+                    elif task_filetype == "png":
+                        file_name_out = f"{file_name_out}.png"
 
-                    # jpg file/options
-                    jpg_file = engine.adobe.File(upload_path)
-                    jpg_options = engine.adobe.JPEGSaveOptions()
-                    jpg_options.quality = 12
-
-                    # mark the temp upload path for removal
-                    item.properties["remove_upload"] = True
-
-                    # save a jpg copy of the document
-                    document.saveAs(jpg_file, jpg_options, True)
-                elif True:
-                    file_name_out = "%s.png" % file_name_out
-                    # path to a temp png file
                     upload_path = os.path.join(
                         tempfile.gettempdir(), file_name_out
-                    )                    
-                    png_file = engine.adobe.File(upload_path)
-                    png_options = engine.adobe.PNGSaveOptions()
-                    png_options.compression = 2
-                    png_options.interlaced = False
+                    )           
+
+                    version_path = self.get_next_version_name(item,upload_path)
+                    version_path_components = self.publisher.util.get_file_path_components(version_path)
+                    publish_name = version_path_components["filename"]  
+
+                    self.logger.info("Using prior version info to determine publish version.")
+
+                    self.logger.info("Publish name: %s" % (publish_name,))  
+                    item.properties["publish_name"] = publish_name   
 
                     # mark the temp upload path for removal
-                    item.properties["remove_upload"] = True
+                    item.properties["remove_upload"] = True                      
 
-                    # save a jpg copy of the document
-                    document.saveAs(png_file, png_options, True)                    
+                    if task_filetype == "jpg":
+                        # jpg file/options
+                        jpg_file = engine.adobe.File(version_path)
+                        jpg_options = engine.adobe.JPEGSaveOptions()
+                        jpg_options.quality = 12
 
-                # restore the active document
-                engine.adobe.app.activeDocument = previous_active_document
+                        # save a jpg copy of the document
+                        document.saveAs(jpg_file, jpg_options, True)
+                    elif task_filetype == "png":               
+                        png_file = engine.adobe.File(version_path)
+                        png_options = engine.adobe.PNGSaveOptions()
+                        png_options.compression = 2
+                        png_options.interlaced = False
 
-        # use the path's filename as the publish name
-        path_components = publisher.util.get_file_path_components(path)
-        publish_name = path_components["filename"]
+                        # save a jpg copy of the document
+                        document.saveAs(png_file, png_options, True)                    
 
-        # populate the version data to send to SG
-        self.logger.info("Creating Version...")
-        version_data = {
-            "project": item.context.project,
-            "code": file_name_out,
-            "description": item.description,
-            "entity": self._get_version_entity(item),
-            "sg_task": item.context.task,
-        }
+                    # restore the active document
+                    engine.adobe.app.activeDocument = previous_active_document
 
-        publish_data = item.properties.get("sg_publish_data")
+            # populate the version data to send to SG
+            self.logger.info("Creating Version...")
+            version_data = {
+                "project": item.context.project,
+                "code": publish_name,
+                "description": item.description,
+                "entity": self._get_version_entity(item),
+                "sg_task": item.context.task,
+            }
 
-        # if the file was published, add the publish data to the version
-        if publish_data:
-            version_data["published_files"] = [publish_data]
+            publish_data = item.properties.get("sg_publish_data")
 
-        # log the version data for debugging
-        self.logger.debug(
-            "Populated Version data...",
-            extra={
-                "action_show_more_info": {
-                    "label": "Version Data",
-                    "tooltip": "Show the complete Version data dictionary",
-                    "text": "<pre>%s</pre>" % (pprint.pformat(version_data),),
-                }
-            },
-        )
+            # if the file was published, add the publish data to the version
+            if publish_data:
+                version_data["published_files"] = [publish_data]
 
-        # create the version
-        self.logger.info("Creating version for review...")
-        version = self.parent.shotgun.create("Version", version_data)
-
-        # stash the version info in the item just in case
-        item.properties["sg_version_data"] = version
-
-        # Make sure the string is utf8 encoded to avoid issues with the SG API.
-        upload_path = six.ensure_str(upload_path)
-
-        # Upload the file to SG
-        self.logger.info("Uploading content...")
-        self.parent.shotgun.upload(
-            "Version", version["id"], upload_path, "sg_uploaded_movie"
-        )
-        self.logger.info("Upload complete!")
-
-        # thumbnail to upload is the one stored in item
-        thumb = item.get_thumbnail_as_path()
-        # if thumbnail not set, consider the one created from file path
-        if not thumb:
-            thumb = upload_path
-
-        # go ahead and update the publish thumbnail (if there was one)
-        if publish_data:
-            self.logger.info("Updating publish thumbnail...")
-            self.parent.shotgun.upload_thumbnail(
-                publish_data["type"], publish_data["id"], thumb
+            # log the version data for debugging
+            self.logger.debug(
+                "Populated Version data...",
+                extra={
+                    "action_show_more_info": {
+                        "label": "Version Data",
+                        "tooltip": "Show the complete Version data dictionary",
+                        "text": "<pre>%s</pre>" % (pprint.pformat(version_data),),
+                    }
+                },
             )
-            self.logger.info("Publish thumbnail updated!")
 
-        item.properties["upload_path"] = upload_path
+            # create the version
+            self.logger.info("Creating version for review...")
+            version = self.parent.shotgun.create("Version", version_data)
+
+            # stash the version info in the item just in case
+            item.properties["sg_version_data"] = version
+
+            # Make sure the string is utf8 encoded to avoid issues with the SG API.
+            upload_path = six.ensure_str(version_path)
+
+            # Upload the file to SG
+            self.logger.info("Uploading content...")
+            self.parent.shotgun.upload(
+                "Version", version["id"], upload_path, "sg_uploaded_movie"
+            )
+            self.logger.info("Upload complete!")
+
+            # thumbnail to upload is the one stored in item
+            thumb = item.get_thumbnail_as_path()
+            # if thumbnail not set, consider the one created from file path
+            if not thumb:
+                thumb = upload_path
+
+            # go ahead and update the publish thumbnail (if there was one)
+            if publish_data:
+                self.logger.info("Updating publish thumbnail...")
+                self.parent.shotgun.upload_thumbnail(
+                    publish_data["type"], publish_data["id"], thumb
+                )
+                self.logger.info("Publish thumbnail updated!")
+
+            item.properties["upload_path"] = upload_path
+        else:
+            super(PhotoshopUploadVersionPlugin, self).publish(settings, item)
 
     def finalize(self, settings, item):
         """
@@ -318,29 +280,31 @@ class PhotoshopUploadVersionPlugin(HookBaseClass):
             instances.
         :param item: Item to process
         """
+        if item.type_spec == "photoshop.document":
+            version = item.properties["sg_version_data"]
 
-        version = item.properties["sg_version_data"]
+            self.logger.info(
+                "Version uploaded for Photoshop document",
+                extra={
+                    "action_show_in_shotgun": {
+                        "label": "Show Version",
+                        "tooltip": "Reveal the version in ShotGrid.",
+                        "entity": version,
+                    }
+                },
+            )
 
-        self.logger.info(
-            "Version uploaded for Photoshop document",
-            extra={
-                "action_show_in_shotgun": {
-                    "label": "Show Version",
-                    "tooltip": "Reveal the version in ShotGrid.",
-                    "entity": version,
-                }
-            },
-        )
+            upload_path = item.properties["upload_path"]
 
-        upload_path = item.properties["upload_path"]
-
-        # remove the tmp file
-        if item.properties.get("remove_upload", False):
-            try:
-                os.remove(upload_path)
-            except Exception:
-                self.logger.warn("Unable to remove temp file: %s" % (upload_path,))
-                pass
+            # remove the tmp file
+            if item.properties.get("remove_upload", False):
+                try:
+                    os.remove(upload_path)
+                except Exception:
+                    self.logger.warn("Unable to remove temp file: %s" % (upload_path,))
+                    pass
+        else:
+            super(PhotoshopUploadVersionPlugin, self).finalize(settings, item)
 
     def _get_version_entity(self, item):
         """

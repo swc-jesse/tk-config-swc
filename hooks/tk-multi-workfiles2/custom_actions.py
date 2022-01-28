@@ -19,7 +19,7 @@ from sgtk.platform.qt import QtGui, QtCore
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
-
+p4_app = sgtk.platform.current_engine().apps.get("tk-multi-perforce")
 
 class CustomActions(HookBaseClass):
     """
@@ -90,7 +90,7 @@ class CustomActions(HookBaseClass):
                                                            ],
                                                            ["sg_p4_depo_path"])
             self.logger.debug("Data from PublishedFile entity: {}".format(sg_publish_data))
-            action_list.append({"name": "p4_file_sync", "caption": "Perforce: Sync File from Depo"})
+            action_list.append({"name": "p4_file_sync", "caption": "Perforce: Sync Asset from Depo"})
         return action_list
 
     def execute_action(
@@ -140,42 +140,7 @@ class CustomActions(HookBaseClass):
             return False
 
         if action == "p4_file_sync":
-            p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
-            p4_icon = os.path.join(self.disk_location, os.pardir, os.pardir, "icons", "perforce.png")
-            p4 = p4_fw.connection.connection
-            if not p4:
-                p4 = p4_fw.connection.connect()
-                if not p4:
-                    raise TankError("No Perforce connection!")
-
-            sg_publish_data = self.parent.shotgun.find_one("PublishedFile",
-                                                    [
-                                                        ["version_number", "is", file["version"]],
-                                                        ["created_at", "is", file["published_at"]],
-                                                    ],
-                                                    ["sg_p4_depo_path"])
-            # self.logger.debug("Data from PublishedFile entity: {}".format(sg_publish_data))
-
-            sync_path = sg_publish_data.get("sg_p4_depo_path")
-            if sync_path:
-                msgBox = QtGui.QMessageBox()
-                msgBox.setText("Sync file from Depot")
-                msgBox.setInformativeText("Do you want to sync this file from the depo?\n\n{}".format(sync_path))
-                msgBox.setIconPixmap(QtGui.QPixmap(p4_icon).scaledToWidth(48, QtCore.Qt.SmoothTransformation))
-                msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-                msgBox.setDefaultButton(QtGui.QMessageBox.Yes)
-                msgBox.setEscapeButton(QtGui.QMessageBox.No)
-
-                ret = msgBox.exec_()
-
-                if ret == QtGui.QMessageBox.Yes:
-                    # check out the file
-                    try:
-                        p4.run_sync([], sync_path)
-                    except TankError as e:
-                        self.parent.log_warning(e)
-                # operation completed successfully
-                return True
+            p4_app.sync_files(context.entity["type"], [context.entity['id']])
 
         # if action == "p4_folder_sync":
         #     p4_fw = self.load_framework(TK_FRAMEWORK_PERFORCE_NAME)
