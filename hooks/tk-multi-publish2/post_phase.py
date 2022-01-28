@@ -48,7 +48,6 @@ class ChangeSubmitWorker(QtCore.QRunnable):
     @QtCore.Slot()
     def run(self):
         try:
-            raise Exception('doing test to kill this')
             submission = self.fw.util.submit_change(self.p4, self.change)
             self.submission_response.emit(submission)
         except Exception as e:
