@@ -34,6 +34,19 @@ settings.tk-desktop.asset:
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 
+# sequence
+settings.tk-desktop.sequence:
+  apps:
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+  location: "@engines.tk-desktop.location"
+
+# sequence_step
+settings.tk-desktop.sequence_step:
+  apps:
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.sequence_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+  location: "@engines.tk-desktop.location"
+
 # asset_step
 settings.tk-desktop.asset_step:
   apps:
@@ -45,6 +58,13 @@ settings.tk-desktop.asset_step:
 settings.tk-desktop.asset_child_step:
   apps:
     # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.asset_child_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+  location: "@engines.tk-desktop.location"
+
+# seq_asset_step
+settings.tk-desktop.seq_asset_step:
+  apps:
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.seq_asset_step"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 

@@ -86,6 +86,17 @@ settings.tk-substancepainter.asset_child_step:
   template_project: asset_child_root
   location: "@engines.tk-substancepainter.location"
 
+# seq_asset_step
+settings.tk-substancepainter.seq_asset_step:
+  apps:
+    <<: *settings_tk-substancepainter_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.substancepainter.seq_asset_step"
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.substancepainter.seq_asset_step"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.substancepainter.seq_asset_step"
+  menu_favourites: *settings_tk-substancepainter_menus
+  template_project: seq_asset_root
+  location: "@engines.tk-substancepainter.location"
+
 # pub_asset_step
 settings.tk-substancepainter.pub_asset_step:
   apps:

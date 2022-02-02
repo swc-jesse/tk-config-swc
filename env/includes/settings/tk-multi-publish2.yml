@@ -74,6 +74,12 @@ settings.tk-multi-publish2.3dsmax.asset_child_step:
   collector_settings:
       Work Template: asset_child_max_workfile
 
+# seq_asset_step
+settings.tk-multi-publish2.3dsmax.seq_asset_step: 
+  <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
+  collector_settings:
+      Work Template: seq_asset_max_workfile
+
 # anim_asset_step
 settings.tk-multi-publish2.3dsmax.anim_asset_step: 
   <<: *settings_publish_plugins_tk-multi-publish2_3dsmax
@@ -131,6 +137,12 @@ settings.tk-multi-publish2.houdini.asset_child_step:
   collector_settings:
       Work Template: asset_child_houdini_workfile
 
+# seq_asset_step
+settings.tk-multi-publish2.houdini.seq_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: seq_asset_houdini_workfile
+
 # anim_asset_step
 settings.tk-multi-publish2.houdini.anim_asset_step:
   <<: *settings_publish_plugins_tk-multi-publish2_houdini
@@ -182,11 +194,23 @@ settings.tk-multi-publish2.maya.asset_step: &settings_publish_plugins_tk-multi-p
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
+# sequence_step
+settings.tk-multi-publish2.maya.sequence_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_maya
+  collector_settings:
+      Work Template: sequence_maya_workfile
+
 # asset_child_step
 settings.tk-multi-publish2.maya.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_maya
   collector_settings:
       Work Template: asset_child_maya_workfile
+
+# seq_asset_step
+settings.tk-multi-publish2.maya.seq_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_maya
+  collector_settings:
+      Work Template: seq_asset_maya_workfile
 
 # anim_asset_step
 settings.tk-multi-publish2.maya.anim_asset_step:
@@ -246,6 +270,13 @@ settings.tk-multi-publish2.photoshop.asset_child_step:
   collector_settings:
       Work Template: asset_child_photoshop_workfile
       Work Area: asset_child_root
+
+# seq_asset_step
+settings.tk-multi-publish2.photoshop.seq_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_photoshop
+  collector_settings:
+      Work Template: seq_asset_photoshop_workfile
+      Work Area: seq_asset_root
 
 # pub_asset_step
 settings.tk-multi-publish2.photoshop.pub_asset_step:
@@ -311,6 +342,39 @@ settings.tk-multi-publish2.substancepainter.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
   collector_settings:
       Work Template: asset_child_substancepainter_workfile
+      # Work Export Template: substancepainter_asset_textures_path_export
+      # Publish Textures as Folder: true
+  post_phase: "{config}/tk-multi-publish2/post_phase.py"
+  publish_plugins:
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py"
+  #   settings: {}
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_textures.py"
+  #   settings:
+  #     Publish Template: substancepainter_asset_textures_path_publish
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_texture.py"
+  #   settings:
+  #     Publish Template: substancepainter_asset_texture_path_publish
+  - name: Upload for review
+    hook: "{self}/upload_version.py:{config}/tk-multi-publish2/upload_version.py"
+    settings: {}
+  # - name: Begin file versioning
+  #   hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
+  #   settings: {}
+  # - name: Publish to Perforce & ShotGrid
+  #   hook: "{config}/tk-multi-publish2/publish_file.py:{engine}/tk-multi-publish2/basic/publish_session.py"
+  #   settings:
+  #       Publish Template: substancepainter_asset_publish
+  help_url: *help_url
+  location: "@apps.tk-multi-publish2.location"
+
+# seq_asset_step
+settings.tk-multi-publish2.substancepainter.seq_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_substancepainter
+  collector_settings:
+      Work Template: seq_asset_substancepainter_workfile
       # Work Export Template: substancepainter_asset_textures_path_export
       # Publish Textures as Folder: true
   post_phase: "{config}/tk-multi-publish2/post_phase.py"
@@ -426,6 +490,12 @@ settings.tk-multi-publish2.substancedesigner.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
   collector_settings:
       Work Template: asset_child_substancedesigner_workfile
+
+# seq_asset_step
+settings.tk-multi-publish2.substancedesigner.seq_asset_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_substancedesigner
+  collector_settings:
+      Work Template: seq_asset_substancedesigner_workfile
 
 # pub_asset step
 settings.tk-multi-publish2.substancedesigner.pub_asset_step:

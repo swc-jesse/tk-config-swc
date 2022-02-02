@@ -26,6 +26,13 @@ settings.tk-shell.asset:
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: '@engines.tk-shell.location'
 
+# sequence
+settings.tk-shell.sequence:
+  apps:
+    tk-multi-launchapp: '@settings.tk-multi-launchapp'
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+  location: '@engines.tk-shell.location'
+
 # project
 settings.tk-shell.project:
   apps:
