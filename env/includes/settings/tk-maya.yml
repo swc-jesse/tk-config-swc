@@ -67,6 +67,7 @@ settings.tk-maya.asset_step:
 settings.tk-maya.sequence:
   apps:
     <<: *settings_tk-maya_apps
+    tk-multi-loader2: "@settings.tk-multi-loader2.maya.sequence"
     tk-multi-publish2: "@settings.tk-multi-publish2.maya.sequence"  
     tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.sequence"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.sequence"
