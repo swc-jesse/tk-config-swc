@@ -41,23 +41,6 @@ settings.tk-maya.asset:
   automatic_context_switch: True
   location: "@engines.tk-maya.location"
 
-# sequence
-settings.tk-maya.sequence:
-  apps:
-    tk-multi-about:
-      location: "@apps.tk-multi-about.location"
-    tk-multi-loader2: "@settings.tk-multi-loader2.maya"
-    tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
-    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
-    tk-multi-perforce: "@settings.tk-multi-perforce"
-    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"  
-  menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
-  - {app_instance: tk-multi-perforce, name: Perforce Status...}
-  debug_logging: false
-  automatic_context_switch: True
-  location: "@engines.tk-maya.location"
-
 # asset_step
 settings.tk-maya.asset_step: 
   apps: &settings_tk-maya_apps
@@ -79,6 +62,18 @@ settings.tk-maya.asset_step:
   template_project: asset_work_area
   automatic_context_switch: True
   location: "@engines.tk-maya.location"
+
+# sequence
+settings.tk-maya.sequence:
+  apps:
+    <<: *settings_tk-maya_apps
+    tk-multi-publish2: "@settings.tk-multi-publish2.maya.sequence"  
+    tk-multi-snapshot: "@settings.tk-multi-snapshot.maya.sequence"
+    tk-multi-workfiles2: "@settings.tk-multi-workfiles2.maya.sequence"
+  menu_favourites: *settings_tk-maya_menu
+  template_project: sequence_root
+  automatic_context_switch: True
+  location: "@engines.tk-maya.location"  
 
 # sequence_step
 settings.tk-maya.sequence_step:

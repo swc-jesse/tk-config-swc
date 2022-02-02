@@ -359,9 +359,11 @@ paths:
     asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}][_{Task}]'
     asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}][_{Task}].{timestamp}'
 
+    sequence_filename: '@sequence_root/{Sequence}[_{name}]'
+    sequence_snapshot_filename: '@sequence_root/snapshots/{Sequence}[_{name}].{timestamp}'
     sequence_work_area: '@sequence_root/{Step}' 
-    sequence_filename: '@sequence_work_area/{Sequence}[_{Task}][_{name}]'
-    sequence_snapshot_filename: '@sequence_work_area/snapshots/{Sequence}[_{Task}][_{name}].{timestamp}'
+    sequence_task_filename: '@sequence_work_area/{Sequence}[_{Task}][_{name}]'
+    sequence_task_snapshot_filename: '@sequence_work_area/snapshots/{Sequence}[_{Task}][_{name}].{timestamp}'
 
     seq_asset_work_area: '@seq_asset_root/{Step}/{Task}' 
     seq_asset_filename: '@seq_asset_work_area/{asset_name}[_{name}][_{Task}]'
@@ -472,6 +474,11 @@ paths:
         definition: '@sequence_filename.{maya_extension}'
     sequence_maya_snapshot:
         definition: '@sequence_snapshot_filename.{maya_extension}'
+
+    sequence_task_maya_workfile:
+        definition: '@sequence_task_filename.{maya_extension}'
+    sequence_task_maya_snapshot:
+        definition: '@sequence_task_snapshot_filename.{maya_extension}'
 
     asset_child_maya_workfile:
         definition: '@asset_child_filename.{maya_extension}'

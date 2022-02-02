@@ -63,16 +63,7 @@ entity_browser_settings: &entity_browser_settings
       entity_type: Task
       filters:
       link_field: entity
-      hierarchy: [entity,step]    
-  - caption: Publishing
-    entity_type: CustomEntity03
-    hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
-    filters: 
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: []       
+      hierarchy: [entity,step]       
   - caption: Animation
     entity_type: Asset
     hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
@@ -84,6 +75,15 @@ entity_browser_settings: &entity_browser_settings
       filters:    
       link_field: entity
       hierarchy: []
+  - caption: Cinematics
+    entity_type: Sequence
+    hierarchy: [sg_asset_library, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:    
+      link_field: entity
+      hierarchy: [step]
 
 
 # env_entity_browser_settings
@@ -121,7 +121,7 @@ entity_browser_settings: &anim_entity_browser_settings
       entity_type: Task
       filters:    
       link_field: entity
-      hierarchy: []
+      hierarchy: [step]
 
 
 # pub_entity_browser_settings
@@ -393,14 +393,24 @@ settings.tk-multi-workfiles2.maya.asset_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
-# sequence_step
-settings.tk-multi-workfiles2.maya.sequence_step:
+# sequence
+settings.tk-multi-workfiles2.maya.sequence:
   template_publish: sequence_maya_workfile
   template_publish_area: sequence_root
   template_work: sequence_maya_workfile
   template_work_area: sequence_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# sequence_step
+settings.tk-multi-workfiles2.maya.sequence_step:
+  template_publish: sequence_task_maya_workfile
+  template_publish_area: sequence_root
+  template_work: sequence_task_maya_workfile
+  template_work_area: sequence_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # asset_child_step
@@ -420,7 +430,7 @@ settings.tk-multi-workfiles2.maya.seq_asset_step:
   template_work: seq_asset_maya_workfile
   template_work_area: seq_asset_root
   <<: *common_workfiles_settings
-  <<: *entity_browser_settings
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # anim_asset_step

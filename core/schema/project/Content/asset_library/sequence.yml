@@ -22,4 +22,5 @@ entity_type: "Sequence"
 # three fields: path, relation and values
 # (this is std shotgun API syntax)
 # any values starting with $ are resolved into path objects
-filters: [ { "path": "project", "relation": "is", "values": [ "$project" ] } ]
+filters:
+    - { "path": "sg_asset_library", "relation": "is", "values": [ "$asset_library" ] }
