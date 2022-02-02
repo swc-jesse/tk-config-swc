@@ -14,3 +14,4 @@ name: "{sg_asset_type}/{sg_asset_category}/{code}"
 # any values starting with $ are resolved into path objects
 filters:
     - { "path": "sg_asset_parent", "relation": "is", "values": [ "$sequence" ] }     
+    - { "path": "sg_asset_parent", "relation": "type_is", "values": [ "Sequence" ] }  
