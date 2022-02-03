@@ -84,10 +84,10 @@ entity_browser_settings: &sequence_browser_settings
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']
   - caption: Sequence Assets
-    entity_type: Asset
-    hierarchy: [project, sg_asset_library, sg_asset_type, code]
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_type, entity, step, content]
     filters:
-      - [sequences, is, '{context.entity}']         
+      - { "filter_operator": "any","filters": [[entity.Asset.sequences, is, '{context.entity}'],[entity, is, '{context.entity}']] }
 
 entity_browser_settings: &shot_browser_settings
   entities:
