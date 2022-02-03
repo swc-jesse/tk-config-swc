@@ -184,7 +184,7 @@ settings.tk-multi-loader2.houdini:
 
 # maya assets
 settings.tk-multi-loader2.maya:
-  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
   action_mappings: 
     Alembic Cache: [perforce_sync, reference, import]
     Image: [perforce_sync, texture_node, image_plane]
@@ -207,7 +207,7 @@ settings.tk-multi-loader2.maya:
 
 # maya sequence
 settings.tk-multi-loader2.maya.sequence:
-  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
   action_mappings:
     Alembic Cache: [perforce_sync, reference, import]
     Image: [perforce_sync, texture_node, image_plane]
@@ -230,7 +230,7 @@ settings.tk-multi-loader2.maya.sequence:
 
 # maya shot
 settings.tk-multi-loader2.maya.shot:
-  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
   action_mappings:
     Alembic Cache: [perforce_sync, reference, import]
     Image: [perforce_sync, texture_node, image_plane]
