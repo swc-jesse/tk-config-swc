@@ -82,6 +82,10 @@ keys:
         type: str
         shotgun_entity_type: Asset
         shotgun_field_name: sg_asset_parent.Sequence.sg_asset_library.AssetLibrary.code
+    shot_asset_library_parent:
+        type: str
+        shotgun_entity_type: Shot
+        shotgun_field_name: sg_sequence.Sequence.sg_asset_library.AssetLibrary.code
     asset_type:
         type: str
         shotgun_entity_type: Asset
@@ -345,6 +349,7 @@ paths:
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
     sequence_root: 'Content/{seq_asset_library}/Sequences/{Sequence}'
+    shot_root: 'Content/{shot_asset_library_parent}/Sequences/{Sequence}/{Shot}'
     seq_asset_root: 'Content/{seq_asset_library_parent}/Sequences/{seq_asset_parent}/{asset_type}/{asset_category}/{Asset}'    
 
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_folder_name}'
@@ -364,6 +369,12 @@ paths:
     sequence_work_area: '@sequence_root/{Step}' 
     sequence_task_filename: '@sequence_work_area/{Sequence}[_{Task}][_{name}]'
     sequence_task_snapshot_filename: '@sequence_work_area/snapshots/{Sequence}[_{Task}][_{name}].{timestamp}'
+
+    shot_filename: '@shot_root/{Shot}[_{name}]'
+    shot_snapshot_filename: '@shot_root/snapshots/{Shot}[_{name}].{timestamp}'
+    shot_work_area: '@shot_root/{Step}' 
+    shot_task_filename: '@shot_work_area/{Shot}[_{Task}][_{name}]'
+    shot_task_snapshot_filename: '@shot_work_area/snapshots/{Shot}[_{Task}][_{name}].{timestamp}'
 
     seq_asset_work_area: '@seq_asset_root/{Step}/{Task}' 
     seq_asset_filename: '@seq_asset_work_area/{asset_name}[_{name}][_{Task}]'
@@ -479,6 +490,16 @@ paths:
         definition: '@sequence_task_filename.{maya_extension}'
     sequence_task_maya_snapshot:
         definition: '@sequence_task_snapshot_filename.{maya_extension}'
+
+    shot_maya_workfile:
+        definition: '@shot_filename.{maya_extension}'
+    shot_maya_snapshot:
+        definition: '@shot_snapshot_filename.{maya_extension}'
+
+    shot_task_maya_workfile:
+        definition: '@shot_task_filename.{maya_extension}'
+    shot_task_maya_snapshot:
+        definition: '@shot_task_snapshot_filename.{maya_extension}'
 
     asset_child_maya_workfile:
         definition: '@asset_child_filename.{maya_extension}'

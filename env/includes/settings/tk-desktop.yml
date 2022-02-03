@@ -47,6 +47,19 @@ settings.tk-desktop.sequence_step:
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
   location: "@engines.tk-desktop.location"
 
+# shot
+settings.tk-desktop.shot:
+  apps:
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+  location: "@engines.tk-desktop.location"
+
+# shot_step
+settings.tk-desktop.shot_step:
+  apps:
+    # tk-multi-workfiles2: "@settings.tk-multi-workfiles2.shot_step"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+  location: "@engines.tk-desktop.location"
+
 # asset_step
 settings.tk-desktop.asset_step:
   apps:

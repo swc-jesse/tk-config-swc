@@ -134,6 +134,18 @@ settings.tk-multi-snapshot.maya.sequence_step:
   template_work: sequence_task_maya_workfile
   location: "@apps.tk-multi-snapshot.location"
 
+# shot
+settings.tk-multi-snapshot.maya.shot:
+  template_snapshot: shot_maya_snapshot
+  template_work: shot_maya_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# shot_step
+settings.tk-multi-snapshot.maya.shot_step:
+  template_snapshot: shot_task_maya_snapshot
+  template_work: shot_task_maya_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
 # asset_child_step
 settings.tk-multi-snapshot.maya.asset_child_step:
   template_snapshot: asset_child_maya_snapshot

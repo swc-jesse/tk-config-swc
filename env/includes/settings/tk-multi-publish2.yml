@@ -206,6 +206,18 @@ settings.tk-multi-publish2.maya.sequence_step:
   collector_settings:
       Work Template: sequence_task_maya_workfile
 
+# shot
+settings.tk-multi-publish2.maya.shot:
+  <<: *settings_publish_plugins_tk-multi-publish2_maya
+  collector_settings:
+      Work Template: shot_maya_workfile
+
+# shot_step
+settings.tk-multi-publish2.maya.shot_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_maya
+  collector_settings:
+      Work Template: shot_task_maya_workfile
+
 # asset_child_step
 settings.tk-multi-publish2.maya.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_maya
