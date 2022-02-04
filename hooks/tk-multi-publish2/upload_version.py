@@ -8,12 +8,15 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+from shutil import copyfile
+import tempfile
 import sgtk
 import os
 import datetime
 import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 class UploadVersionPlugin(HookBaseClass):
     @property
@@ -157,9 +160,12 @@ class UploadVersionPlugin(HookBaseClass):
         path_components = publisher.util.get_file_path_components(path)
 
         if path_components["filename"] != item.properties["publish_name"]:
-            new_path = os.path.join(path_components["folder"],item.properties["publish_name"])
-            os.rename(path, new_path)
-            item.properties["path"] = new_path
+            temp_path = os.path.join(
+                    tempfile.gettempdir(), item.properties["publish_name"]
+                )         
+            copyfile(path, temp_path)
+            item.properties["original_path"] = path
+            item.properties["path"] = temp_path
         
         super(UploadVersionPlugin, self).publish(settings, item)
 
@@ -177,21 +183,51 @@ class UploadVersionPlugin(HookBaseClass):
         self.publisher = self.parent
         path = item.properties["path"]
         version = item.properties["sg_version_data"]
-
         type_class = item.type_spec.split(".")[0] 
 
-        if(type_class == "playblast"):
+        if("original_path" in item.properties):
+            original_path = item.properties["original_path"]
             os.remove(path)
-            self.logger.info(
-                "Playblast deleted after uploading for file: %s" % (path,),
-                extra={
-                    "action_show_in_shotgun": {
-                        "label": "Show Version",
-                        "tooltip": "Reveal the version in ShotGrid.",
-                        "entity": version,
-                    }
-                },
-            )        
+        else:
+            original_path = path
+
+        if(type_class == "playblast"):
+            context = None
+            try:
+                context = self.swc_fw.find_task_context(original_path)
+            except(AttributeError):
+                try:
+                    self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+                    context = self.swc_fw.find_task_context(original_path)
+                except:
+                    # This probably isn't a valid folder
+                    pass
+            except:
+                pass
+            if context:
+                os.remove(original_path)
+
+                self.logger.info(
+                    "Playblast deleted after uploading for file: %s" % (original_path,),
+                    extra={
+                        "action_show_in_shotgun": {
+                            "label": "Show Version",
+                            "tooltip": "Reveal the version in ShotGrid.",
+                            "entity": version,
+                        }
+                    },
+                )        
+            else:
+                self.logger.info(
+                    "Playblast uploaded for file: %s" % (original_path,),
+                    extra={
+                        "action_show_in_shotgun": {
+                            "label": "Show Version",
+                            "tooltip": "Reveal the version in ShotGrid.",
+                            "entity": version,
+                        }
+                    },
+                )      
         else:
             super(UploadVersionPlugin, self).finalize(settings, item)
 
