@@ -97,14 +97,14 @@ frameworks:
     hook_get_perforce_user: '{config}/tk-framework-perforce/get_perforce_user.py'
     hook_get_shotgun_user: '{config}/tk-framework-perforce/get_shotgun_user.py'
     location:
-      # ## Dev
+      # # Dev
       # type: dev
       # path: 'S:/Projects/ShotgunConfig/tk-framework-perforce'
       # Github
       type: git_branch
       branch: swc_beta
-      path: https://github.com/nimbleheroes/tk-framework-perforce.git
-      version: "2bcb44f"
+      path: https://github.com/studiowildcard/tk-framework-perforce.git
+      version: "94cf845"
       
   # SWC - Custom utilities
   tk-framework-swc_v0.x.x:
