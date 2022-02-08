@@ -63,16 +63,7 @@ entity_browser_settings: &entity_browser_settings
       entity_type: Task
       filters:
       link_field: entity
-      hierarchy: [entity,step]    
-  - caption: Publishing
-    entity_type: CustomEntity03
-    hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
-    filters: 
-    sub_hierarchy:
-      entity_type: Task
-      filters:
-      link_field: entity
-      hierarchy: []       
+      hierarchy: [entity,step]       
   - caption: Animation
     entity_type: Asset
     hierarchy: [sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
@@ -84,6 +75,15 @@ entity_browser_settings: &entity_browser_settings
       filters:    
       link_field: entity
       hierarchy: []
+  - caption: Cinematics
+    entity_type: Sequence
+    hierarchy: [sg_asset_library, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:    
+      link_field: entity
+      hierarchy: [step]
 
 
 # env_entity_browser_settings
@@ -113,6 +113,24 @@ entity_browser_settings: &anim_entity_browser_settings
       filters:    
       link_field: entity
       hierarchy: []
+  - caption: Sequences
+    entity_type: Sequence
+    hierarchy: [sg_asset_library, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:    
+      link_field: entity
+      hierarchy: [step]
+  - caption: Shots
+    entity_type: Shot
+    hierarchy: [sg_sequence, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:    
+      link_field: entity
+      hierarchy: [step]
 
 
 # pub_entity_browser_settings
@@ -246,6 +264,16 @@ settings.tk-multi-workfiles2.3dsmax.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# seq_asset_step
+settings.tk-multi-workfiles2.3dsmax.seq_asset_step:
+  template_publish: seq_asset_max_workfile
+  template_publish_area: seq_asset_root
+  template_work: seq_asset_max_workfile
+  template_work_area: seq_asset_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
 # anim_asset_step
 settings.tk-multi-workfiles2.3dsmax.anim_asset_step:
   template_publish: anim_asset_max_workfile
@@ -311,6 +339,16 @@ settings.tk-multi-workfiles2.houdini.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# seq_asset_step
+settings.tk-multi-workfiles2.houdini.seq_asset_step:
+  template_publish: seq_asset_houdini_workfile
+  template_publish_area: seq_asset_root
+  template_work: seq_asset_houdini_workfile
+  template_work_area: seq_asset_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
 # anim_asset_step
 settings.tk-multi-workfiles2.houdini.anim_asset_step:
   template_publish: anim_asset_houdini_workfile
@@ -364,6 +402,46 @@ settings.tk-multi-workfiles2.maya.asset_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# sequence
+settings.tk-multi-workfiles2.maya.sequence:
+  template_publish: sequence_maya_workfile
+  template_publish_area: sequence_root
+  template_work: sequence_maya_workfile
+  template_work_area: sequence_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# sequence_step
+settings.tk-multi-workfiles2.maya.sequence_step:
+  template_publish: sequence_task_maya_workfile
+  template_publish_area: sequence_root
+  template_work: sequence_task_maya_workfile
+  template_work_area: sequence_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# shot
+settings.tk-multi-workfiles2.maya.shot:
+  template_publish: shot_maya_workfile
+  template_publish_area: shot_root
+  template_work: shot_maya_workfile
+  template_work_area: shot_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# shot_step
+settings.tk-multi-workfiles2.maya.shot_step:
+  template_publish: shot_task_maya_workfile
+  template_publish_area: shot_root
+  template_work: shot_task_maya_workfile
+  template_work_area: shot_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
 # asset_child_step
 settings.tk-multi-workfiles2.maya.asset_child_step:
   template_publish: asset_child_maya_workfile
@@ -372,6 +450,16 @@ settings.tk-multi-workfiles2.maya.asset_child_step:
   template_work_area: asset_child_root
   <<: *common_workfiles_settings
   <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# seq_asset_step
+settings.tk-multi-workfiles2.maya.seq_asset_step:
+  template_publish: seq_asset_maya_workfile
+  template_publish_area: seq_asset_root
+  template_work: seq_asset_maya_workfile
+  template_work_area: seq_asset_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 # anim_asset_step
@@ -435,6 +523,16 @@ settings.tk-multi-workfiles2.photoshop.asset_child_step:
   template_publish_area: asset_child_root
   template_work: asset_child_photoshop_workfile
   template_work_area: asset_child_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# seq_asset_step
+settings.tk-multi-workfiles2.photoshop.seq_asset_step:
+  template_publish: seq_asset_photoshop_workfile
+  template_publish_area: seq_asset_root
+  template_work: seq_asset_photoshop_workfile
+  template_work_area: seq_asset_root
   <<: *common_workfiles_settings
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
@@ -527,6 +625,16 @@ settings.tk-multi-workfiles2.substancepainter.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# seq_asset_step
+settings.tk-multi-workfiles2.substancepainter.seq_asset_step:
+  template_publish: seq_asset_substancepainter_workfile
+  template_publish_area: seq_asset_root
+  template_work: seq_asset_substancepainter_workfile
+  template_work_area: seq_asset_root
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
 # pub_asset_step
 settings.tk-multi-workfiles2.substancepainter.pub_asset_step:
   template_publish: pub_asset_substancepainter_workfile
@@ -613,6 +721,17 @@ settings.tk-multi-workfiles2.substancedesigner.asset_child_step:
   template_publish_area: asset_child_root
   template_work: asset_child_substancedesigner_workfile
   template_work_area: asset_child_root
+  # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
+  <<: *common_workfiles_settings
+  <<: *entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# seq_asset_step
+settings.tk-multi-workfiles2.substancedesigner.seq_asset_step:
+  template_publish: seq_asset_substancedesigner_workfile
+  template_publish_area: seq_asset_root
+  template_work: seq_asset_substancedesigner_workfile
+  template_work_area: seq_asset_root
   # saveas_default_name: hook:tk-multi-workfiles2/saveas_default_name_tk-substancedesigner
   <<: *common_workfiles_settings
   <<: *entity_browser_settings

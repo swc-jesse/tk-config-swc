@@ -24,7 +24,7 @@ p4_app = sgtk.platform.current_engine().apps.get("tk-multi-perforce")
 # # Allow other computers to attach to ptvsd at this IP address and port.
 # ptvsd.enable_attach(address=('localhost', 5678), redirect_output=True)
 
-class ShellActions(HookBaseClass):
+class PerforceActions(HookBaseClass):
     """
     Stub implementation of the shell actions, used for testing.
     """
@@ -72,17 +72,17 @@ class ShellActions(HookBaseClass):
             "Actions: %s. Publish Data: %s" % (ui_area, actions, sg_publish_data)
         )
 
-        action_instances = []
+        action_instances = HookBaseClass.generate_actions(self, sg_publish_data, actions, ui_area)
 
         # For the sake of easy test, we'll reuse Maya publish types.
 
-        if "create_folders" in actions:
+        if "perforce_sync" in actions:
             action_instances.append(
                 {
-                    "name": "create_folders",
-                    "params": "Create Folders 'params'",
-                    "caption": "Create Folders",
-                    "description": "Executes Create Folders.",
+                    "name": "perforce_sync",
+                    "params": "Perforce Sync 'params'",
+                    "caption": "Perforce: Sync",
+                    "description": "Executes Perforce Sync.",
                 }
             )
 
@@ -117,38 +117,27 @@ class ShellActions(HookBaseClass):
         app.log_info("Executing action '%s' on the selection")
         # Helps to visually scope selections
         # Execute each action.
-
+        perforce_entities = []
+        perforce_type = None
         for single_action in actions:
             name = single_action["name"]
             sg_publish_data = single_action["sg_publish_data"]
 
+            # If we're doing perforce sync, find all the selected entities instead of calling individually
+            if name == "perforce_sync":
+                if perforce_type == None:
+                    perforce_type = sg_publish_data['type']
+                elif perforce_type != sg_publish_data['type']:
+                    # We can't run multiple types of entities together
+                    raise Exception("Attempting to Perforce sync multiple entity types at once.")
+                perforce_entities.append(sg_publish_data['id'])
+                continue
+
             params = single_action["params"]
-            self.execute_action(name, params, sg_publish_data)
+            HookBaseClass.execute_action(self, name, params, sg_publish_data)
 
-    def execute_action(self, name, params, sg_publish_data):
-        """
-        Print out all actions. The data sent to this be method will
-        represent one of the actions enumerated by the generate_actions method.
-
-        :param name: Action name string representing one of the items returned by generate_actions.
-        :param params: Params data, as specified by generate_actions.
-        :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
-        :returns: No return value expected.
-        """
-        app = self.parent
-        engine = self.parent.engine
-        app.log_debug(
-            "Execute action called for action %s. "
-            "Parameters: %s. Publish Data: %s" % (name, params, sg_publish_data)
-        )
-
-        # resolve path
-        # toolkit uses utf-8 encoded strings internally and Maya API expects unicode
-        # so convert the path to ensure filenames containing complex characters are supported
-        # path = six.ensure_str(self.get_publish_path(sg_publish_data))
-
-        if name == "create_folders":   
-            tk = sgtk.sgtk_from_entity(sg_publish_data['type'], sg_publish_data['id'])    
-            tk.synchronize_filesystem_structure()     
-            tk.create_filesystem_structure(sg_publish_data['type'], sg_publish_data['id'])            
+        # Call perforce sync
+        if perforce_type and len(perforce_entities):
+            p4_app.sync_files(perforce_type, perforce_entities)
+          
             

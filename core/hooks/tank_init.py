@@ -24,5 +24,5 @@ class TankInit(Hook):
 
         The default implementation does nothing.
         """
-        self.logger.info("Custom Tank Init Hook")
+        # self.logger.info("Custom Tank Init Hook")
         pass
