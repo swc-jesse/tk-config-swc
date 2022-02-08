@@ -21,8 +21,17 @@ includes:
 
 ################################################################################
 
-# asset & asset_child
+# asset & asset_child & sequence
 settings.tk-shotgun.asset:
+  apps:
+    tk-multi-launchapp: "@settings.tk-multi-launchapp"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+    tk-shotgun-folders: "@settings.tk-shotgun-folders"
+    tk-shotgun-launchfolder: "@settings.tk-shotgun-launchfolder"
+  location: "@engines.tk-shotgun.location"
+
+settings.tk-shotgun.sequence:
   apps:
     tk-multi-launchapp: "@settings.tk-multi-launchapp"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
@@ -33,6 +42,26 @@ settings.tk-shotgun.asset:
 
 # asset_step & asset_child_step
 settings.tk-shotgun.asset_step:
+  apps:
+    tk-multi-launchapp: "@settings.tk-multi-launchapp.shotgun"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+    tk-shotgun-folders: "@settings.tk-shotgun-folders"
+    tk-shotgun-launchfolder: "@settings.tk-shotgun-launchfolder"
+  location: "@engines.tk-shotgun.location"
+
+# sequence_step
+settings.tk-shotgun.sequence_step:
+  apps:
+    tk-multi-launchapp: "@settings.tk-multi-launchapp.shotgun"
+    tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
+    tk-multi-perforce: "@settings.tk-multi-perforce"
+    tk-shotgun-folders: "@settings.tk-shotgun-folders"
+    tk-shotgun-launchfolder: "@settings.tk-shotgun-launchfolder"
+  location: "@engines.tk-shotgun.location"
+
+# shot_step
+settings.tk-shotgun.shot_step:
   apps:
     tk-multi-launchapp: "@settings.tk-multi-launchapp.shotgun"
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"
