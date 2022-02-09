@@ -163,7 +163,7 @@ apps.tk-multi-perforce.location:
   type: git_branch
   branch: swc_beta
   path: https://github.com/studiowildcard/tk-multi-perforce.git
-  version: "aaf27ba"
+  version: "5af3aeb6665599f96a289570249d6250c1729a9d"
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
