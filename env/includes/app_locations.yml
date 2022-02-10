@@ -156,9 +156,9 @@ apps.tk-multi-workfiles2.location:
 
 # Perforce
 apps.tk-multi-perforce.location:
-  ### Dev
+  # ## Dev
   # type: dev
-  # path: C:/swc-configs/tk-multi-perforce
+  # path: S:\Projects\ShotgunConfig\tk-multi-perforce
   ## Github
   type: git_branch
   branch: swc_beta
