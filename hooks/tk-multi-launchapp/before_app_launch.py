@@ -16,11 +16,16 @@ to set environment variables or run scripts as part of the app initialization.
 """
 
 import os
+import tempfile
 import tank
 import sgtk
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
+maya_env_template = """MAYA_MODULE_PATH = %PERFORCE_TOOL_PATH%\MODULES;
+XBMLANGPATH = %PERFORCE_TOOL_PATH%\ICONS;
+MAYA_SHELF_PATH  = %PERFORCE_TOOL_PATH%\SHELVES;
+PYTHONPATH = %PERFORCE_TOOL_PATH%;%PERFORCE_TOOL_PATH%\PYTHON;"""
 
 class BeforeAppLaunch(tank.Hook):
     """
@@ -54,11 +59,26 @@ class BeforeAppLaunch(tank.Hook):
 
         # Append to PYTHONPATH
     
-        tools_path = software_entity["sg_windows_tools_path"]
+        tools_path = os.path.abspath(os.path.join(self.sgtk.project_path, os.pardir,software_entity["sg_windows_tools_path"]))
 
         if tools_path:
             sgtk.util.append_path_to_env_var("PYTHONPATH", tools_path)
 
             if engine_name == 'tk-maya':
-                # Point to the desired Maya.env file
-                os.environ["MAYA_ENV_DIR"] = tools_path 
+                # Create and point to the desired Maya.env file
+                maya_env = {
+                    'dir': '',
+                    'file': None,
+                }
+
+                maya_env['dir'] = os.path.join(tempfile.gettempdir(),'sgtk-maya')
+                if not os.path.exists(maya_env['dir']):
+                    os.makedirs(maya_env['dir'])
+
+                maya_env['file'] = open(os.path.join(maya_env['dir'],'Maya.env'),'w')
+                maya_env['file'].write(f'PERFORCE_TOOL_PATH = {tools_path}\n')
+                maya_env['file'].writelines(maya_env_template)
+                maya_env['file'].close()
+                
+                os.environ["MAYA_ENV_DIR"] = maya_env['dir']
+                os.environ["MAYA_TOOLS_PATH"] = tools_path
