@@ -24,22 +24,21 @@ entity_browser_settings: &entity_browser_settings
     - [project, is, '{context.project}']
     hierarchy: [project, entity, step, content]       
   - caption: Content
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
-      - [entity.Asset.sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']        
-      - [entity, type_is, 'Asset']
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']    
+      - [sg_asset_type, is_not, ["Animations"]]       
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']
   - caption: Children
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_parent.Asset.sg_asset_library, entity.Asset.sg_asset_parent.Asset.sg_asset_type, entity.Asset.sg_asset_parent.Asset.sg_asset_category, entity.Asset.sg_asset_parent.Asset.code, entity.Asset.sg_asset_category, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
-      - [entity.Asset.sg_asset_parent, is_not, [ null ]]    
-      - [entity.Asset.sg_asset_type, is_not, ["Animations"]]         
-      - [project, is, '{context.project}']    
-      - [entity, type_is, 'Asset']      
+      - [project, is, '{context.project}']  
+      - [sg_asset_parent, is_not, [ null ]]
+      - [sg_asset_type, is_not, ["Animations"]]     
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']        
   - caption: Animations
@@ -54,12 +53,7 @@ entity_browser_settings: &entity_browser_settings
     hierarchy: [project, entity.CustomEntity01.sg_asset_library, entity.CustomEntity01.sg_asset_type, entity.CustomEntity01.sg_biome, entity.CustomEntity01.sg_asset_category, entity, step, content]
     filters:
       - [project, is, '{context.project}']    
-      - [entity, type_is, 'CustomEntity01']        
-  - caption: Publishing
-    entity_type: CustomEntity03
-    hierarchy: [project, sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
-    filters:
-      - [project, is, '{context.project}']      
+      - [entity, type_is, 'CustomEntity01']           
   - caption: Outsourcing
     entity_type: Task
     filters:
