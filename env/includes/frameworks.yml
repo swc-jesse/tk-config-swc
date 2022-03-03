@@ -104,7 +104,7 @@ frameworks:
       type: git_branch
       branch: swc_beta
       path: https://github.com/nimbleheroes/tk-framework-perforce.git
-      version: "5c2bc29"
+      version: "4ad7567"
       
   # SWC - Custom utilities
   tk-framework-swc_v0.x.x:
