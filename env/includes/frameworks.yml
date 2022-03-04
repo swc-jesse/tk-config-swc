@@ -106,7 +106,7 @@ frameworks:
       # version: 5c2bc29d986f4009dfc01fbb1d3fafb5bdb85501
       type: git
       path: https://github.com/studiowildcard/tk-framework-perforce
-      version: v0.5.1 
+      version: v0.5.2
   # SWC - Custom utilities
   tk-framework-swc_v0.x.x:
     location:
