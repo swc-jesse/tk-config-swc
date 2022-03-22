@@ -166,7 +166,7 @@ apps.tk-multi-perforce.location:
   # version: 4f5602afb6884325c5b222895b5a7b1c1f551b9e
   type: git
   path: https://github.com/studiowildcard/tk-multi-perforce
-  version: v0.5.1
+  version: v0.5.2
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
