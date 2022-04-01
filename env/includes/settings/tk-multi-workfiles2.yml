@@ -75,9 +75,18 @@ entity_browser_settings: &entity_browser_settings
       filters:    
       link_field: entity
       hierarchy: []
-  - caption: Cinematics
+  - caption: Sequences
     entity_type: Sequence
     hierarchy: [sg_asset_library, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:    
+      link_field: entity
+      hierarchy: [step]
+  - caption: Shots
+    entity_type: Shot
+    hierarchy: [sg_sequence, code]
     filters:
     sub_hierarchy:
       entity_type: Task
@@ -501,6 +510,16 @@ settings.tk-multi-workfiles2.maya.env_asset_step:
   <<: *common_workfiles_settings
   my_tasks_extra_display_fields: []    
   <<: *env_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# project
+settings.tk-multi-workfiles2.maya.project:
+  template_publish: 
+  template_publish_area: 
+  template_work: 
+  template_work_area: 
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
 ################################################################################
