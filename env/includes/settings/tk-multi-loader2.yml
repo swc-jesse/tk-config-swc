@@ -58,7 +58,20 @@ entity_browser_settings: &entity_browser_settings
     entity_type: Task
     filters:
     - [step.Step.code, is, "Vendor"]      
-    hierarchy: [entity, content]      
+    hierarchy: [entity, content]   
+  - caption: Cinematics
+    entity_type: Task
+    hierarchy: [project, entity, step, content]
+    filters:
+      - [project, is, '{context.project}']   
+      - { "filter_operator": "any","filters": [[entity, type_is, 'Sequence'],[entity, type_is, 'Shot']] }
+  - caption: Cinematic Assets
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    filters:
+      - [project, is, '{context.project}']   
+      - { "filter_operator": "any","filters": [[entity.Asset.sequences, is_not, [null]]] }
+   
 
 entity_browser_settings: &sequence_browser_settings
   entities:
