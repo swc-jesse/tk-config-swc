@@ -131,6 +131,30 @@ settings.tk-multi-publish2.houdini.asset_step: &settings_publish_plugins_tk-mult
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
+# sequence
+settings.tk-multi-publish2.houdini.sequence:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: sequence_houdini_workfile
+
+# sequence_step
+settings.tk-multi-publish2.houdini.sequence_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: sequence_task_houdini_workfile
+
+# shot
+settings.tk-multi-publish2.houdini.shot:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: shot_houdini_workfile
+
+# shot_step
+settings.tk-multi-publish2.houdini.shot_step:
+  <<: *settings_publish_plugins_tk-multi-publish2_houdini
+  collector_settings:
+      Work Template: shot_task_houdini_workfile
+
 # asset_child_step
 settings.tk-multi-publish2.houdini.asset_child_step:
   <<: *settings_publish_plugins_tk-multi-publish2_houdini

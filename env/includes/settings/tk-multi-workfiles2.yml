@@ -348,6 +348,46 @@ settings.tk-multi-workfiles2.houdini.asset_child_step:
   <<: *entity_browser_settings
   location: "@apps.tk-multi-workfiles2.location"
 
+# sequence
+settings.tk-multi-workfiles2.houdini.sequence:
+  template_publish: sequence_houdini_workfile
+  template_publish_area: sequence_root
+  template_work: sequence_houdini_workfile
+  template_work_area: sequence_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# sequence_step
+settings.tk-multi-workfiles2.houdini.sequence_step:
+  template_publish: sequence_task_houdini_workfile
+  template_publish_area: sequence_root
+  template_work: sequence_task_houdini_workfile
+  template_work_area: sequence_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# shot
+settings.tk-multi-workfiles2.houdini.shot:
+  template_publish: shot_houdini_workfile
+  template_publish_area: shot_root
+  template_work: shot_houdini_workfile
+  template_work_area: shot_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
+# shot_step
+settings.tk-multi-workfiles2.houdini.shot_step:
+  template_publish: shot_task_houdini_workfile
+  template_publish_area: shot_root
+  template_work: shot_task_houdini_workfile
+  template_work_area: shot_root
+  <<: *common_workfiles_settings
+  <<: *anim_entity_browser_settings
+  location: "@apps.tk-multi-workfiles2.location"
+
 # seq_asset_step
 settings.tk-multi-workfiles2.houdini.seq_asset_step:
   template_publish: seq_asset_houdini_workfile

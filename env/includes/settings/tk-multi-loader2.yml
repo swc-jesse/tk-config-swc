@@ -172,6 +172,53 @@ settings.tk-multi-loader2.houdini:
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 
+# houdini sequence
+settings.tk-multi-loader2.houdini.sequence:
+  actions_hook: "{self}/tk-houdini_actions.py:{config}/tk-multi-loader2/tk-houdini/tk-houdini_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings:
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Houdini Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
+  <<: *sequence_browser_settings   
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
+# houdini shot
+settings.tk-multi-loader2.houdini.shot:
+  actions_hook: "{self}/tk-houdini_actions.py:{config}/tk-multi-loader2/tk-houdini/tk-houdini_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings:
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Houdini Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
+  <<: *shot_browser_settings   
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
+
 # maya assets
 settings.tk-multi-loader2.maya:
   actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"

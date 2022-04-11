@@ -17,6 +17,7 @@ includes:
 - ./includes/frameworks.yml
 - ./includes/settings/tk-desktop.yml
 - ./includes/settings/tk-maya.yml
+- ./includes/settings/tk-houdini.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
 - ./includes/settings/tk-multi-perforce.yml
@@ -27,6 +28,7 @@ includes:
 engines:
   tk-desktop: "@settings.tk-desktop.shot_step"
   tk-maya: "@settings.tk-maya.shot_step"
+  tk-houdini: "@settings.tk-houdini.shot_step"
   tk-shell: "@settings.tk-shell.shot"
   tk-shotgun: "@settings.tk-shotgun.shot_step"
 
