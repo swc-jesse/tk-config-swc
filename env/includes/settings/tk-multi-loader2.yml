@@ -22,7 +22,11 @@ entity_browser_settings: &entity_browser_settings
     filters:
     - [task_assignees, is, '{context.user}']
     - [project, is, '{context.project}']
-    hierarchy: [project, entity, step, content]       
+    hierarchy: [project, entity, step, content]      
+  - caption: Project
+    type: Hierarchy
+    root: "{context.project}"
+    publish_filters: [] 
   - caption: Content
     entity_type: Asset
     hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
