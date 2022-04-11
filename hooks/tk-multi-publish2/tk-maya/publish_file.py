@@ -294,7 +294,14 @@ def _maya_find_additional_session_dependencies():
     ref_nodes = cmds.ls(references=True)
     for ref_node in ref_nodes:
         # get the path:
-        ref_path = cmds.referenceQuery(ref_node, filename=True)
+
+        # swc - ethanm - handling like maya does it in their scripts.
+        try:
+            ref_path = cmds.referenceQuery(ref_node, filename=True)
+        except:
+            cmds.warning('_maya_find_additional_session_dependencies: Ref Node "{}" has no filename.'.format(ref_node))
+            continue
+
         # make it platform dependent
         # (maya uses C:/style/paths)
         ref_path = ref_path.replace("/", os.path.sep)

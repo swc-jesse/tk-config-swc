@@ -76,6 +76,30 @@ settings.tk-multi-snapshot.houdini.asset_step:
   template_work: asset_houdini_workfile
   location: "@apps.tk-multi-snapshot.location"
 
+# sequence
+settings.tk-multi-snapshot.houdini.sequence:
+  template_snapshot: sequence_houdini_snapshot
+  template_work: sequence_houdini_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# sequence_step
+settings.tk-multi-snapshot.houdini.sequence_step:
+  template_snapshot: sequence_task_houdini_snapshot
+  template_work: sequence_task_houdini_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# shot
+settings.tk-multi-snapshot.houdini.shot:
+  template_snapshot: shot_houdini_snapshot
+  template_work: shot_houdini_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
+# shot_step
+settings.tk-multi-snapshot.houdini.shot_step:
+  template_snapshot: shot_task_houdini_snapshot
+  template_work: shot_task_houdini_workfile
+  location: "@apps.tk-multi-snapshot.location"
+
 # asset_child_step
 settings.tk-multi-snapshot.houdini.asset_child_step:
   template_snapshot: asset_child_houdini_snapshot

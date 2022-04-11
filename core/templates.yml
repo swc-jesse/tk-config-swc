@@ -536,6 +536,26 @@ paths:
     asset_houdini_snapshot:
         definition: '@asset_snapshot_filename.hip'
 
+    sequence_houdini_workfile:
+        definition: '@sequence_filename.hip'
+    sequence_houdini_snapshot:
+        definition: '@sequence_snapshot_filename.hip'
+
+    sequence_task_houdini_workfile:
+        definition: '@sequence_task_filename.hip'
+    sequence_task_houdini_snapshot:
+        definition: '@sequence_task_snapshot_filename.hip'
+
+    shot_houdini_workfile:
+        definition: '@shot_filename.hip'
+    shot_houdini_snapshot:
+        definition: '@shot_snapshot_filename.hip'
+
+    shot_task_houdini_workfile:
+        definition: '@shot_task_filename.hip'
+    shot_task_houdini_snapshot:
+        definition: '@shot_task_snapshot_filename.hip'
+
     asset_child_houdini_workfile:
         definition: '@asset_child_filename.hip'
     asset_child_houdini_snapshot:

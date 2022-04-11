@@ -143,6 +143,11 @@ settings.tk-shotgun.version:
   apps:
   location: "@engines.tk-shotgun.location"
 
+# playlist
+settings.tk-shotgun.playlist:
+  apps:
+  location: "@engines.tk-shotgun.location"  
+
 # publishedfile
 settings.tk-shotgun.publishedfile:
   apps:
