@@ -100,13 +100,13 @@ frameworks:
       # type: dev
       # path: 'S:/Projects/ShotgunConfig/tk-framework-perforce'
       # Github
-      # type: git_branch
-      # branch: swc_beta
-      # path: https://github.com/nimbleheroes/tk-framework-perforce.git
-      # version: 5c2bc29d986f4009dfc01fbb1d3fafb5bdb85501
-      type: git
-      path: https://github.com/studiowildcard/tk-framework-perforce
-      version: v0.5.2
+      type: git_branch
+      branch: manual-rebase-20220411
+      path: https://github.com/nimbleheroes/tk-framework-perforce.git
+      version: "a02631d6cbe5d7bbebed0a21f3603fc199de3ada"
+      # type: git
+      # path: https://github.com/studiowildcard/tk-framework-perforce
+      # version: v0.5.2
   # SWC - Custom utilities
   tk-framework-swc_v0.x.x:
     location:
