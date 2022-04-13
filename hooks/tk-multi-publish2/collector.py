@@ -12,6 +12,7 @@ import mimetypes
 import os
 import sgtk
 from tank_vendor import six
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_PERFORCE_NAME = "tk-framework-perforce_v0.x.x"
@@ -188,7 +189,13 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("zbrush.png"),
                     "item_type": "file.zbrush",
                     "item_priority": 5,
-                },                                                                             
+                }, 
+                "Ignore": {
+                    "extensions": ["painter_lock"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "ignore",
+                    "item_priority": 0,                    
+                }                                                                            
             }
 
         return self._common_file_info
@@ -196,22 +203,23 @@ class BasicSceneCollector(HookBaseClass):
     @property
     def common_folder_info(self):
         """
-        A dictionary of file type info that allows the basic collector to
-        identify common production file types and associate them with a display
-        name, item type, and config icon.
+        A dictionary of folder type info that allows the basic collector to
+        identify common production folder types and choose how to act on them, 
+        for example, ignoring certain folders entirely or changing how files
+        inside a folder are processed.
 
         The dictionary returned is of the form::
 
             {
-                <Publish Type>: {
-                    "extensions": [<ext>, <ext>, ...],
-                    "icon": <icon path>,
-                    "item_type": <item type>
+                <Folder Type>: {
+                    "name": <folder name>,
+                    "item_type": <item type>,
+                    "ignored": <bool>
                 },
-                <Publish Type>: {
-                    "extensions": [<ext>, <ext>, ...],
-                    "icon": <icon path>,
-                    "item_type": <item type>
+                <Folder Type>: {
+                    "name": <folder name>,
+                    "item_type": <item type>,
+                    "ignored": <bool>
                 },
                 ...
             }
@@ -241,10 +249,24 @@ class BasicSceneCollector(HookBaseClass):
                     "name": "backups",
                     "item_type": "folder.houdini.backups",
                     "ignored": True,
-                },                                                                        
+                },
+                "Local WIP Files": {
+                    "name": "wip",
+                    "item_type": "folder.wip",
+                    "ignored": True,
+                },                                                                          
             }
 
         return self._common_folder_info
+
+    @property
+    def ignored_filename_strings(self):
+        
+        ignored = [
+            "autosave",
+        ]
+
+        return ignored
 
     @property
     def settings(self):
@@ -302,28 +324,33 @@ class BasicSceneCollector(HookBaseClass):
 
         # handle files and folders differently
         if os.path.isdir(path):
-            folder = self.p4_fw.util.recursive_reconcile(path)                
+            folder = self.p4_fw.util.reconcile_files(path)                
             self._collect_folder(parent_item, folder)
             return None
         else:
-            folder = self.p4_fw.util.recursive_reconcile(os.path.dirname(path))
-            for items in folder.add_info, folder.edit_info, folder.delete_info, folder.open_info:
-                for item in items:
-                    if item["clientFile"] == path:
-                        item_info = self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item})
-                        if custom_info:
-                            item_info.update(custom_info)
-                        collectedFile = self._collect_file(parent_item, item_info)
-                        if not collectedFile:
-                            return None
+            try:
+                file = self.p4_fw.util.reconcile_files(path)
+                for items in file.add_info, file.edit_info, file.delete_info, file.open_info:
+                    for item in items:
+                        if item["clientFile"] == path:
+                            item_info = self._collect_item_info(parent_item,item["clientFile"],extra={"p4_data":item})
+                            if custom_info:
+                                item_info.update(custom_info)
+                            collectedFile = self._collect_file(parent_item, item_info)
+                            if not collectedFile:
+                                return None
 
-                        playblasts = os.path.join(os.path.dirname(path),"playblasts")
-                        if(os.path.exists(playblasts)):
-                            folder.recursive_scan(playblasts)
-                            self._collect_folder(parent_item, folder)
-                        return collectedFile
-            self.logger.warn("File not added or changed in Perforce: %s" % (path,))
-            return None
+                            playblasts = os.path.join(os.path.dirname(path),"playblasts")
+                            if(os.path.exists(playblasts)):
+                                file.scan(playblasts)
+                                self._collect_folder(parent_item, file)
+                            return collectedFile
+                self.logger.warn("File not added or changed in Perforce: %s" % (path,))
+                return None
+            except Exception as e:
+                self.logger.debug(f"Error: {e}")    
+                item_info = self._collect_item_info(parent_item,path)
+                self._collect_single_version(parent_item,item_info)
 
     def _collect_file(self, parent_item, item_info, frame_sequence=False):
         """
@@ -335,8 +362,14 @@ class BasicSceneCollector(HookBaseClass):
         :returns: The item that was created
         """
 
-        if item_info["item_type"].startswith("script"):
+        if item_info["item_type"].startswith("script") or item_info["item_type"] == "ignore":
             return None
+
+        for subStr in self.ignored_filename_strings:
+            if subStr.lower() in item_info["item_path"].lower():
+                self.logger.info(f'Ignored file with "{subStr}" in the name: {os.path.normpath(item_info["item_path"])}')
+                return None
+
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
         path = item_info["item_path"]
@@ -354,7 +387,6 @@ class BasicSceneCollector(HookBaseClass):
         type_display = item_info["type_display"]
         extension = item_info["extension"]
         item_priority = item_info["item_priority"]
-        p4_data = item_info["p4_data"]
         evaluated_path = path
         is_sequence = False
 
@@ -370,11 +402,18 @@ class BasicSceneCollector(HookBaseClass):
         display_name = publisher.util.get_publish_name(path, sequence=is_sequence)
 
         # Try to get the context more specifically from the path on disk
+        context = None
         try:
             context = self.swc_fw.find_task_context(path)
         except(AttributeError):
-            self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
-            context = self.swc_fw.find_task_context(path)
+            try:
+                self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+                context = self.swc_fw.find_task_context(path)
+            except:
+                # This probably isn't a valid folder
+                pass
+        except:
+            pass
 
         # create and populate the item
         file_item = parent_item.create_item(item_type, type_display, display_name)
@@ -412,7 +451,9 @@ class BasicSceneCollector(HookBaseClass):
         # properties for the plugins to use for processing.
         file_item.properties["path"] = evaluated_path
         file_item.properties["item_priority"] = item_priority
-        file_item.properties["p4_data"] = p4_data
+        if "p4_data" in item_info.keys():
+            p4_data = item_info["p4_data"]
+            file_item.properties["p4_data"] = p4_data
 
         if is_sequence:
             # include an indicator that this is an image sequence and the known
@@ -654,6 +695,35 @@ class BasicSceneCollector(HookBaseClass):
 
         return self._image_extensions
 
+    def _collect_single_version(self, parent_item, item_info):
+        """
+        Creates items for quicktime playblasts.
+
+        Looks for a 'project_root' property on the parent item, and if such
+        exists, look for movie files in a 'movies' subfolder.
+
+        :param parent_item: Parent Item instance
+        :param str project_root: The maya project root to search for playblasts
+        """
+
+        # do some early pre-processing to ensure the file is of the right
+        # type. use the base class item info method to see what the item
+        # type would be.
+        item_info["item_type"] = f"playblast.{item_info['item_type'].split('.')[1]}"
+    
+        item = self._collect_file(parent_item, item_info)
+        if not item:
+            return None
+
+        # # the item has been created. update the display name to include
+        # # the an indication of what it is and why it was collected
+
+        # publish_name = self.get_next_version_name(item,item.properties["path"])
+        # item.properties["publish_name"] = publish_name       
+        # item.name = f"(Review) {publish_name}"  
+
+        return item
+
     def _collect_playblast(self, parent_item, item_info):
         """
         Creates items for quicktime playblasts.
@@ -686,7 +756,10 @@ class BasicSceneCollector(HookBaseClass):
 
                     # the item has been created. update the display name to include
                     # the an indication of what it is and why it was collected
-                    item.name = "(%s) %s" % ("Review", item.name)     
+
+                    publish_name = self.get_next_version_name(item,item.properties["path"])
+                    item.properties["publish_name"] = publish_name       
+                    item.name = f"(Review) {publish_name}"  
 
                     return item
         else:
@@ -695,9 +768,9 @@ class BasicSceneCollector(HookBaseClass):
             if not item:
                 return None            
 
-            # the item has been created. update the display name to include
-            # the an indication of what it is and why it was collected
-            item.name = "(%s) %s" % ("Review", item.name)    
+            publish_name = self.get_next_version_name(item,item.properties["path"])
+            item.properties["publish_name"] = publish_name       
+            item.name = f"(Review) {publish_name}"  
 
             return item
 
@@ -739,3 +812,34 @@ class BasicSceneCollector(HookBaseClass):
                 return False
 
         return True
+
+    def get_next_version_name(self, item, path):
+        # Increment version number based on how many versions
+        self.publisher = self.parent
+
+        # use the path's filename as the base publish name
+        path_components = self.publisher.util.get_file_path_components(path)
+        publish_name = path_components["filename"]
+
+        # See how many prior versions there are
+        filters = [
+            ['entity', 'is', item.context.entity]
+        ]
+
+        prior_versions = self.publisher.shotgun.find("Version",filters,['code'])      
+
+        regex = r"(" + re.escape(publish_name.split('.')[0]) + r"){1}(\.v\d)?\.\w*$"
+
+        x = [i for i in prior_versions if re.match(regex,i['code'])]   
+
+        # Set the publish name of this item as the next version
+        version_number = len(x)+1     
+        version_path = self.publisher.util.get_version_path(path,version_number)
+        version_path_components = self.publisher.util.get_file_path_components(version_path)
+        publish_name = version_path_components["filename"]  
+        
+        self.logger.info("Using prior version info to determine publish version.")
+        self.logger.info("Publish name: %s" % (publish_name,))  
+
+        return publish_name      
+

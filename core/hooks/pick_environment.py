@@ -52,6 +52,10 @@ class PickEnvironment(sgtk.Hook):
                     return "asset_child"
 
                 return "asset"
+            elif context.entity["type"] == "Sequence":
+                return "sequence" 
+            elif context.entity["type"] == "Shot":
+                return "shot"                     
             elif context.entity["type"] == "CustomEntity01":
                 return "env_asset"  
             elif context.entity["type"] == "CustomEntity03":
@@ -79,6 +83,10 @@ class PickEnvironment(sgtk.Hook):
                     return "anim_asset_step"
                 else:
                     return "asset_step"
+            elif context.entity["type"] == "Sequence":
+                return "sequence_step"  
+            elif context.entity["type"] == "Shot":
+                return "shot_step"  
             elif context.entity["type"] == "CustomEntity01":
                 return "env_asset_step"  
             elif context.entity["type"] == "CustomEntity03":

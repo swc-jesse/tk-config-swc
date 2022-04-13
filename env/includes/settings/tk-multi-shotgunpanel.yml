@@ -90,6 +90,7 @@ settings.tk-multi-shotgunpanel.houdini:
 settings.tk-multi-shotgunpanel.maya:
   enable_context_switch: true
   shotgun_fields_hook: "{config}/tk-multi-shotgunpanel/shotgun_fields.py"
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py"
   action_mappings:
     PublishedFile:
     - actions: [reference, import]

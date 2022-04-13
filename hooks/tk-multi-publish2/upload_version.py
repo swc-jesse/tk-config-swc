@@ -8,10 +8,15 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+from shutil import copyfile
+import tempfile
 import sgtk
 import os
+import datetime
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
+TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
 
 class UploadVersionPlugin(HookBaseClass):
     @property
@@ -109,12 +114,60 @@ class UploadVersionPlugin(HookBaseClass):
             if p4_data["action"] == "delete":
                 return {"accepted": False}
                         
-        # get the base settings
-        settings = super(UploadVersionPlugin, self).accept(settings, item)
         if(item.type_spec.split(".")[0] != "playblast"):
             # set the default checked state
-            settings["checked"] = False
+            return {"accepted": False}
+        
+        # get the base settings
+        settings = super(UploadVersionPlugin, self).accept(settings, item)
         return settings
+
+    def validate(self, settings, item):
+        """
+        Validates the given item to check that it is ok to publish.
+        Returns a boolean to indicate validity.
+        :param settings: Dictionary of Settings. The keys are strings, matching
+            the keys returned in the settings property. The values are `Setting`
+            instances.
+        :param item: Item to process
+        :returns: True if item is valid, False otherwise.
+        """
+        publish_name = item.properties.get("publish_name")
+        if not publish_name:
+            version_path = self.get_next_version_name(item,item.properties["path"])
+            version_path_components = self.publisher.util.get_file_path_components(version_path)
+            publish_name = version_path_components["filename"]  
+            
+            self.logger.info("Using prior version info to determine publish version.")
+
+            self.logger.info("Publish name: %s" % (publish_name,))  
+            item.properties["publish_name"] = publish_name       
+            item.name = f"(Review) {publish_name}"  
+        return super(UploadVersionPlugin, self).validate(settings, item)
+
+    def publish(self, settings, item):
+        """
+        Executes the publish logic for the given item and settings.
+        :param settings: Dictionary of Settings. The keys are strings, matching
+            the keys returned in the settings property. The values are `Setting`
+            instances.
+        :param item: Item to process
+        """
+
+        publisher = self.parent
+        path = item.properties["path"]
+
+        path_components = publisher.util.get_file_path_components(path)
+
+        if path_components["filename"] != item.properties["publish_name"]:
+            temp_path = os.path.join(
+                    tempfile.gettempdir(), item.properties["publish_name"]
+                )         
+            copyfile(path, temp_path)
+            item.properties["original_path"] = path
+            item.properties["path"] = temp_path
+        
+        super(UploadVersionPlugin, self).publish(settings, item)
 
     def finalize(self, settings, item):
         """
@@ -126,21 +179,79 @@ class UploadVersionPlugin(HookBaseClass):
         :param item: Item to process
         """
 
+        # Increment version number based on how many versions
+        self.publisher = self.parent
         path = item.properties["path"]
         version = item.properties["sg_version_data"]
+        type_class = item.type_spec.split(".")[0] 
 
-        type_class = item.type_spec.split(".")[0]
-        if(type_class == "playblast"):
+        if("original_path" in item.properties):
+            original_path = item.properties["original_path"]
             os.remove(path)
-            self.logger.info(
-                "Playblast deleted after uploading for file: %s" % (path,),
-                extra={
-                    "action_show_in_shotgun": {
-                        "label": "Show Version",
-                        "tooltip": "Reveal the version in ShotGrid.",
-                        "entity": version,
-                    }
-                },
-            )        
+        else:
+            original_path = path
+
+        if(type_class == "playblast"):
+            context = None
+            try:
+                context = self.swc_fw.find_task_context(original_path)
+            except(AttributeError):
+                try:
+                    self.swc_fw = self.load_framework(TK_FRAMEWORK_SWC_NAME)
+                    context = self.swc_fw.find_task_context(original_path)
+                except:
+                    # This probably isn't a valid folder
+                    pass
+            except:
+                pass
+            if context:
+                os.remove(original_path)
+
+                self.logger.info(
+                    "Playblast deleted after uploading for file: %s" % (original_path,),
+                    extra={
+                        "action_show_in_shotgun": {
+                            "label": "Show Version",
+                            "tooltip": "Reveal the version in ShotGrid.",
+                            "entity": version,
+                        }
+                    },
+                )        
+            else:
+                self.logger.info(
+                    "Playblast uploaded for file: %s" % (original_path,),
+                    extra={
+                        "action_show_in_shotgun": {
+                            "label": "Show Version",
+                            "tooltip": "Reveal the version in ShotGrid.",
+                            "entity": version,
+                        }
+                    },
+                )      
         else:
             super(UploadVersionPlugin, self).finalize(settings, item)
+
+    def get_next_version_name(self, item, path):
+        # Increment version number based on how many versions
+        self.publisher = self.parent
+
+        # use the path's filename as the base publish name
+        path_components = self.publisher.util.get_file_path_components(path)
+        publish_name = path_components["filename"]
+
+        # See how many prior versions there are
+        filters = [
+            ['entity', 'is', self._get_version_entity(item)]
+        ]
+
+        prior_versions = self.publisher.shotgun.find("Version",filters,['code'])      
+
+        regex = r"(" + re.escape(publish_name.split('.')[0]) + r"){1}(\.v\d)?\.\w*$"
+
+        x = [i for i in prior_versions if re.match(regex,i['code'])]   
+
+        # Set the publish name of this item as the next version
+        version_number = len(x)+1     
+        version_path = self.publisher.util.get_version_path(path,version_number)
+
+        return version_path      

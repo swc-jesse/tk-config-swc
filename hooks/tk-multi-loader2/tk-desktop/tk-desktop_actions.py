@@ -76,16 +76,6 @@ class ShellActions(HookBaseClass):
 
         # For the sake of easy test, we'll reuse Maya publish types.
 
-        if "perforce_sync" in actions:
-            action_instances.append(
-                {
-                    "name": "perforce_sync",
-                    "params": "Perforce Sync 'params'",
-                    "caption": "Perforce: Sync",
-                    "description": "Executes Perforce Sync.",
-                }
-            )
-
         if "create_folders" in actions:
             action_instances.append(
                 {
@@ -96,25 +86,6 @@ class ShellActions(HookBaseClass):
                 }
             )
 
-        if "debug_action_3" in actions:
-            action_instances.append(
-                {
-                    "name": "debug_action_3",
-                    "params": "Debug Action 3 'params'",
-                    "caption": "Debug Action 3",
-                    "description": "Executes Debug Action 3.",
-                }
-            )
-
-        if "debug_action_4" in actions:
-            action_instances.append(
-                {
-                    "name": "debug_action_4",
-                    "params": "Debug Action 4 'params'",
-                    "caption": "Debug Action 4",
-                    "description": "Executes Debug Action 4.",
-                }
-            )
         return action_instances
 
     def execute_multiple_actions(self, actions):
@@ -146,9 +117,11 @@ class ShellActions(HookBaseClass):
         app.log_info("Executing action '%s' on the selection")
         # Helps to visually scope selections
         # Execute each action.
+
         for single_action in actions:
             name = single_action["name"]
             sg_publish_data = single_action["sg_publish_data"]
+
             params = single_action["params"]
             self.execute_action(name, params, sg_publish_data)
 
@@ -174,10 +147,8 @@ class ShellActions(HookBaseClass):
         # so convert the path to ensure filenames containing complex characters are supported
         # path = six.ensure_str(self.get_publish_path(sg_publish_data))
 
-        if name == "perforce_sync":            
-            p4_app.sync_files(sg_publish_data['type'], [sg_publish_data['id']])
-
         if name == "create_folders":   
-            tk = sgtk.sgtk_from_entity(sg_publish_data['type'], sg_publish_data['id'])         
+            tk = sgtk.sgtk_from_entity(sg_publish_data['type'], sg_publish_data['id'])    
+            tk.synchronize_filesystem_structure()     
             tk.create_filesystem_structure(sg_publish_data['type'], sg_publish_data['id'])            
             

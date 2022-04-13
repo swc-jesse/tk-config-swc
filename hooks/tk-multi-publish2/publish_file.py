@@ -13,7 +13,8 @@ import pprint
 import traceback
 import tempfile
 import sgtk
-# from sgtk.util.filesystem import copy_file, ensure_folder_exists
+from sgtk.util.filesystem import copy_file, ensure_folder_exists
+from sgtk.platform.qt import QtGui, QtCore
 
 HookBaseClass = sgtk.get_hook_baseclass()
 TK_FRAMEWORK_SWC_NAME = "tk-framework-swc_v0.x.x"
@@ -69,7 +70,7 @@ class PublishPlugin(HookBaseClass):
         The type string should be one of the data types that toolkit accepts
         as part of its environment configuration.
         """
-        return {
+        settings = {
             "File Types": {
                 "type": "list",
                 "default": [
@@ -98,6 +99,39 @@ class PublishPlugin(HookBaseClass):
                 ),
             },
         }
+
+        # define the settings the custom plugin UI will set
+        settings["pathinfo"] = {
+            "type": "dict",
+            "default": None,
+            "description": "Path info for this file."
+        }
+        return settings
+
+    def create_settings_widget(self, parent):
+        # Create our custom widget and return it.
+        # It is actually a collection of widgets parented to a single widget.
+        self.review_widget = FileInfoWidget(parent, self.parent.shotgun)
+        return self.review_widget
+
+
+    def get_ui_settings(self, widget):
+        # This will get called when the selection changes in the UI.
+        # We need to gather the settings from the UI and return them
+        return {}
+
+
+    def set_ui_settings(self, widget, settings):
+        # The plugin task has just been selected in the UI, so we must set the UI state given the settings.
+        # It's possible this is the first time the plugin task has been selected, in which case we won't have
+        # any settings passed.
+        # There also maybe multiple plugins selected in which case there might be a mix of states
+        # The current implementation simply sets the settings for each settings block, so the end state of the UI
+        # will represent that of the last selected item.
+        for setting_block in settings:
+            pathinfo = setting_block.get("pathinfo")
+            if pathinfo:
+                widget.pathinfo = pathinfo
 
     @property
     def item_filters(self):
@@ -152,7 +186,21 @@ class PublishPlugin(HookBaseClass):
                     extra={"action_show_folder": {"path": path}},
                 )
 
+                context_entity = context_step = context_task = None
                 # return the accepted info
+                if item.context.entity:
+                    context_entity = item.context.entity["name"]
+                if item.context.step:
+                    context_step = item.context.step["name"]
+                if item.context.task:
+                    context_task = item.context.task["name"]
+
+                settings["pathinfo"].value={
+                    "path":path,
+                    "asset":context_entity,
+                    "step":context_step,
+                    "task":context_task
+                    }
                 return {"accepted": True}            
 
     def validate(self, settings, item):
@@ -614,3 +662,57 @@ class PublishPlugin(HookBaseClass):
         """
         return item.get_property("publish_kwargs", default_value={})
 
+class FileInfoWidget(QtGui.QWidget):
+
+    def __init__(self, parent, sg):
+
+        super(FileInfoWidget, self).__init__(parent)
+
+        self.__setup_ui()
+
+    @property
+    def pathinfo(self):
+        return {
+            "path":self.pathinfo_data.Text(),
+            "asset":self.assetinfo_data.Text(),
+            "step":self.stepinfo_data.Text(),
+            "task":self.taskinfo_data.Text()
+        }
+
+    @pathinfo.setter
+    def pathinfo(self, value):
+        self.pathinfo_data.setText(value["path"])   
+        self.assetinfo_data.setText(value["asset"])  
+        self.stepinfo_data.setText(value["step"])  
+        self.taskinfo_data.setText(value["task"])       
+
+    def __setup_ui(self):
+        """
+        Creates and lays out all the Qt widgets
+        :return:
+        """
+        layout = QtGui.QVBoxLayout()
+        layout.setAlignment(QtCore.Qt.AlignLeft)
+        self.setLayout(layout)
+
+        # Create text box with additional file info
+        self.pathinfo_lbl = QtGui.QLabel("Path:")
+        self.pathinfo_data = QtGui.QLabel(" ")
+        self.assetinfo_lbl = QtGui.QLabel("Asset:")
+        self.assetinfo_data = QtGui.QLabel(" ")
+        self.stepinfo_lbl = QtGui.QLabel("Step:")
+        self.stepinfo_data = QtGui.QLabel(" ")
+        self.taskinfo_lbl = QtGui.QLabel("Task:")
+        self.taskinfo_data = QtGui.QLabel(" ")
+        self.fileinfo_layout = QtGui.QGridLayout()
+        self.fileinfo_layout.addWidget(self.pathinfo_lbl,0,0)
+        self.fileinfo_layout.addWidget(self.pathinfo_data,0,1)
+        self.fileinfo_layout.addWidget(self.assetinfo_lbl,1,0)
+        self.fileinfo_layout.addWidget(self.assetinfo_data,1,1)       
+        self.fileinfo_layout.addWidget(self.stepinfo_lbl,2,0)
+        self.fileinfo_layout.addWidget(self.stepinfo_data,2,1)    
+        self.fileinfo_layout.addWidget(self.taskinfo_lbl,3,0)
+        self.fileinfo_layout.addWidget(self.taskinfo_data,3,1)     
+
+        sp = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Maximum)
+        layout.addLayout(self.fileinfo_layout)

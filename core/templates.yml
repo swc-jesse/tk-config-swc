@@ -42,6 +42,10 @@ keys:
         type: str
         shotgun_entity_type: Task
         shotgun_field_name: content
+    Sequence:
+        type: str
+    Shot:
+        type: str        
     task_step:
         type: str
         shotgun_entity_type: Task
@@ -58,14 +62,30 @@ keys:
         type: str
         shotgun_entity_type: Asset
         shotgun_field_name: sg_asset_parent.Asset.code
+    seq_asset_parent:  
+        type: str
+        shotgun_entity_type: Sequence
+        shotgun_field_name: sg_asset_parent.Sequence.code  
     asset_library:
         type: str
         shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_library.AssetLibrary.code
+    seq_asset_library:
+        type: str
+        shotgun_entity_type: Sequence
         shotgun_field_name: sg_asset_library.AssetLibrary.code
     asset_library_parent:
         type: str
         shotgun_entity_type: Asset
         shotgun_field_name: sg_asset_parent.Asset.sg_asset_library.AssetLibrary.code
+    seq_asset_library_parent:
+        type: str
+        shotgun_entity_type: Asset
+        shotgun_field_name: sg_asset_parent.Sequence.sg_asset_library.AssetLibrary.code
+    shot_asset_library_parent:
+        type: str
+        shotgun_entity_type: Shot
+        shotgun_field_name: sg_sequence.Sequence.sg_asset_library.AssetLibrary.code
     asset_type:
         type: str
         shotgun_entity_type: Asset
@@ -328,7 +348,9 @@ paths:
     # will be set within each template that uses the alias.
     asset_root: 'Content/{asset_library}/{asset_type}/{asset_category}/{Asset}'
     asset_child_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_category}/{folder_name}'
-    #anim_asset_root: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{folder_name}'
+    sequence_root: 'Content/{seq_asset_library}/Sequences/{Sequence}'
+    shot_root: 'Content/{shot_asset_library_parent}/Sequences/{Sequence}/{Shot}'
+    seq_asset_root: 'Content/{seq_asset_library_parent}/Sequences/{seq_asset_parent}/{asset_type}/{asset_category}/{Asset}'    
 
     env_asset_root: 'Content/{env_asset_library}/{env_asset_type}/{biome}/{env_asset_category}/{env_folder_name}'
     pub_asset_root: '{pub_asset_type}/{Campaign}/{Product}/{use}/{CustomEntity03}'
@@ -341,6 +363,21 @@ paths:
     asset_child_work_area: '@asset_child_root/{Step}/{Task}'
     asset_child_filename: '@asset_child_work_area/{asset_name}[_{name}][_{Task}]'
     asset_child_snapshot_filename: '@asset_child_work_area/snapshots/{asset_name}[_{name}][_{Task}].{timestamp}'
+
+    sequence_filename: '@sequence_root/{Sequence}[_{name}]'
+    sequence_snapshot_filename: '@sequence_root/snapshots/{Sequence}[_{name}].{timestamp}'
+    sequence_work_area: '@sequence_root/{Step}' 
+    sequence_task_filename: '@sequence_work_area/{Sequence}[_{Task}][_{name}]'
+    sequence_task_snapshot_filename: '@sequence_work_area/snapshots/{Sequence}[_{Task}][_{name}].{timestamp}'
+
+    shot_filename: '@shot_root/{Shot}[_{name}]'
+    shot_snapshot_filename: '@shot_root/snapshots/{Shot}[_{name}].{timestamp}'
+    shot_work_area: '@shot_root/{Step}' 
+    shot_task_filename: '@shot_work_area/{Shot}[_{Task}][_{name}]'
+    shot_task_snapshot_filename: '@shot_work_area/snapshots/{Shot}[_{Task}][_{name}].{timestamp}'
+
+    seq_asset_work_area: '@seq_asset_root/{Step}/{Task}' 
+    seq_asset_filename: '@seq_asset_work_area/{asset_name}[_{name}][_{Task}]'
 
     anim_asset_work_area: 'Content/{asset_library_parent}/{asset_type_parent}/{asset_category_parent}/{asset_parent}/{asset_type}/{asset_category}/{folder_name}'
     anim_asset_filename: '@anim_asset_work_area/[{asset_name}_]{Task}[_{name}]'
@@ -443,6 +480,26 @@ paths:
         definition: '@asset_filename.{maya_extension}'
     asset_maya_snapshot:
         definition: '@asset_snapshot_filename.{maya_extension}'
+
+    sequence_maya_workfile:
+        definition: '@sequence_filename.{maya_extension}'
+    sequence_maya_snapshot:
+        definition: '@sequence_snapshot_filename.{maya_extension}'
+
+    sequence_task_maya_workfile:
+        definition: '@sequence_task_filename.{maya_extension}'
+    sequence_task_maya_snapshot:
+        definition: '@sequence_task_snapshot_filename.{maya_extension}'
+
+    shot_maya_workfile:
+        definition: '@shot_filename.{maya_extension}'
+    shot_maya_snapshot:
+        definition: '@shot_snapshot_filename.{maya_extension}'
+
+    shot_task_maya_workfile:
+        definition: '@shot_task_filename.{maya_extension}'
+    shot_task_maya_snapshot:
+        definition: '@shot_task_snapshot_filename.{maya_extension}'
 
     asset_child_maya_workfile:
         definition: '@asset_child_filename.{maya_extension}'

@@ -15,4 +15,5 @@ name: "{sg_asset_parent.Asset.sg_asset_type}/{sg_asset_parent.Asset.sg_asset_cat
 filters:
     - { "path": "sg_asset_library", "relation": "is", "values": [ "$asset_library" ] }
     - { "path": "sg_asset_parent", "relation": "is_not", "values": [ null ] }
+    - { "path": "sg_asset_parent", "relation": "type_is", "values": [ "Asset" ] }
     - { "path": "sg_asset_type", "relation": "is_not", "values": [ "Animations" ] }    
