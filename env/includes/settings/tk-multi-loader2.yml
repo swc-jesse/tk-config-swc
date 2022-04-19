@@ -22,24 +22,27 @@ entity_browser_settings: &entity_browser_settings
     filters:
     - [task_assignees, is, '{context.user}']
     - [project, is, '{context.project}']
-    hierarchy: [project, entity, step, content]       
+    hierarchy: [project, entity, step, content]      
+  - caption: Project
+    type: Hierarchy
+    root: "{context.project}"
+    publish_filters: [] 
   - caption: Content
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
-      - [entity.Asset.sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']        
-      - [entity, type_is, 'Asset']
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']    
+      - [sg_asset_type, is_not, ["Animations"]]       
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']
   - caption: Children
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_parent.Asset.sg_asset_library, entity.Asset.sg_asset_parent.Asset.sg_asset_type, entity.Asset.sg_asset_parent.Asset.sg_asset_category, entity.Asset.sg_asset_parent.Asset.code, entity.Asset.sg_asset_category, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_parent.Asset.sg_asset_library, sg_asset_parent.Asset.sg_asset_type, sg_asset_parent.Asset.sg_asset_category, sg_asset_parent.Asset.code, sg_asset_category, code]
     filters:
-      - [entity.Asset.sg_asset_parent, is_not, [ null ]]    
-      - [entity.Asset.sg_asset_type, is_not, ["Animations"]]         
-      - [project, is, '{context.project}']    
-      - [entity, type_is, 'Asset']      
+      - [project, is, '{context.project}']  
+      - [sg_asset_parent, is_not, [ null ]]
+      - [sg_asset_type, is_not, ["Animations"]]     
     publish_filters:
       - [task.Task.step.Step.short_name, is_not, 'Animations']        
   - caption: Animations
@@ -54,17 +57,25 @@ entity_browser_settings: &entity_browser_settings
     hierarchy: [project, entity.CustomEntity01.sg_asset_library, entity.CustomEntity01.sg_asset_type, entity.CustomEntity01.sg_biome, entity.CustomEntity01.sg_asset_category, entity, step, content]
     filters:
       - [project, is, '{context.project}']    
-      - [entity, type_is, 'CustomEntity01']        
-  - caption: Publishing
-    entity_type: CustomEntity03
-    hierarchy: [project, sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
-    filters:
-      - [project, is, '{context.project}']      
+      - [entity, type_is, 'CustomEntity01']           
   - caption: Outsourcing
     entity_type: Task
     filters:
     - [step.Step.code, is, "Vendor"]      
-    hierarchy: [entity, content]      
+    hierarchy: [entity, content]   
+  - caption: Cinematics
+    entity_type: Task
+    hierarchy: [project, entity, step, content]
+    filters:
+      - [project, is, '{context.project}']   
+      - { "filter_operator": "any","filters": [[entity, type_is, 'Sequence'],[entity, type_is, 'Shot']] }
+  - caption: Cinematic Assets
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    filters:
+      - [project, is, '{context.project}']   
+      - { "filter_operator": "any","filters": [[entity.Asset.sequences, is_not, [null]]] }
+   
 
 entity_browser_settings: &sequence_browser_settings
   entities:
@@ -75,19 +86,17 @@ entity_browser_settings: &sequence_browser_settings
     - [project, is, '{context.project}']
     hierarchy: [project, entity, step, content]       
   - caption: Content
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
-      - [entity.Asset.sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']        
-      - [entity, type_is, 'Asset']
-    publish_filters:
-      - [task.Task.step.Step.short_name, is_not, 'Animations']
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']    
+      - [sg_asset_type, is_not, ["Animations"]]   
   - caption: Sequence Assets
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_type, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_type, code]
     filters:
-      - { "filter_operator": "any","filters": [[entity.Asset.sequences, is, '{context.entity}'],[entity, is, '{context.entity}'],[entity.Shot.sg_sequence, is, '{context.entity}']] }
+      - { "filter_operator": "any","filters": [[sequences, is, '{context.entity}'],[sg_sequence, is, '{context.entity}']] }
 
 entity_browser_settings: &shot_browser_settings
   entities:
@@ -98,19 +107,17 @@ entity_browser_settings: &shot_browser_settings
     - [project, is, '{context.project}']
     hierarchy: [project, entity, step, content]       
   - caption: Content
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_library, sg_asset_type, sg_asset_category, code]
     filters:
-      - [entity.Asset.sg_asset_parent, is, [ null ]]
-      - [project, is, '{context.project}']        
-      - [entity, type_is, 'Asset']
-    publish_filters:
-      - [task.Task.step.Step.short_name, is_not, 'Animations']
+      - [sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']    
+      - [sg_asset_type, is_not, ["Animations"]]  
   - caption: Sequence Assets
-    entity_type: Task
-    hierarchy: [project, entity.Asset.sg_asset_type, entity, step, content]
+    entity_type: Asset
+    hierarchy: [project, sg_asset_type, code]
     filters:
-      - { "filter_operator": "any","filters": [[entity.Asset.sequences.Sequence.shots, is, '{context.entity}'],[entity, is, '{context.entity}'],[entity.Sequence.shots, is, '{context.entity}']] }      
+      - { "filter_operator": "any","filters": [[sequences.Sequence.shots, is, '{context.entity}'],[shots, is, '{context.entity}']] }      
 
 
 # Desktop
@@ -181,6 +188,53 @@ settings.tk-multi-loader2.houdini:
   <<: *entity_browser_settings 
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
+
+# houdini sequence
+settings.tk-multi-loader2.houdini.sequence:
+  actions_hook: "{self}/tk-houdini_actions.py:{config}/tk-multi-loader2/tk-houdini/tk-houdini_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings:
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Houdini Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
+  <<: *sequence_browser_settings   
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
+# houdini shot
+settings.tk-multi-loader2.houdini.shot:
+  actions_hook: "{self}/tk-houdini_actions.py:{config}/tk-multi-loader2/tk-houdini/tk-houdini_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings:
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Houdini Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
+  <<: *shot_browser_settings   
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
 
 # maya assets
 settings.tk-multi-loader2.maya:

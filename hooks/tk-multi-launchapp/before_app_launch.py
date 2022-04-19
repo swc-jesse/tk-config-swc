@@ -59,9 +59,10 @@ class BeforeAppLaunch(tank.Hook):
 
         # Append to PYTHONPATH
     
-        tools_path = os.path.abspath(os.path.join(self.sgtk.project_path, os.pardir,software_entity["sg_windows_tools_path"]))
+        app_tools_path = software_entity["sg_windows_tools_path"]
 
-        if tools_path:
+        if app_tools_path:
+            tools_path = os.path.abspath(os.path.join(self.sgtk.project_path, os.pardir, app_tools_path))
             sgtk.util.append_path_to_env_var("PYTHONPATH", tools_path)
 
             if engine_name == 'tk-maya':

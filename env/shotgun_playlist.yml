@@ -9,28 +9,22 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 #
 
-description: Apps and Engines related to Child Asset based work.
+description: Apps and engines loaded when a Playlist is loaded.
+  By default, the only engine defined here is tk-shotgun. This configuration
+  provides the apps that are necessary to display menu actions in the Shotgun
+  web application by way of Toolkit's browser integration.
 
 ################################################################################
 
 includes:
 - ./includes/frameworks.yml
-- ./includes/settings/tk-desktop.yml
-- ./includes/settings/tk-maya.yml
-- ./includes/settings/tk-houdini.yml
-- ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
-- ./includes/settings/tk-multi-perforce.yml
 
 ################################################################################
-# configuration for all engines to load in an asset step context
+# configuration for all engines to load in a playlist context
 
 engines:
-  tk-desktop: "@settings.tk-desktop.shot_step"
-  tk-maya: "@settings.tk-maya.shot_step"
-  tk-houdini: "@settings.tk-houdini.shot_step"
-  tk-shell: "@settings.tk-shell.shot"
-  tk-shotgun: "@settings.tk-shotgun.shot_step"
+  tk-shotgun: "@settings.tk-shotgun.playlist"
 
 ################################################################################
 # reference all of the common frameworks
