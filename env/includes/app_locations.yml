@@ -161,12 +161,10 @@ apps.tk-multi-perforce.location:
   # path: S:\Projects\ShotgunConfig\tk-multi-perforce
   # Github
   type: git_branch
-  branch: swc_beta
+  branch: swc_beta_rb
   path: https://github.com/nimbleheroes/tk-multi-perforce.git
-  version: 85f37fc
-  # type: git
-  # path: https://github.com/studiowildcard/tk-multi-perforce
-  # version: v0.5.2
+  version: 5d17db6
+
 ################################################################################
 # reference all of the common frameworks
 frameworks: '@frameworks'
