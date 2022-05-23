@@ -66,9 +66,56 @@ entity_browser_settings: &entity_browser_settings
     - [step.Step.code, is, "Vendor"]      
     hierarchy: [entity, content]      
 
+entity_browser_settings: &sequence_browser_settings
+  entities:
+  - caption: My Tasks
+    entity_type: Task
+    filters:
+    - [task_assignees, is, '{context.user}']
+    - [project, is, '{context.project}']
+    hierarchy: [project, entity, step, content]       
+  - caption: Content
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    filters:
+      - [entity.Asset.sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']        
+      - [entity, type_is, 'Asset']
+    publish_filters:
+      - [task.Task.step.Step.short_name, is_not, 'Animations']
+  - caption: Sequence Assets
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_type, entity, step, content]
+    filters:
+      - { "filter_operator": "any","filters": [[entity.Asset.sequences, is, '{context.entity}'],[entity, is, '{context.entity}'],[entity.Shot.sg_sequence, is, '{context.entity}']] }
+
+entity_browser_settings: &shot_browser_settings
+  entities:
+  - caption: My Tasks
+    entity_type: Task
+    filters:
+    - [task_assignees, is, '{context.user}']
+    - [project, is, '{context.project}']
+    hierarchy: [project, entity, step, content]       
+  - caption: Content
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_library, entity.Asset.sg_asset_type, entity.Asset.sg_asset_category, entity, step, content]
+    filters:
+      - [entity.Asset.sg_asset_parent, is, [ null ]]
+      - [project, is, '{context.project}']        
+      - [entity, type_is, 'Asset']
+    publish_filters:
+      - [task.Task.step.Step.short_name, is_not, 'Animations']
+  - caption: Sequence Assets
+    entity_type: Task
+    hierarchy: [project, entity.Asset.sg_asset_type, entity, step, content]
+    filters:
+      - { "filter_operator": "any","filters": [[entity.Asset.sequences.Sequence.shots, is, '{context.entity}'],[entity, is, '{context.entity}'],[entity.Sequence.shots, is, '{context.entity}']] }      
+
+
 # Desktop
 settings.tk-multi-loader2.desktop:
-  actions_hook: "{config}/tk-multi-loader2/tk-desktop/tk-desktop_actions.py"
+  actions_hook: "{config}/tk-multi-loader2/tk-desktop/tk-desktop_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
   action_mappings:
     Photoshop Image: [perforce_sync]
     3dsmax Scene: [perforce_sync]
@@ -135,16 +182,72 @@ settings.tk-multi-loader2.houdini:
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 
-# maya
+# maya assets
 settings.tk-multi-loader2.maya:
-  action_mappings:
-    Alembic Cache: [reference, import]
-    Image: [texture_node, image_plane]
-    Maya Scene: [reference, import]
-    Photoshop Image: [texture_node, image_plane]
-    Rendered Image: [texture_node, image_plane]
-    Texture: [texture_node, image_plane]
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings: 
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Maya Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
   <<: *entity_browser_settings   
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
+# maya sequence
+settings.tk-multi-loader2.maya.sequence:
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings:
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Maya Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
+  <<: *sequence_browser_settings   
+  publish_filters: [["sg_status_list", "is_not", null]]
+  location: "@apps.tk-multi-loader2.location"
+
+# maya shot
+settings.tk-multi-loader2.maya.shot:
+  actions_hook: "{self}/tk-maya_actions.py:{config}/tk-multi-loader2/tk-maya/tk-maya_actions.py:{config}/tk-multi-loader2/perforce_actions.py"
+  action_mappings:
+    Alembic Cache: [perforce_sync, reference, import]
+    Image: [perforce_sync, texture_node, image_plane]
+    Maya Scene: [perforce_sync, reference, import]
+    Motion Builder FBX: [perforce_sync, import]
+    Obj File: [perforce_sync, import]
+    Photoshop Image: [perforce_sync, texture_node, image_plane]
+    Rendered Image: [perforce_sync, texture_node, image_plane]
+    Texture: [perforce_sync, texture_node, image_plane]
+  entity_mappings:
+    Task: [perforce_sync]
+    Asset: [perforce_sync]
+    Sequence: [perforce_sync]
+    Shot: [perforce_sync]
+    CustomEntity01: [perforce_sync]
+    CustomEntity03: [perforce_sync]   
+  <<: *shot_browser_settings   
   publish_filters: [["sg_status_list", "is_not", null]]
   location: "@apps.tk-multi-loader2.location"
 

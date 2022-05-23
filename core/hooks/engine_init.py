@@ -31,6 +31,8 @@ class EngineInit(Hook):
         if engine.name == "tk-maya":
             self.logger.info("Custom Maya Init Hook")
             import maya.cmds as cmds
-
-            cmds.loadPlugin("wc_sgias.py")
+            try:
+                cmds.loadPlugin("wc_sgias.py")
+            except RuntimeError:
+                self.logger.info("Wildcard Tools not found while initializing engine.")
         pass

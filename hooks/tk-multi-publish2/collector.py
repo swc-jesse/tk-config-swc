@@ -189,7 +189,13 @@ class BasicSceneCollector(HookBaseClass):
                     "icon": self._get_icon_path("zbrush.png"),
                     "item_type": "file.zbrush",
                     "item_priority": 5,
-                },                                                                             
+                }, 
+                "Ignore": {
+                    "extensions": ["painter_lock"],
+                    "icon": self._get_icon_path("file.png"),
+                    "item_type": "ignore",
+                    "item_priority": 0,                    
+                }                                                                            
             }
 
         return self._common_file_info
@@ -252,6 +258,15 @@ class BasicSceneCollector(HookBaseClass):
             }
 
         return self._common_folder_info
+
+    @property
+    def ignored_filename_strings(self):
+        
+        ignored = [
+            "autosave",
+        ]
+
+        return ignored
 
     @property
     def settings(self):
@@ -347,8 +362,14 @@ class BasicSceneCollector(HookBaseClass):
         :returns: The item that was created
         """
 
-        if item_info["item_type"].startswith("script"):
+        if item_info["item_type"].startswith("script") or item_info["item_type"] == "ignore":
             return None
+
+        for subStr in self.ignored_filename_strings:
+            if subStr.lower() in item_info["item_path"].lower():
+                self.logger.info(f'Ignored file with "{subStr}" in the name: {os.path.normpath(item_info["item_path"])}')
+                return None
+
         # make sure the path is normalized. no trailing separator, separators
         # are appropriate for the current os, no double separators, etc.
         path = item_info["item_path"]
