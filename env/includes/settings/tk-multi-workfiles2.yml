@@ -93,6 +93,15 @@ entity_browser_settings: &entity_browser_settings
       filters:    
       link_field: entity
       hierarchy: [step]
+  - caption: Publishing
+    entity_type: CustomEntity03
+    hierarchy: [sg_campaign, sg_product.CustomNonProjectEntity01.code, sg_use, code]
+    filters: 
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: []      
 
 
 # env_entity_browser_settings
