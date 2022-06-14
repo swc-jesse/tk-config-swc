@@ -173,3 +173,13 @@ apps.tk-shotgun-launchfolder.location:
   type: app_store
   name: tk-shotgun-launchfolder
   version: v0.3.1
+
+# Copy from Playlist
+apps.tk-copyfromplaylist.location:
+  # # Dev
+  # type: dev
+  # path: 'S:/Projects/ShotgunConfig/tk-copyfromplaylist'
+  # Github
+  type: git
+  path: https://github.com/studiowildcard/tk-copyfromplaylist.git
+  version: v0.2

@@ -18,6 +18,7 @@ includes:
 - ./tk-multi-perforce.yml
 - ./tk-shotgun-folders.yml
 - ./tk-shotgun-launchfolder.yml
+- ./tk-copyfromplaylist.yml
 
 ################################################################################
 
@@ -146,6 +147,7 @@ settings.tk-shotgun.version:
 # playlist
 settings.tk-shotgun.playlist:
   apps:
+    tk-copyfromplaylist: "@settings.tk-copyfromplaylist"
   location: "@engines.tk-shotgun.location"  
 
 # publishedfile
