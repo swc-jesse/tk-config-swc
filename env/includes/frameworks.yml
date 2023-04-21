@@ -21,25 +21,25 @@ frameworks:
     location:
       type: app_store
       name: tk-framework-adobe
-      version: v1.1.4
+      version: v1.1.7
   # adminui - provides GUIs for administrative commands
   tk-framework-adminui_v0.x.x:
     location:
       type: app_store
       name: tk-framework-adminui
-      version: v0.7.1
+      version: v0.7.3
   # desktopserver - provides a server to run local commands.
   tk-framework-desktopserver_v1.x.x:
     location:
       type: app_store
       name: tk-framework-desktopserver
-      version: v1.5.2
+      version: v1.6.0
   # qtwidgets - collection of Toolkit related QT Widgets
   tk-framework-qtwidgets_v2.x.x:
     location:
       type: app_store
       name: tk-framework-qtwidgets
-      version: v2.10.2
+      version: v2.10.6
   # shotgunutils v4 - Shotgun Related Utilities
   tk-framework-shotgunutils_v4.x.x:
     location:
@@ -52,7 +52,7 @@ frameworks:
     location:
       type: app_store
       name: tk-framework-shotgunutils
-      version: v5.8.4
+      version: v5.8.5
   # widget v0 - QT Widget Framework for Tank Apps (qtwidgets fw predecessor)
   tk-framework-widget_v0.2.x:
     location:
@@ -71,24 +71,23 @@ frameworks:
     location:
       type: app_store
       name: tk-framework-desktopclient
-      version: v0.3.1
+      version: v0.3.2
   # lmv - provides LMV conversion tools
   tk-framework-lmv_v0.x.x:
     location:
       type: app_store
       name: tk-framework-lmv
-      version: v0.2.1
+      version: v0.2.2
 # ---- 3rd Party Frameworks
 
   # unrealqt - PySide build for Unreal (Windows-only)
   # also used by substance painter and designer
   tk-framework-unrealqt_v1.x.x:
     location:
-      type: github_release
       organization: ue4plugins
       repository: tk-framework-unrealqt
-      version: v1.1.0
-
+      version: v1.2.3
+      type: github_release
 # ---- Custom Frameworks
 
   # perforce - provides connection to perforce
@@ -106,8 +105,8 @@ frameworks:
       # version: e004ff5 
       type: git
       path: https://github.com/studiowildcard/tk-framework-perforce
-      version: v0.5.3      
-      
+      version: v0.5.3
+
 
   # SWC - Custom utilities
   tk-framework-swc_v0.x.x:
@@ -122,4 +121,4 @@ frameworks:
       # branch: main
       type: git
       path: https://github.com/studiowildcard/tk-framework-swc
-      version: v1.1.0
+      version: v1.4.0

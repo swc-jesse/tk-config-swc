@@ -23,19 +23,19 @@ includes:
 apps.tk-multi-about.location:
   type: app_store
   name: tk-multi-about
-  version: v0.4.1
+  version: v0.4.2
 
 # demo
 apps.tk-multi-demo.location:
   type: app_store
   name: tk-multi-demo
-  version: v1.3.0
+  version: v1.3.5
 
 # launchapp
 apps.tk-multi-launchapp.location:
   type: app_store
   name: tk-multi-launchapp
-  version: v0.12.1
+  version: v0.12.2
 
 # loader2
 apps.tk-multi-loader2.location:
@@ -49,13 +49,13 @@ apps.tk-multi-loader2.location:
   type: git_branch
   branch: master
   path: https://github.com/studiowildcard/tk-multi-loader2.git
-  version: 7b0a9aa3ac0223b227a7b7b7ee5724c947df2b64
+  version: cc83e0ac195765418a5f3f529fd727a1f6f84cee
 
 # publish2
 apps.tk-multi-publish2.location:
   type: app_store
   name: tk-multi-publish2
-  version: v2.6.1
+  version: v2.6.5
 
 # pythonconsole
 apps.tk-multi-pythonconsole.location:
@@ -67,19 +67,19 @@ apps.tk-multi-pythonconsole.location:
 apps.tk-multi-reviewsubmission.location:
   type: app_store
   name: tk-multi-reviewsubmission
-  version: v1.2.0
+  version: v1.2.1
 
 # shotgun panel
 apps.tk-multi-shotgunpanel.location:
   type: app_store
   name: tk-multi-shotgunpanel
-  version: v1.8.1
+  version: v1.8.6
 
 # dev utils
 apps.tk-multi-devutils.location:
   type: app_store
   name: tk-multi-devutils
-  version: v1.2.0
+  version: v1.2.1
 
 # ---- Houdini apps
 
